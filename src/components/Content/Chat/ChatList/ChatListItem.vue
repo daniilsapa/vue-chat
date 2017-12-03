@@ -1,22 +1,20 @@
 <template>
 
     <div
-         class="item"
+         class="chat-list-item"
          :class="{'active-chat': chat._id === currentChat._id}"
          @click="changeChat"
     >
+        
+        <img src="images/defaults/14575489059580.jpg"/>
 
         <div>
-
-            <div class="float-left active-bar" :class="{'chat-extended': chat.notifications !== 0}">
-
-            </div>
 
             <h6 class="chat-title">
                 {{ chat.title }}
                 <span v-if="chat.notifications !== 0" class="badge badge-secondary">{{ chat.notifications }}</span>
             </h6>
-
+            
         </div>
 
     </div>
@@ -47,38 +45,55 @@
 
 <style lang="scss" scoped>
 
-    .item {
+    .chat-list-item {
+        position: relative;
+        margin-top: 10px;
+
         cursor: pointer;
+        
+        height: 70px;
+
+        box-shadow: 0 0 4px 0 rgba(0,0,0,0.75);
+        border-radius: 3px;
+
+        img {
+            height: 70px;
+            width: 208px;
+            border-radius: 3px;
+        }
 
         .chat-title {
-            padding: 2px 0 0 0;
+            position: absolute;
+            top: 50px;
+
+            padding: 1px 0 2px 5px;
+            margin:0 0 5px 0;
+
+            width: 100%;
+
+            background: rgba(255, 255, 255, 1);
             color: rgba(180, 180, 180, 1);
 
-            margin:0 0 5px 0;
+            border-radius: 0 0 3px 3px;
         }
 
-        .active-bar {
-            min-height: 24px;
-            width: 5px;
-            background: rgba(180, 180, 180, 1);
+    }
 
-            margin: 0 10px 0 0;
+    .chat-list-item:hover {
+
+
+        h6 {
+            background: rgba(200, 200, 200, 1);
+            color: rgba(255, 255, 255, 1);
         }
+
     }
 
     .active-chat {
 
-        .active-bar  {
-            background: rgba(0, 119, 71, 1);
-        }
-
         h6 {
             color: rgba(0, 119, 71, 1) !important;
         }
-    }
-
-    .chat-extended {
-        min-height: 26px !important;
     }
 
 </style>

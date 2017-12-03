@@ -3,8 +3,6 @@ import _ from 'lodash';
 
 import { ErrorHandler } from "../../services/ErrorHandler.secvice"
 
-import { closeSignUpModal } from "../../jQuery/closeSignUpModal"
-
 const state = {
     form: {
         username: {value: '', state: false},
@@ -62,7 +60,6 @@ const actions = {
                 const data = response.body;
 
                 if(data.token){
-                    closeSignUpModal();
                     dispatch('LOCAL_STORAGE_A_SET_TOKEN', data.token.split(' ')[1]);
                     dispatch('APP_A_INIT_APP');
                 }

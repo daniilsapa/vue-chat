@@ -2,8 +2,6 @@ import Vue from 'vue';
 
 import {ErrorHandler} from "../../services/ErrorHandler.secvice"
 
-import {closeLogInModal} from "../../jQuery/closeLogInModal"
-
 const state = {
     form: {
         email: '',
@@ -32,7 +30,7 @@ const actions = {
 
                 dispatch('LOCAL_STORAGE_A_SET_TOKEN', result.body.token.split(' ')[1]);
                 dispatch('APP_A_INIT_APP');
-                closeLogInModal();
+
 
             })
             .catch(error => {

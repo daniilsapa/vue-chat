@@ -39,10 +39,6 @@
     import { mapActions } from 'vuex';
     import { mapGetters } from 'vuex';
 
-    //IMPORTED DOM HANDLERS
-    import { lastMessageHandler } from '../../../../jQuery/lastMessageHandler';
-    import { deleteMessageSigns } from '../../../../jQuery/deleteMessageSigns';
-
     export default {
         data () {
 
@@ -66,10 +62,7 @@
         methods: {
             ...mapActions({
                 beforeLeaveChat: 'CHAT_A_BEFORE_LEAVE_CHAT'
-            }),
-            lastMessageHandlerWrapper() {
-                this.signs = lastMessageHandler(this.localStorage.chats, this.chat);
-            }
+            })
         },
         watch: {
             '$route'(to, from) {
@@ -112,7 +105,6 @@
             chat(newChat) {
                 if(newChat){
                     this.$store._mutations['CHATLIST_M_RESET_NOTIFICATIONS'][0](newChat._id);
-                    setTimeout(this.lastMessageHandlerWrapper, 300)
 
                 }
             }
@@ -133,7 +125,6 @@
         beforeRouteLeave(to, from, next) {
 
             this.beforeLeaveChat();
-            deleteMessageSigns();
             next();
         }
     }

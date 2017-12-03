@@ -31,12 +31,9 @@
 </template>
 
 <script>
-
     //IMPORTED COMPONENTS
     import ErrorBox from './components/ErrorBox/ErrorBox.vue';
     import AppHeader from './components/Header/Header.vue';
-
-
 
     export default {
         data() {
