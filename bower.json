@@ -1,0 +1,10 @@
+{
+  "name": "chat2_1",
+  "version": "1.0.0",
+  "dependencies": {
+    "bootstrap": "4.0.0-beta",
+    "jquery": "^3.2.1",
+    "popper.js": "^1.12.5",
+    "cropperjs": "^1.1.3"
+  }
+}
