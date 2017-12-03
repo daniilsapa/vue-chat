@@ -1,0 +1,82 @@
+<template>
+    <div class="profile-edit">
+
+        <div class="row justify-content-center">
+
+            <div class="col-lg-10">
+                <ul class="nav text-center">
+                    <li class="nav-item">
+                        <router-link tag="a" class="nav-link" active-class="active" to="/profile" exact>Profile</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link tag="a" class="nav-link" active-class="active" to="/profile/edit">Edit</router-link>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-lg-10">
+                <hr/>
+                <profile-field-edit v-for="field in profileFields" :field="field"></profile-field-edit>
+            </div>
+        </div>
+
+    </div>
+</template>
+
+<script>
+
+    //IMPORTED COMPONENTS
+    import ProfileFieldEdit from './ProfileFieldEdit/ProfileFieldEdit.vue';
+
+    export default {
+        props: ['user'],
+        computed: {
+            profileFields() {
+
+                const fieldsArray = [],
+                      neededFields = new RegExp(/username|email|phone|password/);
+
+                for(let key in this.user){
+                    if(key.match(neededFields)) {
+                        fieldsArray.push({
+                            name: key,
+                            value: this.user[key]
+                        })
+                    }
+                }
+
+                return fieldsArray;
+
+            }
+        },
+        components: {
+            ProfileFieldEdit
+        }
+
+    }
+
+</script>
+
+<style lang="scss" scoped>
+
+    .profile-edit {
+
+        background: rgba(255, 255, 255, 1);
+
+        border: 1px solid rgba(180, 180, 180, 1);
+        border-radius: 10px;
+
+        padding: 15px 0 15px 0;
+
+    }
+
+    .active {
+        color: rgba(0, 119, 71, 1) !important;
+
+    }
+
+    .nav-link{
+        color: rgba(180, 180, 180, 1);
+    }
+
+</style>

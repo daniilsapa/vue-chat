@@ -1,15 +1,53 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from 'vue'
-import App from './App'
-import router from './router'
+import Vue from 'vue';
+import App from './App.vue';
 
-Vue.config.productionTip = false
+import VueResource from 'vue-resource';
+import VueRouter from 'vue-router';
 
-/* eslint-disable no-new */
+import { routes } from "./routes.js"
+import { store } from "./store/store"
+
+Vue.use(VueResource);
+Vue.use(VueRouter);
+
+Vue.use(require('vue-prevent-parent-scroll'));
+
+const router = new VueRouter({
+    routes
+});
+
+Vue.http.interceptors.push((request, next) => {
+
+    request.headers.set('authorization', `${JSON.parse(localStorage.getItem('data')).token}`);
+    next();
+
+});
+
+Vue.filter('timestamp', value => {
+
+    const messageDate = new Date(value),
+          currentDate = new Date(Date.now());
+
+    const sameDay = messageDate.getFullYear() === currentDate.getFullYear() &&
+        messageDate.getMonth() === currentDate.getMonth() &&
+        messageDate.getDay() === currentDate.getDay();
+
+    if(sameDay){
+        return `${messageDate.getHours()} : ${messageDate.getMinutes()}`;
+    }
+    else{
+        return `${messageDate.getMonth()}|${messageDate.getDay()}|${messageDate.getFullYear()} at ${messageDate.getHours()} : ${messageDate.getMinutes()}`
+    }
+
+});
+
 new Vue({
-  el: '#app',
-  router,
-  template: '<App/>',
-  components: { App }
-})
+    el: '#app',
+    router,
+    store,
+    render: h => h(App),
+});
+
+
+
+

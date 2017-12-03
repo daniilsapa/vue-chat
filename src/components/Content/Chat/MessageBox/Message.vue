@@ -1,0 +1,109 @@
+<template>
+
+    <div v-if="(privateM && privateTarget) || isOwner || !privateM">
+
+        <div v-if="!message.sameUser" class="col-lg-5 image-wrapper">
+            <img :src="message.author.avatarUrl" class="rounded-circle" height="30px">
+        </div>
+
+        <div v-if="!message.sameUser" class="col-lg-12"></div>
+
+        <div v-if="!message.sameUser"  class="user-info col-lg-5">
+            {{ message.author.username }}
+        </div>
+
+        <div class="col-lg-12 divider"></div>
+
+        <div class="message col-lg-5"
+            :class="{'current-user-message': isOwner && !privateM, 'private-message': privateM}"
+        >
+            <span v-if="privateM && isOwner">
+                to <span class="target"> {{ message.target.username }}</span> <br>
+            </span>
+            {{ message.content }}
+            <div :style="{color: 'rgba(160, 160, 160, 1)'}">
+                {{ message.timestamp | timestamp }}
+            </div>
+        </div>
+
+    </div>
+
+</template>
+
+<script>
+
+    export default {
+        props: ['message', 'isOwner', 'privateM', 'privateTarget'],
+        data () {
+
+            return {
+
+            }
+
+        },
+        created () {
+
+
+        },
+        components: {
+
+        }
+    }
+
+</script>
+
+<style lang="scss" scoped>
+
+    .user-info {
+        border-radius: 20px;
+        border: 1px solid rgba(0, 119, 71, 1);
+        box-shadow: 3px 3px 8px 1px rgba(180, 180, 180, 1);
+
+        padding: 0 0 0 70px;
+
+        font-weight: 600;
+        color: rgba(140, 140, 140, 1);
+    }
+
+    .image-wrapper {
+        position: relative;
+        top: 29px;
+        z-index: 500;
+    }
+    
+
+    .divider {
+        height: 15px;
+    }
+
+    .message {
+        background: rgba(240, 240, 240, 1);
+        box-shadow: 3px 3px 8px 2px rgba(180, 180, 180, 1);
+        color: rgba(180, 180, 180, 1);
+        font-weight: 500;
+
+        span {
+            font-weight: 600;
+            color: rgba(140, 140, 140, 1);
+
+
+            .target {
+                text-decoration: underline;
+            }
+        }
+
+    }
+
+    .current-user-message {
+        background: rgba(197, 255, 247, 1) !important;
+        color: rgba(121, 179, 171 , 1) !important;
+
+    }
+
+    .private-message {
+        background: rgba(252, 252, 180, 1) !important;
+        color: rgba(190, 190, 118, 1) !important;
+
+    }
+
+</style>
