@@ -31,7 +31,7 @@
 
             <div class="col-lg-2 send-button">
 
-                <button class="btn btn-default" @click="sendMessage">
+                <button class="btn btn-default" @click="sendMessageWrapper">
                     <i class="fa fa-paper-plane" aria-hidden="true"></i>
                 </button>
 
@@ -50,6 +50,7 @@
 
     //IMPORTED MAPPERS
     import { mapMutations } from 'vuex'
+    import { mapActions } from 'vuex'
 
     export default {
         props: ['chat'],
@@ -77,18 +78,18 @@
             }
         },
         methods: {
-            ...mapMutations({
-                restoreStorage: 'LOCAL_STORAGE_M_STORE_DATA'
+            ...mapActions({
+                sendMessage: 'CHAT_A_SEND_MESSAGE'
             }),
-            sendMessage () {
-                const pattern = new RegExp(/^@[a-zA-Z0-9]{24}\([a-zA-Z0-9]{1,16}\)$/);
+            sendMessageWrapper () {
+                const pattern = new RegExp(/^@[a-zA-Z0-9]{24}[a-zA-Z0-9_]{1,16}$/);
 
                 if(this.message[0] === '@'){
                     let dividerPos = this.message.indexOf(':'),
                         addressee = this.message.slice(0, dividerPos);
 
                     if(addressee.match(pattern)){
-                        this.$store.dispatch('CHAT_A_SEND_MESSAGE', {
+                        this.sendMessage({
                             content: this.message.slice(dividerPos + 1),
                             target: addressee.slice(1, 25),
                             type: 'private'
@@ -98,7 +99,7 @@
                     }
                 }
                 else {
-                    this.$store.dispatch('CHAT_A_SEND_MESSAGE', {content: this.message, type: 'public'});
+                    this.sendMessage({content: this.message, type: 'public'});
                     this.message = '';
                 }
 
@@ -107,10 +108,8 @@
             },
             inputHandler() { this.showUsersList = this.message === '@'; },
             addAddressee(id, username) {
-
                 this.message = `@${id}(${username}):`;
                 this.inputHandler();
-
             }
         },
         components: {

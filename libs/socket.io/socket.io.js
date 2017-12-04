@@ -62,71 +62,59 @@ module.exports = io => {
     (function joinNamespaces() {
 
         const notifications = io.of('/notifications');
+        const messages = io.of('/messages');
 
         notifications.on('connection', socket => {
-            //console.log('USER USER USER', socket.request.user)
+
+
             if(socket.request.user.logged_in === false){
                 socket.disconnect();
                 return;
             }
-            //console.log('socket.request.user', socket.request.user.availableChats.forEach);
+
+            console.log('connected to notifications namespace');
+
             socket.request.user.availableChats.forEach(item => {
-
                 socket.join(item)
-
             })
 
         });
 
-        const messages = io.of('/messages');
+
 
         messages.on('connection', socket => {
 
+
             if(!socket.request.user.logged_in){
                 socket.disconnect();
+                return
             }
 
+            console.log('connected to message namespace');
+
             socket.on('changeChat', async data => {
-
                 try {
-
                     await socket.leave(data.previousChat, err => {
-
                         socket.join(data.currentChat, err => {
-
                             if(err) console.log('chat changin\' error', err);
                             socket.currentChat = data.currentChat;
 
-                            // const sockets = io.in(socket.currentChat);
-                            //
-                            // const Rchat = {
-                            //     ...chat._doc,
-                            //     online: Object.keys(sockets.sockets).map((item) => {
-                            //         return sockets.sockets[item].request.user;
-                            //     })
-                            // };
-
                             socket.emit('changeChat', {});
-
                         });
-
                     });
                 }
                 catch(e) {
                     socket.emit('changeChat', {error: 'server error'});
                 }
-
             });
 
             socket.on('message', async data => {
-
-                let isPrivate = data.type === 'private';
-
-                const message = await messageCtrl.createMessage({
-                    ...data,
-                    author: socket.request.user._id,
-                    chat: socket.currentChat
-                });
+                const isPrivate = data.type === 'private',
+                      message = await messageCtrl.createMessage({
+                            ...data,
+                            author: socket.request.user._id,
+                            chat: socket.currentChat
+                      });
 
                 if(isPrivate){
                     message.target = await userCtrl.getUserById(message.target);

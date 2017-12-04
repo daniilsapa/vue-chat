@@ -15,7 +15,7 @@ const mutations = {
 const actions = {
     'SOCKET_IO_A_INIT_SOCKETS'({ commit, getters, state, dispatch }) {
 
-        const token = getters['LOCAL_STORAGE_G_GET_TOKEN'];
+        const token = JSON.parse(localStorage.getItem('data')).token;
 
         commit('SOCKET_IO_M_CONNECT_TO_SOCKET', {
             title: 'socket',
@@ -28,24 +28,22 @@ const actions = {
 
             commit('SOCKET_IO_M_CONNECT_TO_SOCKET', {
                 title: 'notifications',
-                socket: io('http://localhost:3000/notifications')
+                socket: io('/notifications')
             });
 
             state.notifications.on('notification.message', notification => {
-
                 if(getters['CHAT_G_GET_CHAT']['_id'] !== notification.chat){
                     commit('CHATLIST_M_ADD_NOTIFICATION', notification);
                 }
-
             });
 
             commit('SOCKET_IO_M_CONNECT_TO_SOCKET', {
                 title: 'messages',
-                socket: io('http://localhost:3000/messages')
+                socket: io('/messages')
             });
 
             state.messages.on('message', message => {
-
+                console.log('message event was fired', message);
                 const currentChat = getters['CHAT_G_GET_CHAT'];
 
                 if(message.chat !== currentChat._id) return;
@@ -56,8 +54,6 @@ const actions = {
                 }
 
                 commit('CHAT_M_ADD_MESSAGE', message);
-                commit('CHAT_M_SCROLL');
-
             });
 
             state.messages.on('typingUsers', typingUsers => {

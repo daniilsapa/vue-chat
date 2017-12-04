@@ -4,7 +4,7 @@
         <div class="chat-header"><h5 v-if="chat">{{ chat.title }}</h5></div>
             <div class="chat-box">
 
-                <ul v-if="chat" class="message-list" id="chatList" v-prevent-parent-scroll>
+                <ul v-if="chat" class="message-list" id="messageList" v-prevent-parent-scroll>
 
                     <message class="row message-list-item" v-for="message in chat.messages"
                         :id="message._id"
@@ -34,25 +34,59 @@
     //IMPORTED COMPONENTS
     import Editor from './Editor/Editor.vue';
     import Message from './Message.vue';
-
     //IMPORTED MAPPERS
     import { mapActions } from 'vuex';
     import { mapGetters } from 'vuex';
+    import { mapMutations } from 'vuex';
 
     export default {
-        data () {
-            return {
-                id: null,
-            }
-
-        },
         computed: {
             ...mapGetters({
-                chat: 'CHAT_G_GET_CHAT',
                 appState: 'APP_G_GET_APP_STATE',
+                chat: 'CHAT_G_GET_CHAT',
                 currentUser: 'SESSION_G_GET_CURRENT_USER',
-                localStorage: 'LOCAL_STORAGE_G_GET_STORAGE',
+                scrollEvent: 'CHAT_G_GET_SCROLL_EVENT'
             })
+        },
+        watch: {
+            $route(to, from) {
+                this.beforeLeaveChat();
+                this.getChat(to.params.id);
+            },
+            appState(newState) {
+                if(newState) {
+                    this.getChat(this.$route.params.id);
+                }
+            },
+            chat(newChat) {
+                if(newChat){
+                    this.$store._mutations['CHATLIST_M_RESET_NOTIFICATIONS'][0](newChat._id);
+                }
+            },
+            scrollEvent(newValue) {
+                console.log('scroll');
+                if(newValue){
+                    const messageList = this.$el.querySelector("#messageList"),
+                        lastMessage = messageList.lastElementChild.previousElementSibling;
+
+                    let scrollHeight = messageList.scrollHeight;
+
+                    let needScroll =
+                        messageList.scrollTop +
+                        lastMessage.offsetHeight +
+                        lastMessage.previousElementSibling.offsetHeight +
+                        messageList.clientHeight >=
+                        scrollHeight;
+
+                    console.log('scrollHeight', scrollHeight);
+                    console.log('height', lastMessage);
+                    console.log('needScroll', needScroll);
+
+                    if(needScroll) {
+                        messageList.scrollTop = messageList.scrollHeight;
+                    }
+                }
+            }
         },
         methods: {
             ...mapActions({
@@ -60,36 +94,16 @@
                 getChat: 'CHAT_A_FETCH_CHAT'
             })
         },
-        watch: {
-            '$route'(to, from) {
-
-                this.beforeLeaveChat();
-                this.getChat(to.params.id);
-
-            },
-            appState(newState) {
-                if(newState) {
-                    this.$store.dispatch('CHAT_A_FETCH_CHAT' , this.$route.params.id);
-                }
-            },
-            chat(newChat) {
-                if(newChat){
-                    this.$store._mutations['CHATLIST_M_RESET_NOTIFICATIONS'][0](newChat._id);
-
-                }
-            }
-        },
-        created () {
-            if(this.appState) {
-                this.$store.dispatch('CHAT_A_FETCH_CHAT' , this.$route.params.id);
-            }
-        },
         components: {
             Editor,
             Message
         },
+        created () {
+            if(this.appState) {
+                this.getChat(this.$route.params.id);
+            }
+        },
         beforeRouteLeave(to, from, next) {
-
             this.beforeLeaveChat();
             next();
         }

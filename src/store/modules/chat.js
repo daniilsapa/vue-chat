@@ -10,12 +10,14 @@ const state = {
         _id: null
     },
     newMessage: '',
-    scrollHandler: false
+    scrollEvent: false
 };
 
 const mutations = {
     'CHAT_M_ADD_MESSAGE'(state, message) {
         state.currentChat.messages.push(message);
+        state.scrollEvent = true;
+        setTimeout(() => {state.scrollEvent = false}, 100);
     },
     'CHAT_M_RESET_CHAT'(state) {
         state.currentChat = {};
@@ -115,8 +117,8 @@ const getters = {
     'CHAT_G_GET_NEW_MESSAGE'(state) {
         return state.newMessage;
     },
-    'CHAT_G_GET_SCROLL'(state) {
-        return state.scrollHandler;
+    'CHAT_G_GET_SCROLL_EVENT'(state) {
+        return state.scrollEvent;
     }
 };
 
