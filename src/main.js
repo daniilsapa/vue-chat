@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import axios from 'axios'
 import App from './App.vue';
 
 import VueResource from 'vue-resource';
@@ -18,11 +19,24 @@ const router = new VueRouter({
     routes
 });
 
-Vue.http.interceptors.push((request, next) => {
+axios.interceptors.request
+    .use(
+        (config) => {
+            config.headers.authorization = `${JSON.parse(localStorage.getItem('data')).token}`;
+            return config;
+        },
+        (error) => {
+            // Do something with request error
+            return Promise.reject(error);
+        }
+    );
 
-    request.headers.set('authorization', `${JSON.parse(localStorage.getItem('data')).token}`);
-    next();
+axios.interceptors.response.use(function (response) {
 
+    return response;
+}, function (error) {
+    // Do something with response error
+    return Promise.reject(error);
 });
 
 Vue.filter('timestamp', value => {
@@ -38,7 +52,7 @@ Vue.filter('timestamp', value => {
         return `${messageDate.getHours()} : ${messageDate.getMinutes()}`;
     }
     else{
-        return `${messageDate.getMonth()}|${messageDate.getDay()}|${messageDate.getFullYear()} at ${messageDate.getHours()} : ${messageDate.getMinutes()}`
+        return `${messageDate.getMonth()}/${messageDate.getDay()}/${messageDate.getFullYear()} at ${messageDate.getHours()} : ${messageDate.getMinutes()}`
     }
 
 });

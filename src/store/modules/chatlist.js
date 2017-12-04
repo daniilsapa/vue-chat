@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import axios from 'axios';
 
 import { ErrorHandler } from "../../services/ErrorHandler.secvice"
 
@@ -36,10 +36,9 @@ const mutations = {
 
 const actions = {
     'CHATLIST_A_FETCH_AVAILABLE_CHATS'({ commit, getters }, id) {
-        const user = getters.SESSION_G_GET_CURRENT_USER;
 
-        Vue.http.post('/private/chats/available', getters['SESSION_G_GET_CURRENT_USER']['availableChats'])
-            .then(result => commit('CHATLIST_M_SET_AVAILABLE_CHATS', result.body))
+        axios.post('/private/chats/available', getters['SESSION_G_GET_CURRENT_USER']['availableChats'])
+            .then(result => commit('CHATLIST_M_SET_AVAILABLE_CHATS', result.data))
             .catch(error => {
 
                 ErrorHandler.pushError({message: 'Can\'t load chat list, try again later.'})

@@ -8,9 +8,9 @@
         
         <img src="images/defaults/14575489059580.jpg"/>
 
-        <div>
+        <div class="chat-title">
 
-            <h6 class="chat-title">
+            <h6 >
                 {{ chat.title }}
                 <span v-if="chat.notifications !== 0" class="badge badge-secondary">{{ chat.notifications }}</span>
             </h6>
@@ -71,19 +71,22 @@
 
             width: 100%;
 
-            background: rgba(255, 255, 255, 1);
-            color: rgba(180, 180, 180, 1);
+            background: rgba(255, 255, 255, 0.6);
+            color: rgba(240, 240, 240, 1);
 
             border-radius: 0 0 3px 3px;
+
+            h6 {
+                margin: 0;
+            }
         }
 
     }
 
     .chat-list-item:hover {
 
-
-        h6 {
-            background: rgba(200, 200, 200, 1);
+        .chat-title {
+            background: rgba(120, 120, 120, 0.6);
             color: rgba(255, 255, 255, 1);
         }
 
@@ -91,8 +94,8 @@
 
     .active-chat {
 
-        h6 {
-            color: rgba(0, 119, 71, 1) !important;
+        .chat-title {
+            background: rgba(23, 162, 184, 0.6) !important;
         }
     }
 

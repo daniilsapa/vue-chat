@@ -32,14 +32,9 @@ module.exports = app => {
     app.use('/auth', auth);
     app.use('/public', publicRoutes);
     app.use('/private', passport.authenticate('jwt', { session: false }), function(req, res, next){
-        //res.json("Success! You can not see this without a token");
+        console.log('request', req.headers)
         next();
     }, privateRoutes);
-    // app.use('/private', );
-
-    app.get("/secret", passport.authenticate('jwt', { session: false }), function(req, res){
-        res.json("Success! You can not see this without a token");
-    });
 
 };
 

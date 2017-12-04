@@ -1,31 +1,32 @@
-import Vue from 'vue';
+//IMPORTED MODULES
+import axios from 'axios';
 
+//IMPORTED SERVICES
+import { ErrorHandler } from "../../services/ErrorHandler.secvice"
 
 const state = {
+    chatFetched: false,
     currentChat: {
-        _id: 'none'
+        _id: null
     },
     newMessage: '',
-    scrollHandler: false,
-    chatFetched: false
+    scrollHandler: false
 };
 
 const mutations = {
     'CHAT_M_ADD_MESSAGE'(state, message) {
-
         state.currentChat.messages.push(message);
-
+    },
+    'CHAT_M_RESET_CHAT'(state) {
+        state.currentChat = {};
+        state.newMessage = '';
+        state.chatFetched = false;
     },
     'CHAT_M_SCROLL'(state, message) {
-
         state.scrollHandler = true;
         setTimeout(() => {
             state.scrollHandler = false;
         }, 100)
-
-    },
-    'CHAT_M_RESET_CHAT'(state) {
-        state.currentChat = {};
     },
     'CHAT_M_SET_NEW_MESSAGE'(state, message) {
         state.newMessage = message;
@@ -33,114 +34,89 @@ const mutations = {
     'CHAT_M_SET_TYPING_USERS'(state, typingUsers) {
         state.currentChat.typingUsers = typingUsers;
     }
-
 };
 
 const actions = {
-    'CHAT_A_FETCH_CHAT'({ state, dispatch }, id) {
+    'CHAT_A_BEFORE_LEAVE_CHAT'({ state, commit, dispatch, getters }) {
+        const data = JSON.parse(localStorage.getItem('data')),
+              currentChatId = state.currentChat._id;
 
-        Vue.http.get(`/private/chats/${id}`)
-            .then(response => {
+        if(data.chats[currentChatId]){
+            data.chats[currentChatId].message = state.newMessage;
 
-                dispatch('CHAT_A_SET_CHAT', response.body);
-                state.chatFetched = true;
+            if(state.currentChat.messages[state.currentChat.messages.length - 1]){
+                data.chats[currentChatId].lastMessage = state.currentChat.messages[state.currentChat.messages.length - 1]['_id'];
+            }
 
-            });
+            localStorage.setItem('data', JSON.stringify(data));
+        }
 
-
+        commit('CHAT_M_RESET_CHAT');
     },
-    'CHAT_A_SET_CHAT'({ state, getters }, chat) {
+    'CHAT_A_CHANGE_TYPING_STATE'({ getters }, state) {
+        const messagesSocket = getters['SOCKET_IO_G_GET_MESSAGES_SOCKET'];
 
-        let repeatsCount = 0;
-        let currentUser = null;
-
-        chat.messages = chat.messages.map((item, index) => {
-
-            if(item.author._id !== currentUser){
-                repeatsCount = 0;
-            }
-
-            currentUser = item.author._id;
-            ++repeatsCount;
-
-            if(repeatsCount >= 2){
-                item.sameUser = true;
-            }
-
-            return item;
-
-        });
-
-        chat.typingUsers = [];
-
-        getters['SOCKET_IO_G_GET_MESSAGES_SOCKET'].emit('changeChat', {
-            currentChat: chat._id,
-            previousChat: state.currentChat._id
-        });
-
-        getters['SOCKET_IO_G_GET_MESSAGES_SOCKET'].emit('typingUsers', {});
-
-        state.currentChat = chat;
-
-        const currentChatId = state.currentChat._id,
-              localStorage = getters['LOCAL_STORAGE_G_GET_STORAGE'],
-              messageStored = localStorage.chats[currentChatId] && localStorage.chats[currentChatId].message;
-
-        if(messageStored) {
-            state.newMessage = localStorage.chats[currentChatId].message;
+        if(state) {
+            messagesSocket.emit('beginTyping', {});
         }
         else {
-            state.newMessage = '';
+            messagesSocket.emit('finishTyping', {});
         }
-
+    },
+    'CHAT_A_FETCH_CHAT'({ state, dispatch }, id) {
+        axios.get(`/private/chats/${id}`)
+            .then(response => {
+                dispatch('CHAT_A_SET_CHAT', response.data);
+                state.chatFetched = true;
+            })
+            .catch(error => {
+                ErrorHandler.pushError({message: 'Cannot get chat!'})
+            });
     },
     'CHAT_A_SEND_MESSAGE'({ getters, state }, message) {
         getters['SOCKET_IO_G_GET_MESSAGES_SOCKET'].emit('message',  message);
     },
-    'CHAT_A_BEFORE_LEAVE_CHAT'({ state, commit, dispatch, getters }) {
+    'CHAT_A_SET_CHAT'({ state, getters, commit }, chat) {
+        const messagesSocket = getters['SOCKET_IO_G_GET_MESSAGES_SOCKET'],
+              storedChats = JSON.parse(localStorage.getItem('data')).chats;
 
-        if(state.currentChat._id){
-            const currentChatId = state.currentChat._id;
+        chat.messages = chat.messages.map((message, index) => {
+            let prevMessage = chat.messages[index - 1];
 
-            dispatch('LOCAL_STORAGE_A_SET_MESSAGE', {
-                chat: currentChatId,
-                message: state.newMessage
-            });
+            if(prevMessage && message){
+                if(prevMessage.author._id === message.author._id){
+                    message.sameUser = true;
+                }
+            }
 
-            dispatch('LOCAL_STORAGE_A_SET_LAST_MESSAGE', {
-                chat: currentChatId,
-                message: state.currentChat.messages[state.currentChat.messages.length - 1]['_id']
-            });
+            return message;
+        });
 
-            commit('CHAT_A_RESET_CHAT');
+        messagesSocket
+            .emit('changeChat', {
+                currentChat: chat._id,
+                previousChat: state.currentChat._id
+            })
+            .emit('typingUsers', {});
 
-            state.chatFetched = false;
+        chat.typingUsers = [];
+        state.currentChat = chat;
+
+        if(storedChats[chat._id] && storedChats[chat._id].message){
+            commit('CHAT_M_SET_NEW_MESSAGE', storedChats[chat._id].message);
         }
-
-    },
-    'CHAT_A_CHANGE_TYPING_STATE'({ getters }, state) {
-
-        if(state) {
-            getters['SOCKET_IO_G_GET_MESSAGES_SOCKET'].emit('beginTyping', {})
-        }
-        else {
-            getters['SOCKET_IO_G_GET_MESSAGES_SOCKET'].emit('finishTyping', {})
-        }
-
-
     }
-
 };
 
 const getters = {
     'CHAT_G_GET_CHAT'(state) {
         return state.currentChat;
     },
-    'CHAT_G_GET_SCROLL'(state) {
-        return state.scrollHandler;
-    },
     'CHAT_G_GET_NEW_MESSAGE'(state) {
         return state.newMessage;
+    },
+    'CHAT_G_GET_SCROLL'(state) {
+        return state.scrollHandler;
     }
 };
 

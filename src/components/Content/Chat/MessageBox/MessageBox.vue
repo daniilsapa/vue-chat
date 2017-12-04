@@ -41,12 +41,8 @@
 
     export default {
         data () {
-
             return {
-                typingUsers: [],
-                activeUsers: [],
                 id: null,
-                signs: null
             }
 
         },
@@ -55,51 +51,25 @@
                 chat: 'CHAT_G_GET_CHAT',
                 appState: 'APP_G_GET_APP_STATE',
                 currentUser: 'SESSION_G_GET_CURRENT_USER',
-                scrollHandler: 'CHAT_G_GET_SCROLL',
                 localStorage: 'LOCAL_STORAGE_G_GET_STORAGE',
             })
         },
         methods: {
             ...mapActions({
-                beforeLeaveChat: 'CHAT_A_BEFORE_LEAVE_CHAT'
+                beforeLeaveChat: 'CHAT_A_BEFORE_LEAVE_CHAT',
+                getChat: 'CHAT_A_FETCH_CHAT'
             })
         },
         watch: {
             '$route'(to, from) {
 
                 this.beforeLeaveChat();
-                $(this.signs.$lastMessageSign).remove();
-                $(this.signs.$noMessagesSign).remove();
-                this.$store.dispatch('CHAT_A_FETCH_CHAT' , to.params.id);
+                this.getChat(to.params.id);
 
             },
             appState(newState) {
                 if(newState) {
                     this.$store.dispatch('CHAT_A_FETCH_CHAT' , this.$route.params.id);
-                }
-            },
-            scrollHandler(event) {
-
-                if(true){
-                    let $messageList = $(".message-list"),
-                        $newMessage = $messageList.children('div:last-child').prev();
-
-                    let scrollHeight = $messageList.prop("scrollHeight");
-
-                    let needScroll = $messageList.prop("scrollTop") +
-                        $newMessage.innerHeight() +
-                        $newMessage.prev().innerHeight() +
-                        $messageList.prop("clientHeight") >=
-                        scrollHeight;
-
-                    if(needScroll) {
-                        console.log('needScroll', needScroll);
-                        console.log('scrollHeight', scrollHeight);
-                        $($messageList).prop("scrollTop", scrollHeight);
-                        console.log('$chatList.scrollTop', $messageList.prop("scrollTop"));
-
-                    }
-
                 }
             },
             chat(newChat) {
@@ -110,13 +80,9 @@
             }
         },
         created () {
-
             if(this.appState) {
                 this.$store.dispatch('CHAT_A_FETCH_CHAT' , this.$route.params.id);
             }
-
-
-
         },
         components: {
             Editor,
