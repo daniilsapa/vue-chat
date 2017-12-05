@@ -6,7 +6,7 @@
 
             <hr>
 
-            <div v-if="chat" class="message-list" id="messageList" >
+            <div v-if="chat" class="message-list" id="messageList" v-prevent-parent-scroll>
                 <transition-group name="message" tag="div" class="transition-group-message">
 
                     <message class="row message-list-item" v-for="message in chat.messages"
@@ -126,6 +126,8 @@
 <style lang="scss" scoped>
 
     .chat-box {
+        max-height: 100%;
+
         background: rgba(255, 255, 255, 1);
 
         border-radius: 4px 4px 4px 4px;
@@ -138,7 +140,7 @@
 
             border-radius: 4px 4px 0 0;
 
-            color: rgba(255, 255, 255, 1);
+            color: rgba(190, 190, 190, 1);
 
             h5 {
                 margin: 0;
@@ -151,7 +153,7 @@
     }
 
     .message-list {
-        height: 650px;
+        height: 505px;
 
         overflow: scroll;
         overflow-x: hidden;
@@ -167,19 +169,10 @@
 
     }
 
-
-
     .message-list-item {
         margin: 10px;
     }
 
-    .textarea {
-        position: relative;
-        top: -100px;
-
-        z-index: 550;
-
-    }
 
     .message-enter {
         opacity: 0;

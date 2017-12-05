@@ -1,50 +1,26 @@
 <template>
-    <div class="container content">
+    <div class="row">
 
-        <chat></chat>
+        <div class="col-lg-2 col-md-3">
+            <side-bar></side-bar>
+        </div>
+
+        <router-view class="col-lg-10 col-md-9"></router-view>
 
     </div>
 </template>
 
 <script>
+    //IMPORTED COMPONENTS
+    import SideBar from './SideBar/SideBar.vue'
 
-    import Chat from './Chat/Chat.vue'
+    import { mapGetters } from 'vuex'
 
     export default {
         components: {
-            Chat
+            SideBar
         }
     }
-
 </script>
-<style lang="scss">
-    .content {
-        padding: 70px 0 0 0;
 
-        .conversation-wrapper {
-            background-image: url("../../../images/001-subtle-light-pattern-background-texture-vol5.jpg");
-
-
-            .conversation {
-                padding: 20px 0 0 0;
-
-                height: 900px;
-
-                .message {
-                    padding: 10px 10px 10px 12px;
-
-                    margin: 20px 0 0 0;
-                    box-shadow: 0px 0px 12px 1px rgba(140, 140, 140, 1);
-
-                    background: rgba(255, 255, 255, 1);
-                }
-            }
-        }
-
-        .subproject {
-            margin: 50px 0 50px 0;
-        }
-
-    }
-    
-</style>
+<style lang="scss" scoped></style>

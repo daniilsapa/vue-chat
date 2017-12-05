@@ -3,15 +3,16 @@ import { ErrorHandler } from "../services/ErrorHandler.secvice"
 
 import Home from '../components/Content/Home/Home.vue';
 
-import Chat from '../components/Content/Chat/Chat.vue';
+import ChatList from '../components/Content/ChatList/ChatList.vue';
     //      \/ NESTED COMPONENTS \/
-    import MessageBox from '../components/Content/Chat/MessageBox/MessageBox.vue';
-    import ChatInvite from '../components/Content/Chat/ChatInvite.vue';
-    import ChatCreation from '../components/Content/Chat/ChatCreation/ChatCreation.vue';
+    import MessageBox from '../components/Content/MessageBox/MessageBox.vue';
+    import ChatInvite from '../components/Content/ChatInvite.vue';
+    import ChatCreation from '../components/Content/ChatCreation/ChatCreation.vue';
 
 import Profile from '../components/Content/Profile/Profile.vue';
     //      \/ NESTED COMPONENTS \/
-import UserProfile from '../components/Content/Profile/UserProfile/UserProfile.vue'
+    import UserProfile from '../components/Content/Profile/UserProfile/UserProfile.vue'
+    import ProfileEdit from '../components/Content/Profile/ProfileEdit/ProfileEdit.vue'
 
 
 export const routes = [
@@ -25,7 +26,7 @@ export const routes = [
     {
         path: '/chats',
         components: {
-            default: Chat,
+            default: ChatList,
         },
         children: [
             {
@@ -37,10 +38,6 @@ export const routes = [
                 component: ChatCreation,
 
             },
-            {
-                path: ':id',
-                component: MessageBox
-            }
 
         ],
         beforeEnter(to, from, next) {
@@ -59,6 +56,10 @@ export const routes = [
         }
     },
     {
+        path: '/chats/:id',
+        component: MessageBox
+    },
+    {
         path: '/profile',
         components: {
             default: Profile,
@@ -67,6 +68,10 @@ export const routes = [
             {
                 path: '',
                 component: UserProfile
+            },
+            {
+                path: 'edit',
+                component: ProfileEdit
             }
 
         ],

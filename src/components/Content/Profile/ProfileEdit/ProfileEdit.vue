@@ -6,10 +6,10 @@
             <div class="col-lg-10">
                 <ul class="nav text-center">
                     <li class="nav-item">
-                        <router-link tag="a" class="nav-link" active-class="active" to="/profile" exact>Profile</router-link>
+                        <router-link tag="a" class="nav-link" active-class="text-info" to="/profile" exact>Profile</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link tag="a" class="nav-link" active-class="active" to="/profile/edit">Edit</router-link>
+                        <router-link tag="a" class="nav-link" active-class="text-info" to="/profile/edit">Edit</router-link>
                     </li>
                 </ul>
             </div>
@@ -58,22 +58,6 @@
 </script>
 
 <style lang="scss" scoped>
-
-    .profile-edit {
-
-        background: rgba(255, 255, 255, 1);
-
-        border: 1px solid rgba(180, 180, 180, 1);
-        border-radius: 10px;
-
-        padding: 15px 0 15px 0;
-
-    }
-
-    .active {
-        color: rgba(0, 119, 71, 1) !important;
-
-    }
 
     .nav-link{
         color: rgba(180, 180, 180, 1);

@@ -6,7 +6,10 @@
             <div class="col-lg-10">
                 <ul class="nav text-center">
                     <li class="nav-item">
-                        <router-link tag="a" class="nav-link" active-class="active" to="/profile" exact>Profile</router-link>
+                        <router-link tag="a" class="nav-link" active-class="text-info" to="/profile" exact>Profile</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link tag="a" class="nav-link" active-class="active" to="/profile/edit" exact>Edit</router-link>
                     </li>
                 </ul>
             </div>
@@ -34,34 +37,14 @@
 </template>
 
 <script>
-
     export default {
         props: ['user'],
-        computed: {
-
-        },
-        components: {
-
-        }
-
     }
-
 </script>
 
 <style lang="scss" scoped>
 
-    $grey180: rgba(180, 180, 180, 1);
-
-    .user-profile {
-
-        background: rgba(255, 255, 255, 1);
-
-        border: 1px solid $grey180;
-        border-radius: 10px;
-
-        padding: 15px 0 100px 0;
-
-    }
+    $grey180: rgba(190, 190, 190, 1);
 
     .profile-field {
         h5 {
@@ -70,11 +53,6 @@
         p {
             color: rgba(150, 150, 150, 1);
         }
-    }
-
-    .active {
-        color: rgba(0, 119, 71, 1) !important;
-
     }
 
     .nav-link{

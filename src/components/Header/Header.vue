@@ -1,57 +1,98 @@
 <template>
     <div>
-        <session-bar></session-bar>
         <nav class="navbar navbar-expand-lg navbar-light">
-            <router-link tag="div" to="/" exact class="navbar-brand" href="#">Werewolf</router-link>
+
+            <router-link tag="div" to="/" exact class="navbar-brand text-info" href="#">Werewolf</router-link>
+
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <router-link tag="div" class="nav-link" active-class="active" to="/" exact>Home</router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link tag="div" class="nav-link" active-class="active" to="/chats">Chats</router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link tag="div" class="nav-link" active-class="active" to="/profile">Profile</router-link>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent"></div>
 
+            <ul class="nav navbar-nav navbar-right">
+
+                <li>
+                    <a href="#">
+
+                        <div v-if="userType === 'user' || userType === 'admin'" class="loggedAs">
+                            Logged in as <span>{{ currentUser.username }}</span>
+                        </div>
+
+                        <div v-else class="sign">
+                            <a href="#" data-toggle="modal" data-target="#LogInModal">log in</a>
+                            |
+                            <a href="#" data-toggle="modal" data-target="#SignUpModal">sign up</a>
+                        </div>
+
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" v-if="userType === 'user' || userType === 'admin'" class="logout" @click="logOut">
+                        log out
+                    </a>
+                </li>
+
+            </ul>
+
+        </nav>
     </div>
 </template>
 
 <script>
+    //IMPORTED COMPONENTS
+    import LogInModal from './LogInModal/LogInModal.vue';
+    import SignUpModal from './SignUpModal/SignUpModal.vue';
 
-    import SessionBar from './SessionBar.vue';
+    //IMPORTED MAPPERS
+    import { mapGetters } from 'vuex';
 
     export default {
+        computed: {
+            ...mapGetters({
+                currentUser: 'SESSION_G_GET_CURRENT_USER',
+                userType: 'SESSION_G_GET_USER_TYPE'
+            })
+        },
         components: {
-            'session-bar': SessionBar
+            LogInModal,
+            SignUpModal
+        }
+    }
+</script>
+
+<style lang="scss" scoped>
+
+    .navbar-brand, .nav-item {
+        cursor: pointer;
+    }
+
+    .navbar-right li a {
+        text-decoration: none;
+    }
+
+    .logout {
+        color: rgba(160, 160, 160, 1);
+        font-weight: 500;
+    }
+
+    .loggedAs {
+        color: rgba(120, 120, 120, 1);
+        font-weight: 500;
+
+        span {
+            text-decoration: underline;
         }
     }
 
-</script>
+    .sign {
+        margin: 3px 0 0 0;
+        padding: 0 50px 0 0;
 
-<style>
-    .navbar {
-        color: rgba(255, 255, 255, 1);
+        a {
+            color: rgba(160, 160, 160, 1);
+        }
     }
 
-    .navbar  a{
-        color: rgba(255, 255, 255, 1);
-    }
-
-    .navbar-brand {
-        cursor: pointer;
-        color: rgba(0, 119, 71, 1) !important;
-    }
-
-    .nav-item {
-        cursor: pointer;
-    }
 </style>

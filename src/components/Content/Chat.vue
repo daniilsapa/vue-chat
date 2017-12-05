@@ -20,7 +20,7 @@
 
 <script>
     import ChatList from './ChatList/ChatList.vue';
-    import ChatBox from './MessageBox/MessageBox.vue';
+    import ChatBox from './Chat/MessageBox/MessageBox.vue';
     import ChatCreation from './ChatCreation/ChatCreation.vue';
 
     export default {

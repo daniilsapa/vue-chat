@@ -25,7 +25,7 @@
 
     import { mapGetters } from 'vuex';
 
-    import { ErrorHandler } from '../../../../services/ErrorHandler.secvice';
+    import { ErrorHandler } from '../../../services/ErrorHandler.secvice';
 
     export default {
 

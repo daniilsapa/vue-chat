@@ -57,7 +57,7 @@
     .user-info {
         border-radius: 20px;
         border: 1px solid rgba(0, 119, 71, 1);
-        box-shadow: 3px 3px 8px 1px rgba(180, 180, 180, 1);
+        box-shadow: 1px 1px 8px 1px rgba(180, 180, 180, 1);
 
         padding: 0 0 0 70px;
 
@@ -78,7 +78,7 @@
 
     .message {
         background: rgba(240, 240, 240, 1);
-        box-shadow: 3px 3px 8px 2px rgba(180, 180, 180, 1);
+        box-shadow: 1px 1px 8px 1px rgba(180, 180, 180, 1);
         color: rgba(180, 180, 180, 1);
         font-weight: 500;
 
