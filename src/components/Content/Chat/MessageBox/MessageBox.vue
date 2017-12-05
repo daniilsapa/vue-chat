@@ -1,33 +1,38 @@
 <template>
-
     <div>
-        <div class="chat-header"><h5 v-if="chat">{{ chat.title }}</h5></div>
-            <div class="chat-box">
+        <div class="chat-box">
 
-                <ul v-if="chat" class="message-list" id="messageList" v-prevent-parent-scroll>
+            <div class="chat-header"><h5 v-if="chat">{{ chat.title }}</h5></div>
+
+            <hr>
+
+            <div v-if="chat" class="message-list" id="messageList" >
+                <transition-group name="message" tag="div" class="transition-group-message">
 
                     <message class="row message-list-item" v-for="message in chat.messages"
-                        :id="message._id"
-                        :message="message"
-                        :privateM="message.type === 'private'"
-                        :class="{'justify-content-end': message.author._id === currentUser._id}"
-                        :privateTarget="message.target && (message.target._id === currentUser._id)"
-                        :isOwner="message.author._id === currentUser._id"
+                             :id="message._id"
+                             :message="message"
+                             :privateM="message.type === 'private'"
+                             :class="{'justify-content-end': message.author._id === currentUser._id}"
+                             :privateTarget="message.target && (message.target._id === currentUser._id)"
+                             :isOwner="message.author._id === currentUser._id"
+                             :key="message._id"
                     >
 
                     </message>
 
-                    <div class="placeholder"></div>
+                </transition-group>
 
-                </ul>
+                <div class="placeholder"></div>
 
-                <h5 v-if="false">Typing users <span v-for="user in typingUsers"> {{ user }} </span></h5>
+            </div>
+
+            <h5 v-if="false">Typing users <span v-for="user in typingUsers"> {{ user }} </span></h5>
 
             <editor v-if="chat" :online="chat.online" :chat="chat" class="textarea"></editor>
 
         </div>
     </div>
-
 </template>
 
 <script>
@@ -66,25 +71,32 @@
             scrollEvent(newValue) {
                 console.log('scroll');
                 if(newValue){
-                    const messageList = this.$el.querySelector("#messageList"),
-                        lastMessage = messageList.lastElementChild.previousElementSibling;
+                    setTimeout(() => {
 
-                    let scrollHeight = messageList.scrollHeight;
 
-                    let needScroll =
-                        messageList.scrollTop +
-                        lastMessage.offsetHeight +
-                        lastMessage.previousElementSibling.offsetHeight +
-                        messageList.clientHeight >=
-                        scrollHeight;
+                        const messageList = this.$el.querySelector("#messageList"),
+                            lastMessage = messageList.lastElementChild.previousElementSibling.lastElementChild,
+                            needScroll = messageList.scrollTop +
+                                lastMessage.offsetHeight +
+                                lastMessage.previousElementSibling.offsetHeight +
+                                messageList.clientHeight >=
+                                messageList.scrollHeight;
 
-                    console.log('scrollHeight', scrollHeight);
-                    console.log('height', lastMessage);
-                    console.log('needScroll', needScroll);
+                        let count = 0;
 
-                    if(needScroll) {
-                        messageList.scrollTop = messageList.scrollHeight;
-                    }
+                        if(needScroll){
+                            const interval = setInterval(() => {
+                                if(messageList.scrollHeight - messageList.clientHeight === messageList.scrollTop){
+                                    clearInterval(interval);
+                                }
+
+                                ++count;
+                                messageList.scrollTop = messageList.scrollTop + 10;
+                            }, 30);
+                        }
+
+                    }, 100)
+
                 }
             }
         },
@@ -113,15 +125,29 @@
 
 <style lang="scss" scoped>
 
-    .chat-header {
-        background: rgba(205, 205, 205, 1);
-        padding:15px 0 15px 15px;
-        margin:0 0 20px 0;
-        box-shadow: 5px 5px 8px 2px rgba(180, 180, 180, 1);
-    }
-
     .chat-box {
         background: rgba(255, 255, 255, 1);
+
+        border-radius: 4px 4px 4px 4px;
+        border: 1px solid rgba(190, 190, 190, 1);
+
+        .chat-header {
+            padding:15px 0 15px 15px;
+
+            background: rgba(240, 240, 240, 1);
+
+            border-radius: 4px 4px 0 0;
+
+            color: rgba(255, 255, 255, 1);
+
+            h5 {
+                margin: 0;
+            }
+        }
+
+        hr {
+            margin: 0;
+        }
     }
 
     .message-list {
@@ -153,6 +179,43 @@
 
         z-index: 550;
 
+    }
+
+    .message-enter {
+        opacity: 0;
+    }
+
+    .message-enter-to {
+        animation: message-in 1s ease-out forwards;
+        transition: opacity .5s;
+    }
+
+    .message-leave-to {
+        animation: message-out 1s ease-out forwards;
+        transition: opacity 1s;
+        opacity: 0;
+    }
+
+    .message-move {
+        transition: transform 1s;
+    }
+
+    @keyframes message-in {
+        from {
+            transform: translateY(20px)
+        }
+        to {
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes message-out {
+        from {
+            transform: translateY(0)
+        }
+        to {
+            transform: translateY(20px);
+        }
     }
 
 

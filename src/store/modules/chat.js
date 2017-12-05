@@ -17,7 +17,7 @@ const mutations = {
     'CHAT_M_ADD_MESSAGE'(state, message) {
         state.currentChat.messages.push(message);
         state.scrollEvent = true;
-        setTimeout(() => {state.scrollEvent = false}, 100);
+        setTimeout(() => {state.scrollEvent = false}, 100)
     },
     'CHAT_M_RESET_CHAT'(state) {
         state.currentChat = {};

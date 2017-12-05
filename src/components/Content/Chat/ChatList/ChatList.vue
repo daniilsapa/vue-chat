@@ -77,7 +77,7 @@
 
             background: rgba(225, 225, 225, 0.8);
 
-            border-bottom: 1px solid rgba(180, 180, 180, 1);
+            /*border-bottom: 1px solid rgba(180, 180, 180, 1);*/
             border-radius: 3px 3px 0 0;
 
             box-shadow: 0px 1px 7px 0px rgba(0,0,0,0.45);
