@@ -6,14 +6,18 @@ module.exports = function (chatArray) {
 
     return new Promise((resolve, reject) => {
 
-        Chat.find({_id: {$in: chatArray}},(error, result) => {
+        Chat.find({_id: {$in: chatArray}})
+            .populate({
+                path: 'creator',
+            })
+            .exec((error, result) => {
 
-            if (error) {
-                return reject(error);
-            }
-            return resolve(result);
+                if (error) {
+                    return reject(error);
+                }
+                return resolve(result);
 
-        });
+            });
 
     });
 

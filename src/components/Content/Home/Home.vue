@@ -4,8 +4,6 @@
         <hr>
         <h3>Dear <span v-if="!user.username" >guest!</span> <span v-else>{{ user.username }}</span> </h3>
     </div>
-
-
 </template>
 
 <script>

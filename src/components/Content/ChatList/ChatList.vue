@@ -1,11 +1,9 @@
 <template>
     <div>
-        <div class="chat-list-box">
+        <div class="chat-list-box ww-box">
 
-            <div class="chat-list-header text-center">
-                <h5>Your Chats</h5>
-                <hr>
-            </div>
+            <ww-header title="Chats"></ww-header>
+
 
             <div class="chat-list" v-prevent-parent-scroll>
                 <chat-list-item
@@ -43,6 +41,9 @@
                 availableChats: 'CHATLIST_G_GET_AVAILABLE_CHATS',
             })
         },
+        components: {
+            ChatListItem
+        },
         watch: {
             appState(newState) {
                 if(newState){
@@ -55,8 +56,10 @@
                 getChatList: 'CHATLIST_A_FETCH_AVAILABLE_CHATS'
             })
         },
-        components: {
-            ChatListItem
+        created() {
+            if(this.appState){
+                this.getChatList();
+            }
         }
     }
 
@@ -71,29 +74,9 @@
 
         height: 500px;
 
-        background: rgba(255, 255, 255, 1);
-
-        border: 1px solid $box-border-color;
-        border-radius: 4px;
-
-        .chat-list-header {
-            padding: 15px 0 0 0;
-
-            background: rgba(242, 242, 242, 0.8);
-
-            border-radius: 4px 4px 0 0;
-
-            h5 {
-                padding: 0 0 15px 0;
-            }
-
-            hr {
-                margin: 0;
-            }
-        }
-
         .chat-list {
-            padding: 20px;
+            padding: 20px 20px 60px 20px;
+
             overflow: auto;
             max-height: 438px;
 
@@ -118,9 +101,7 @@
             .add-chat-btn:hover {
                 background: rgba(23, 162, 184, 0.9);
             }
-
         }
-
     }
 
 </style>

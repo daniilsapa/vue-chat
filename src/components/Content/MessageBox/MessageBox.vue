@@ -1,33 +1,29 @@
 <template>
     <div>
-        <div class="chat-box">
+        <div class="chat-box ww-box">
 
-            <div class="chat-header"><h5 v-if="chat">{{ chat.title }}</h5></div>
-
-            <hr>
+            <ww-header v-if="chat._id" :title="chat.title"></ww-header>
 
             <div v-if="chat" class="message-list" id="messageList" v-prevent-parent-scroll>
-                <transition-group name="message" tag="div" class="transition-group-message">
 
+                <transition-group name="message" tag="div" class="transition-group-message">
                     <message class="row message-list-item" v-for="message in chat.messages"
-                             :id="message._id"
-                             :message="message"
-                             :privateM="message.type === 'private'"
                              :class="{'justify-content-end': message.author._id === currentUser._id}"
+                             :id="message._id"
+                             :isAuthor="message.author._id === currentUser._id"
+                             :isPrivate="message.type === 'private'"
+                             :message="message"
                              :privateTarget="message.target && (message.target._id === currentUser._id)"
-                             :isOwner="message.author._id === currentUser._id"
                              :key="message._id"
                     >
-
                     </message>
-
                 </transition-group>
 
                 <div class="placeholder"></div>
 
             </div>
 
-            <h5 v-if="false">Typing users <span v-for="user in typingUsers"> {{ user }} </span></h5>
+            <hr>
 
             <editor v-if="chat" :online="chat.online" :chat="chat" class="textarea"></editor>
 
@@ -128,10 +124,7 @@
     .chat-box {
         max-height: 100%;
 
-        background: rgba(255, 255, 255, 1);
-
-        border-radius: 4px 4px 4px 4px;
-        border: 1px solid rgba(190, 190, 190, 1);
+        background: rgba(240, 240, 240, 1);
 
         .chat-header {
             padding:15px 0 15px 15px;
@@ -150,6 +143,10 @@
         hr {
             margin: 0;
         }
+
+        .textarea {
+            margin: 10px 0 0 0;
+        }
     }
 
     .message-list {
@@ -157,6 +154,8 @@
 
         overflow: scroll;
         overflow-x: hidden;
+
+        background: rgba(255, 255, 255, 1);
 
         .placeholder {
             height: 100px;
@@ -169,10 +168,10 @@
 
     }
 
+    /*ANIMATIONS*/
     .message-list-item {
         margin: 10px;
     }
-
 
     .message-enter {
         opacity: 0;

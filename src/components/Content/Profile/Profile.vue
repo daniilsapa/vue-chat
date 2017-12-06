@@ -1,17 +1,17 @@
 <template>
-    <div class="row profile">
-        <div class="col-lg-12">
-            <div class="row">
+    <div>
+        <div class="profile row ww-box">
 
-                <div class="col-lg-5 avatar text-center">
-                    <img class="rounded-circle" :src="user.avatarUrl"/>
-                </div>
+            <ww-header class="col-lg-12" title="Profile"></ww-header>
 
-                <transition name="side" mode="out-in">
-                    <router-view :user="user" class="col-lg-7 router-view"></router-view>
-                </transition>
-
+            <div class="col-lg-5 avatar text-center">
+                <img class="rounded-circle" :src="user.avatarUrl"/>
             </div>
+
+            <transition name="side" mode="out-in">
+                <router-view :user="user" class="col-lg-7 router-view"></router-view>
+            </transition>
+
         </div>
     </div>
 </template>
@@ -45,12 +45,6 @@
     $box-border-color: rgba(210, 210, 210, 1);
 
     .profile {
-        padding: 30px;
-
-        border: 1px solid $box-border-color;
-        border-radius: 4px;
-
-        background: rgba(255, 255, 255, 1);
 
         .avatar {
             padding: 50px;

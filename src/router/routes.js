@@ -14,6 +14,10 @@ import Profile from '../components/Content/Profile/Profile.vue';
     import UserProfile from '../components/Content/Profile/UserProfile/UserProfile.vue'
     import ProfileEdit from '../components/Content/Profile/ProfileEdit/ProfileEdit.vue'
 
+import Notifications from '../components/Content/NotificationBox/NotificationBox.vue';
+import ChatSettings from '../components/Content/ChatSettings/ChatSettings.vue';
+import Members from '../components/Content/ChatSettings/Members/Members.vue';
+import AddMembers from '../components/Content/ChatSettings/AddMembers/AddMembers.vue';
 
 export const routes = [
     {
@@ -25,21 +29,7 @@ export const routes = [
     },
     {
         path: '/chats',
-        components: {
-            default: ChatList,
-        },
-        children: [
-            {
-                path: '',
-                component: ChatInvite
-            },
-            {
-                path: 'create',
-                component: ChatCreation,
-
-            },
-
-        ],
+        component: ChatList,
         beforeEnter(to, from, next) {
 
             const data = JSON.parse(localStorage.getItem('data'));
@@ -51,13 +41,30 @@ export const routes = [
                 next(false);
                 ErrorHandler.pushError({message: 'Only authorized users can access Chats'})
             }
-
-
         }
+    },
+    {
+        path: '/chats/:id/settings',
+        component: ChatSettings,
+        children: [
+            {
+                path: '/chats/:id/settings/members',
+                component: Members
+            },
+            {
+                path: '/chats/:id/settings/members/add',
+                component: AddMembers
+            },
+
+        ]
     },
     {
         path: '/chats/:id',
         component: MessageBox
+    },
+    {
+      path: '/notifications',
+      component: Notifications
     },
     {
         path: '/profile',

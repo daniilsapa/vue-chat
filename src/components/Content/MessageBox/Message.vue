@@ -1,6 +1,6 @@
 <template>
 
-    <div v-if="(privateM && privateTarget) || isOwner || !privateM">
+    <div v-if="(isPrivate && privateTarget) || isAuthor || !privateM">
 
         <div v-if="!message.sameUser" class="col-lg-5 image-wrapper">
             <img :src="message.author.avatarUrl" class="rounded-circle" height="30px">
@@ -15,12 +15,14 @@
         <div class="col-lg-12 divider"></div>
 
         <div class="message col-lg-5"
-            :class="{'current-user-message': isOwner && !privateM, 'private-message': privateM}"
+            :class="{'current-user-message': isAuthor && !isPrivate, 'private-message': isPrivate}"
         >
-            <span v-if="privateM && isOwner">
+            <span v-if="isPrivate && isAuthor">
                 to <span class="target"> {{ message.target.username }}</span> <br>
             </span>
+
             {{ message.content }}
+
             <div :style="{color: 'rgba(160, 160, 160, 1)'}">
                 {{ message.timestamp | timestamp }}
             </div>
@@ -33,7 +35,7 @@
 <script>
 
     export default {
-        props: ['message', 'isOwner', 'privateM', 'privateTarget'],
+        props: ['message', 'isOwner', 'privateM', 'privateTarget', 'isPrivate', 'isAuthor'],
         data () {
 
             return {
@@ -55,20 +57,24 @@
 <style lang="scss" scoped>
 
     .user-info {
-        border-radius: 20px;
-        border: 1px solid rgba(0, 119, 71, 1);
-        box-shadow: 1px 1px 8px 1px rgba(180, 180, 180, 1);
-
         padding: 0 0 0 70px;
 
+        border-radius: 20px;
+        border: 1px solid rgba(23,162,184, 1);
+        box-shadow: 1px 1px 8px 1px rgba(180, 180, 180, 1);
+
+
+
         font-weight: 600;
+
+        background: rgba(240, 240, 240, 1);
         color: rgba(140, 140, 140, 1);
     }
 
     .image-wrapper {
         position: relative;
         top: 29px;
-        z-index: 500;
+        z-index: 25;
     }
     
 
@@ -81,6 +87,8 @@
         box-shadow: 1px 1px 8px 1px rgba(180, 180, 180, 1);
         color: rgba(180, 180, 180, 1);
         font-weight: 500;
+
+        border-radius: 4px;
 
         span {
             font-weight: 600;

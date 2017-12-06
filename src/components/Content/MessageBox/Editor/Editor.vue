@@ -1,19 +1,20 @@
 <template>
     <div>
-
-        <div class="editor-wrapper row justify-content-center">
+        <div class="editor-wrapper row no-gutters justify-content-center">
 
             <addressee-list class="addressee-list col-lg-10"
                             v-if="showUsersList"
-                            :members="chat.members"
-                            :addAddressee="addAddressee"
+                            :users="chat.members"
+                            :itemClickFunc="addAddressee"
             >
 
             </addressee-list>
 
             <typing-users class="typing-users col-lg-10" :typingUsers="chat.typingUsers" ></typing-users>
 
-            <textarea class="form-control editor col-lg-10"
+            <div class="col-lg-9">
+
+                <textarea class="form-control align-left editor ww-box"
                       id="messageEditor"
                       rows="3"
                       v-model="message"
@@ -21,33 +22,24 @@
                       @leavefocus="isTyping = false"
                       @change="isTyping = false"
                       @input="inputHandler"
-            >
-
-            </textarea>
-
-        </div>
-
-        <div class="row justify-content-end">
-
-            <div class="col-lg-2 send-button">
-
-                <button class="btn btn-default" @click="sendMessageWrapper">
-                    <i class="fa fa-paper-plane" aria-hidden="true"></i>
-                </button>
+                >
+                </textarea>
 
             </div>
 
-        </div>
+            <div class="send-button-wrapper col-lg-1">
+                <button class="btn btn-outline-info send-button" @click="sendMessageWrapper">
+                    <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                </button>
+            </div>
 
+        </div>
     </div>
 </template>
 
 <script>
-
     //IMPORTED COMPONENTS
-    import AddresseeList from './AddresseeList/AddresseeList.vue';
     import TypingUsers from './TypingUsers/TypingUsers.vue';
-
     //IMPORTED MAPPERS
     import { mapMutations } from 'vuex'
     import { mapActions } from 'vuex'
@@ -55,12 +47,10 @@
     export default {
         props: ['chat'],
         data () {
-
             return {
                 isTyping: false,
                 showUsersList: false
             }
-
         },
         computed: {
             message: {
@@ -82,29 +72,21 @@
                 sendMessage: 'CHAT_A_SEND_MESSAGE'
             }),
             sendMessageWrapper () {
-                const pattern = new RegExp(/^@[a-zA-Z0-9]{24}[a-zA-Z0-9_]{1,16}$/);
+                let dividerPos = this.message.indexOf(':'),
+                    addressee = this.message.slice(0, dividerPos);
 
-                if(this.message[0] === '@'){
-                    let dividerPos = this.message.indexOf(':'),
-                        addressee = this.message.slice(0, dividerPos);
-
-                    if(addressee.match(pattern)){
-                        this.sendMessage({
-                            content: this.message.slice(dividerPos + 1),
-                            target: addressee.slice(1, 25),
-                            type: 'private'
-                        });
-
-                        this.message = '';
-                    }
+                if(addressee.match(/^@[a-zA-Z0-9]{24}\([a-zA-Z0-9_]{1,16}\)$/)){
+                    this.sendMessage({
+                        content: this.message.slice(dividerPos + 1),
+                        target: addressee.slice(1, 25),
+                        type: 'private'
+                    });
                 }
                 else {
                     this.sendMessage({content: this.message, type: 'public'});
-                    this.message = '';
                 }
 
                  this.isTyping = false;
-
             },
             inputHandler() { this.showUsersList = this.message === '@'; },
             addAddressee(id, username) {
@@ -113,7 +95,6 @@
             }
         },
         components: {
-            AddresseeList,
             TypingUsers
         }
 
@@ -126,11 +107,15 @@
     .editor-wrapper{
         position: relative;
         top: 0;
+
+        padding: 0 0 50px 0;
     }
     
     .addressee-list {
         position: absolute;
         top: -184px;
+
+        z-index: 100;
     }
 
     .typing-users{
@@ -141,35 +126,42 @@
     .editor {
         position: relative;
         top: 0;
-        background: rgba(255, 255, 255, 1);
-
-        border-radius: 20px;
 
         resize: none;
 
-        border: 1px solid rgba(180, 180, 180, 1);
+        color: rgba(170, 170, 170, 1);
+        font-weight: 500;
     }
 
 
     .editor:focus {
-        border:none;
-        border: 1px solid rgba(27,146,98, 1) !important;
+        border: 1px solid rgba(23,162,184, 1) !important;
     }
 
-    .send-button {
-        position: relative;
-        top:-50px;
+    .send-button-wrapper {
+        padding: 0 0 0 5px;
 
-        button {
-            border-radius: 50px;
+        .send-button {
+            padding-left: 15px;
+            padding-right: 17px;
 
-            /*padding: 15px 15px 15px 15px;*/
+            height: 100%;
 
-            background: rgba(0, 119, 71, 1);
+            background: rgba(255, 255, 255, 1);
 
             i {
-                color: rgba(255, 255, 255, 1);
+                color: rgba(23,162,184, 1);
             }
+        }
+    }
+
+
+
+    .send-button:hover {
+        background: rgba(23,162,184, 1);
+
+        i {
+            color: rgba(255, 255, 255, 1);
         }
     }
 

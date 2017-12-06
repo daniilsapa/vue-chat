@@ -42,7 +42,7 @@ module.exports = {
 	},
 	avatarUrl: {
 		type: String,
-		default: '/images/avatars/default.png'
+		default: '/images/defaults/default.png'
 	},
 	token: {
 		type: String,
@@ -69,5 +69,11 @@ module.exports = {
     isDeleted: {
 	    type: Boolean,
         default: false
-    }
+    },
+	notifications: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Notification'
+        }
+	]
 };

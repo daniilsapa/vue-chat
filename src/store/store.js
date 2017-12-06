@@ -13,6 +13,7 @@ import socketIO from './modules/socketIO';
 import login from './modules/login';
 import signup from './modules/signup';
 import profile from  './modules/profile';
+import chatSettings from './modules/chatSettings';
 
 
 import errors from './modules/errors';
@@ -32,6 +33,7 @@ export const store = new VueX.Store({
         socketIO,
         login,
         signup,
-        profile
+        profile,
+        chatSettings
     }
 });

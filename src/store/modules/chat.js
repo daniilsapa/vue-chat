@@ -55,6 +55,7 @@ const actions = {
 
         commit('CHAT_M_RESET_CHAT');
     },
+
     'CHAT_A_CHANGE_TYPING_STATE'({ getters }, state) {
         const messagesSocket = getters['SOCKET_IO_G_GET_MESSAGES_SOCKET'];
 
@@ -65,6 +66,7 @@ const actions = {
             messagesSocket.emit('finishTyping', {});
         }
     },
+
     'CHAT_A_FETCH_CHAT'({ state, dispatch }, id) {
         axios.get(`/private/chats/${id}`)
             .then(response => {
@@ -75,9 +77,12 @@ const actions = {
                 ErrorHandler.pushError({message: 'Cannot get chat!'})
             });
     },
-    'CHAT_A_SEND_MESSAGE'({ getters, state }, message) {
+
+    'CHAT_A_SEND_MESSAGE'({ getters, commit }, message) {
         getters['SOCKET_IO_G_GET_MESSAGES_SOCKET'].emit('message',  message);
+        commit('CHAT_M_SET_NEW_MESSAGE', '')
     },
+
     'CHAT_A_SET_CHAT'({ state, getters, commit }, chat) {
         const messagesSocket = getters['SOCKET_IO_G_GET_MESSAGES_SOCKET'],
               storedChats = JSON.parse(localStorage.getItem('data')).chats;

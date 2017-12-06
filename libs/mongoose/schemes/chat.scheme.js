@@ -31,5 +31,9 @@ module.exports = {
     creator: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
+    },
+    coverUrl: {
+        type: String,
+        default: '/images/defaults/chat_default.png'
     }
 };

@@ -4,6 +4,10 @@ import App from './App.vue';
 
 import VueResource from 'vue-resource';
 import VueRouter from 'vue-router';
+//GLOBAL COMPONENTS
+import WWHeader from './components/global/WWHeader.vue';
+import Notification from './components/global/Notification.vue';
+import AddresseList from './components/global/AddresseeList/AddresseeList.vue';
 
 import { routes } from "./router/routes.js"
 import { store } from "./store/store"
@@ -31,13 +35,9 @@ axios.interceptors.request
         }
     );
 
-axios.interceptors.response.use(function (response) {
-
-    return response;
-}, function (error) {
-    // Do something with response error
-    return Promise.reject(error);
-});
+Vue.component('ww-header', WWHeader);
+Vue.component('ww-notification', Notification);
+Vue.component('addressee-list', AddresseList);
 
 Vue.filter('timestamp', value => {
 
