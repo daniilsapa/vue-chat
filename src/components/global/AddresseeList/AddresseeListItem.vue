@@ -1,6 +1,6 @@
 <template>
 
-    <div class="row addressee-list-item" @click="itemClickFunc(user._id, user.username)">
+    <div class="row addressee-list-item" @click="itemClickFunc(index)">
         <div class="col-lg-1">
             <img class="addressee-avatar rounded-circle" :src="user.avatarUrl"/>
         </div>
@@ -16,7 +16,7 @@
 <script>
 
     export default {
-        props: ['user', 'itemClickFunc'],
+        props: ['user', 'index', 'itemClickFunc'],
     }
 
 </script>

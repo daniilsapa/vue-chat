@@ -168,11 +168,11 @@
 
     }
 
-    /*ANIMATIONS*/
     .message-list-item {
         margin: 10px;
     }
 
+    /*ANIMATIONS*/
     .message-enter {
         opacity: 0;
     }

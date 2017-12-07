@@ -17,8 +17,8 @@
                         <router-link :to="`/chats/${chat._id}/settings/members/add`" tag="a" class="nav-link" active-class="text-info">Add Members</router-link>
                     </li>
                 </ul>
+                <hr/>
             </div>
-
 
             <transition name="side" mode="out-in">
                 <router-view class="col-lg-12 router-view" :members="chat.members"></router-view>
@@ -87,7 +87,7 @@
     }
 
     .router-view {
-        margin: 15px 0 100px 0;
+        margin: 15px 0 10px 0;
     }
 
     .side-enter-active {

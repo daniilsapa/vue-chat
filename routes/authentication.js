@@ -38,26 +38,12 @@ module.exports = (passport, jwt, jwtsecret) => {
         try{
 
             const user = await User.addUser(request.body);
-            console.log(user);
-
-
-            let chats = await Chat.getAllChats();
-
-            chats = chats.map((item, index) => {
-
-                return item._id
-
-            });
-
-            await User.setAvailableChats(user._id, chats);
-            await Chat.setMemberForManyChats(chats, user._id);
 
             request.userCreated = true;
             next();
 
         }
         catch (err) {
-            console.log(err);
             response.status(500).send(err);
         }
 

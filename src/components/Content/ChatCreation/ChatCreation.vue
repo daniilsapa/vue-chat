@@ -1,22 +1,24 @@
 <template>
-
     <div>
-        <p>
-            Create a new chat
-        </p>
+        <div class="chat-create row ww-box">
 
-        <chat-title-field :serverSignal="serverSignal" :setTitle="setTitle"></chat-title-field>
+            <ww-header class="col-lg-12" title="Create a new chat"></ww-header>
 
-        <button class="btn btn-default"
-                :disabled="!titleIsValid"
-                :titleIsValid="titleIsValid"
-                @click="createChat"
-        >
-            Create
-        </button>
+            <div class="chat-title col-lg-12 mt-3">
+                <chat-title-field :serverSignal="serverSignal" :setTitle="setTitle"></chat-title-field>
 
+                <button class="btn btn-default"
+                        :disabled="!titleIsValid"
+                        :titleIsValid="titleIsValid"
+                        @click="createChat"
+                >
+                    Create
+                </button>
+
+            </div>
+
+        </div>
     </div>
-
 </template>
 
 <script>
@@ -52,13 +54,10 @@
                 })
                     .then(result => console.log(result))
                     .catch(error => this.serverSignal = error.body);
-
             },
             setTitle(title, status) {
-
                 this.title = title;
                 this.titleIsValid = status;
-
             }
         },
         components: {
@@ -69,6 +68,10 @@
 </script>
 
 <style lang="scss" scoped>
+
+    .chat-create {
+        padding: 0 0 50px 0;
+    }
 
 
 </style>

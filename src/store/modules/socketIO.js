@@ -1,5 +1,7 @@
 import io from 'socket.io-client';
 
+import { ErrorHandler } from "../../services/ErrorHandler.secvice"
+
 const state = {
     socket: null,
     notifications: null,
@@ -43,6 +45,14 @@ const actions = {
             });
 
             state.messages.on('message', message => {
+                if(message.error && message.error.message.indexOf('content') !== -1){
+                    ErrorHandler.pushError({message: 'Sent message is empty!'})
+                }
+                else if(message.error){
+                    ErrorHandler.pushError({message: 'An error occurred!    '})
+                }
+
+
                 console.log('message event was fired', message);
                 const currentChat = getters['CHAT_G_GET_CHAT'];
 

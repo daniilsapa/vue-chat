@@ -10,9 +10,9 @@ import ChatList from '../components/Content/ChatList/ChatList.vue';
     import ChatCreation from '../components/Content/ChatCreation/ChatCreation.vue';
 
 import Profile from '../components/Content/Profile/Profile.vue';
-    //      \/ NESTED COMPONENTS \/
-    import UserProfile from '../components/Content/Profile/UserProfile/UserProfile.vue'
-    import ProfileEdit from '../components/Content/Profile/ProfileEdit/ProfileEdit.vue'
+//      \/ NESTED COMPONENTS \/
+import UserProfile from '../components/Content/Profile/UserProfile/UserProfile.vue'
+import ProfileEdit from '../components/Content/Profile/ProfileEdit/ProfileEdit.vue'
 
 import Notifications from '../components/Content/NotificationBox/NotificationBox.vue';
 import ChatSettings from '../components/Content/ChatSettings/ChatSettings.vue';
@@ -57,6 +57,10 @@ export const routes = [
             },
 
         ]
+    },
+    {
+        path: '/chats/create',
+        component: ChatCreation
     },
     {
         path: '/chats/:id',

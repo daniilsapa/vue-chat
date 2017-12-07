@@ -45,7 +45,7 @@
                 this.$router.push(`/chats/${this.chat._id}`);
             },
             goToChatSettings() {
-                this.$router.push(`/chats/${this.chat._id}/settings`);
+                this.$router.push(`/chats/${this.chat._id}/settings/members`);
             }
         }
     }

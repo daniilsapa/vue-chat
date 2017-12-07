@@ -1,4 +1,5 @@
 const userCtrl = require('@userCtrl')();
+const User = require('@userModel');
 const multer = require('multer');
 const upload = multer({dest: 'uploads/'});
 
@@ -11,4 +12,9 @@ module.exports = (router) => {
             await userCtrl.setAvatar(request.user._id, request.file)
 
         });
+
+    router.route('/users')
+        .get(async(request, response, next) => {
+            response.json(await User.getAllUsers());
+        })
 };

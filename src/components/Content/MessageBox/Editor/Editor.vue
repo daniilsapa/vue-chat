@@ -89,8 +89,8 @@
                  this.isTyping = false;
             },
             inputHandler() { this.showUsersList = this.message === '@'; },
-            addAddressee(id, username) {
-                this.message = `@${id}(${username}):`;
+            addAddressee(index) {
+                this.message = `@${this.chat.members[index]._id}(${this.chat.members[index].    username}):`;
                 this.inputHandler();
             }
         },
