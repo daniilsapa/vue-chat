@@ -20,7 +20,7 @@
                         </div>
 
                         <div v-else class="sign">
-                            <a href="#" data-toggle="modal" data-target="#LogInModal">log in</a>
+                            <a href="#" data-toggle="modal" @click="showLogInModal = true">log in</a>
                             |
                             <a href="#" data-toggle="modal" data-target="#SignUpModal">sign up</a>
                         </div>
@@ -38,8 +38,8 @@
 
         </nav>
 
-        <sign-up-modal></sign-up-modal>
-        <log-in-modal></log-in-modal>
+        <sign-up-modal ></sign-up-modal>
+        <log-in-modal :show="showLogInModal" @close="showLogInModal = false"></log-in-modal>
 
     </div>
 </template>
@@ -53,6 +53,12 @@
     import { mapActions } from 'vuex';
 
     export default {
+        data() {
+            return {
+                showLogInModal: false,
+                showSignUpModal: false
+            }
+        },
         computed: {
             ...mapGetters({
                 currentUser: 'SESSION_G_GET_CURRENT_USER',

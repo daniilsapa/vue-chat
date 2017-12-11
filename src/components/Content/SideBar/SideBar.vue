@@ -30,9 +30,14 @@
                 user: 'SESSION_G_GET_CURRENT_USER'
             }),
             notifications() {
-               return this.user.notifications.filter(item => {
-                    return item.state === 'pending';
-                })
+                if(this.user.notifications){
+                    return this.user.notifications.filter(item => {
+                        return item.state === 'pending';
+                    });
+                }
+                else{
+                    return [];
+                }
             }
         }
     }

@@ -33,7 +33,7 @@
         methods: {
           logOut() {
               this.$store.dispatch('SESSION_LOG_OUT');
-              this.$router.push({path: '/'});
+              this.$router.push({ path: '/' });
           }
         },
         components: {

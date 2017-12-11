@@ -14,15 +14,16 @@ import ProfileEdit from '../components/Content/Profile/ProfileEdit/ProfileEdit.v
 import UserProfile from '../components/Content/Profile/UserProfile/UserProfile.vue'
 
 const beforeEnter = (to, from, next) => {
-
+    console.log('beforeEnter', to);
+    console.log('beforeEnter', from);
     const data = JSON.parse(localStorage.getItem('data'));
 
-    if(data && data.token !== ''){
+    if(data && data.token !== null){
         next();
     }
     else{
         next(false);
-        ErrorHandler.pushError({message: 'Only authorized users can access route'})
+        ErrorHandler.pushError({ message: 'Only authorized users can access route' })
     }
 };
 

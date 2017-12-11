@@ -1,11 +1,8 @@
 module.exports = function () {
-
     const User = this;
 
     return new Promise(function(resolve, reject) {
-
         User.find({}, (error, result) => {
-
             if (error) {
                 reject({error});
             }
@@ -15,9 +12,6 @@ module.exports = function () {
             else {
                 resolve(null);
             }
-
         })
-
     });
-
 };

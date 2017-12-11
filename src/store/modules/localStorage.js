@@ -16,7 +16,7 @@ const actions = {
     'LOCAL_STORAGE_A_INIT_STORAGE'({ commit }) {
 
         if(!localStorage.data){
-            localStorage.setItem('data', JSON.stringify({token: '', chats: {}}));
+            localStorage.setItem('data', JSON.stringify({token: null, chats: {}}));
         }
 
         commit('LOCAL_STORAGE_M_RESTORE_DATA');

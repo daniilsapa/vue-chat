@@ -1,6 +1,5 @@
 <template>
     <div class="profile-edit">
-
         <div class="row justify-content-center">
 
             <div class="col-lg-10">
@@ -18,13 +17,12 @@
                 <hr/>
                 <profile-field-edit v-for="field in profileFields" :field="field"></profile-field-edit>
             </div>
-        </div>
 
+        </div>
     </div>
 </template>
 
 <script>
-
     //IMPORTED COMPONENTS
     import ProfileFieldEdit from './ProfileFieldEdit/ProfileFieldEdit.vue';
 
@@ -32,12 +30,10 @@
         props: ['user'],
         computed: {
             profileFields() {
-
-                const fieldsArray = [],
-                      neededFields = new RegExp(/username|email|phone|password/);
+                const fieldsArray = [];
 
                 for(let key in this.user){
-                    if(key.match(neededFields)) {
+                    if(key.match(/username|email|phone|password/)) {
                         fieldsArray.push({
                             name: key,
                             value: this.user[key]
@@ -46,21 +42,16 @@
                 }
 
                 return fieldsArray;
-
             }
         },
         components: {
             ProfileFieldEdit
         }
-
     }
-
 </script>
 
 <style lang="scss" scoped>
-
     .nav-link{
         color: rgba(180, 180, 180, 1);
     }
-
 </style>

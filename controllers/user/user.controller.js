@@ -19,7 +19,7 @@ module.exports = function () {
 
         getUserByToken: getUserByToken,
         getUserById: require('./methods/getUserById.method'),
-
+        getUserByCustomField : require('./methods/getUserByCustomField.method'),
         setAvatar: require('./methods/setAvatar.method')
 
 	};

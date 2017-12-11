@@ -8,6 +8,7 @@ import VueRouter from 'vue-router';
 import WWHeader from './components/global/WWHeader.vue';
 import Notification from './components/global/Notification.vue';
 import AddresseList from './components/global/AddresseeList/AddresseeList.vue';
+import VModal from 'vue-js-modal'
 
 import { routes } from "./router/routes.js"
 import { store } from "./store/store"
@@ -17,6 +18,7 @@ Vue.config.productionTip = false;
 Vue.use(VueResource);
 Vue.use(VueRouter);
 
+Vue.use(VModal);
 Vue.use(require('vue-prevent-parent-scroll'));
 
 const router = new VueRouter({

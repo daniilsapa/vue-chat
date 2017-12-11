@@ -14,7 +14,7 @@ const mutations = {
 const actions = {
     'SESSION_LOG_OUT'({ dispatch, state }) {
         dispatch('LOCAL_STORAGE_A_SET_TOKEN', '');
-        state.currentUser = {};
+        state.currentUser = { notifications: [] };
         state.userType = 'guest';
     },
     'SESSION_SET_CURRENT_USER'({state, commit}, user) {

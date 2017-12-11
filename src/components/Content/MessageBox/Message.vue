@@ -1,6 +1,5 @@
 <template>
-
-    <div v-if="(isPrivate && privateTarget) || isAuthor || !privateM">
+    <div v-if="(isPrivate && privateTarget) || isAuthor || !isPrivate">
 
         <div v-if="!message.sameUser" class="col-lg-5 image-wrapper">
             <img :src="message.author.avatarUrl" class="rounded-circle" height="30px">
@@ -29,33 +28,16 @@
         </div>
 
     </div>
-
 </template>
 
 <script>
 
     export default {
-        props: ['message', 'isOwner', 'privateM', 'privateTarget', 'isPrivate', 'isAuthor'],
-        data () {
-
-            return {
-
-            }
-
-        },
-        created () {
-
-
-        },
-        components: {
-
-        }
+        props: ['message', 'isOwner', 'privateTarget', 'isPrivate', 'isAuthor']
     }
-
 </script>
 
 <style lang="scss" scoped>
-
     .user-info {
         padding: 0 0 0 70px;
 
@@ -113,5 +95,4 @@
         color: rgba(190, 190, 118, 1) !important;
 
     }
-
 </style>

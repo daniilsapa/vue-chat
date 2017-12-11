@@ -1,7 +1,8 @@
 <template>
-
     <div class="form-group">
+
         <label class="form-control-label" for="name">Username</label>
+
         <input id="name"
                name="name"
                maxlength="16"
@@ -11,12 +12,11 @@
                @input="validateField"
                type="text" >
         <div class="invalid-feedback" v-if="!isValid && !isTouched">{{ errorMessage }}</div>
-    </div>
 
+    </div>
 </template>
 
 <script>
-
     //IMPORTED MAPPERS
     import { mapMutations } from 'vuex';
     import { mapGetters } from 'vuex';
