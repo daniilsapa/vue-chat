@@ -33,6 +33,10 @@
 
     .addressee-list-item:hover {
         background: rgba(200, 200, 200, 1);
+
+        .addressee-id {
+            color: rgba(255, 255, 255, 1);
+        }
     }
 
     .addressee-avatar {
@@ -45,6 +49,7 @@
     }
 
     .addressee-id {
+        color: rgba(180, 180, 180, 1);
         font-size: 12px;
     }
 

@@ -39,6 +39,11 @@ const actions = {
                 }
             });
 
+            state.notifications.on('notification.invite', notification => {
+                console.log('notifications notifications', notification)
+                commit('SESSION_M_PUSH_NOTIFICATIONS', notification);
+            });
+
             commit('SOCKET_IO_M_CONNECT_TO_SOCKET', {
                 title: 'messages',
                 socket: io('/messages')

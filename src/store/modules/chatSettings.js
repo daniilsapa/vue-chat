@@ -34,25 +34,27 @@ const actions = {
                 ErrorHandler.pushError({message: 'Cannot get chat!'})
             });
     },
-    'CHAT_SETTINGS_A_FETCH_USERS'({state, dispatch}, id) {
+    'CHAT_SETTINGS_A_FETCH_USERS'({state, dispatch, getters}, id) {
         axios.get(`/private/users`)
             .then(response => {
-
                 state.users = response.data;
-
             })
             .catch(error => {
                 ErrorHandler.pushError({message: 'Cannot get a list of users!'})
             });
     },
-    'CHAT_SETTINGS_A_SEND_NOTIFICATIONS'({state, dispatch}, id) {
-        axios.get(`/private/users`)
-            .then(response => {
-                state.chat = response.data;
-            })
-            .catch(error => {
-                ErrorHandler.pushError({message: 'Cannot get a list of users!'})
-            });
+    'CHAT_SETTINGS_A_SEND_NOTIFICATIONS'({state, dispatch, getters}, id) {
+
+
+        getters['SOCKET_IO_G_GET_NOTIFICATIONS_SOCKET'].emit('notification.invite', {
+            receivers: state.inviteReceivers,
+            notification: {
+                chat: state.chat._id,
+                content: `You\'ve been invited to "${ state.chat.title }" chat`,
+                sender: state.chat.creator,
+                title: "CHAT INVITE"
+            }
+        });
     }
 
 };

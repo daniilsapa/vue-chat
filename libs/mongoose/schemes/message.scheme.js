@@ -19,7 +19,7 @@ module.exports = {
     },
     timestamp: {
         type: Date,
-        default: Date.now()
+        default: Date.now
     },
     target: {
         type: mongoose.Schema.Types.ObjectId,

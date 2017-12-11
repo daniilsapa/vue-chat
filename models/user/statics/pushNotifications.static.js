@@ -1,13 +1,9 @@
-module.exports = function (_id) {
-
+module.exports = function (_id, notificationId) {
     const User = this;
 
-    return new Promise((resolve, reject) => {
+    return new Promise(function(resolve, reject) {
 
-        User.findOne({_id})
-            .populate('notifications')
-            .exec((error, result) => {
-
+        User.updateOne({_id}, {$push: {notifications: notificationId}}, (error, result) => {
             if (error) {
                 reject({error});
             }
@@ -17,9 +13,7 @@ module.exports = function (_id) {
             else {
                 resolve(null);
             }
-
         })
 
     });
-
 };

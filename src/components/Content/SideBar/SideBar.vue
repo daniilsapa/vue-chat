@@ -11,7 +11,10 @@
             <router-link tag="div" class="nav-link" active-class="text-info" to="/chats">Chats</router-link>
         </li>
         <li class="nav-item">
-            <router-link tag="div" class="nav-link" active-class="text-info" to="/notifications">Notifications</router-link>
+            <router-link tag="div" class="nav-link" active-class="text-info" to="/notifications">
+                Notifications
+                <span class="badge badge-secondary" v-show="notifications.length !== 0">{{ notifications.length }}</span>
+            </router-link>
         </li>
     </ul>
 
@@ -22,7 +25,16 @@
     import { mapGetters } from 'vuex'
 
     export default {
-
+        computed: {
+            ...mapGetters({
+                user: 'SESSION_G_GET_CURRENT_USER'
+            }),
+            notifications() {
+               return this.user.notifications.filter(item => {
+                    return item.state === 'pending';
+                })
+            }
+        }
     }
 
 </script>

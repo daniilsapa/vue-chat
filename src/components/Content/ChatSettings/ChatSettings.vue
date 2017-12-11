@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class="profile row ww-box">
+    <div class="ww-box">
+        <div class="profile row ">
 
             <ww-header class="col-lg-12" title="Chat settings"></ww-header>
 
@@ -19,12 +19,14 @@
                 </ul>
                 <hr/>
             </div>
-
-            <transition name="side" mode="out-in">
-                <router-view class="col-lg-12 router-view" :members="chat.members"></router-view>
-            </transition>
-
         </div>
+
+        <div class="row justify-content-center">
+            <transition name="side" mode="out-in">
+                <router-view class="col-lg-11 router-view" :members="chat.members"></router-view>
+            </transition>
+        </div>
+
     </div>
 </template>
 

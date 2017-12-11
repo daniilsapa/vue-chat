@@ -5,7 +5,7 @@
             <div class="col-lg-6 list">
                 <h6 class="ml-2 mb-3">Users:</h6>
                 <addressee-list class="addressee-list" :users="users" :itemClickFunc="addInviteReceiver"></addressee-list>
-                <p class="ml-2">Click on an item to add user in opposite chat</p>
+                <p class="ml-2">Click on an item to add user in opposite list</p>
             </div>
 
             <div class="col-lg-6 list">
@@ -15,7 +15,7 @@
             </div>
 
             <div class="col-lg-12 text-right">
-                <button class="btn btn-outline-info mr-2" @click="resetInviteReceivers">
+                <button class="btn btn-outline-info mr-2" @click="sendNotifications">
                     Send invites
                 </button>
             </div>
@@ -34,7 +34,7 @@
         props: {
             members: {
                 type: Array,
-                default() {return []}
+                default() { return [] }
             }
         },
         computed: {
@@ -54,7 +54,8 @@
         },
         methods: {
             ...mapActions({
-                getUsers: 'CHAT_SETTINGS_A_FETCH_USERS'
+                getUsers: 'CHAT_SETTINGS_A_FETCH_USERS',
+                sendNotifications: 'CHAT_SETTINGS_A_SEND_NOTIFICATIONS'
             }),
             ...mapMutations({
                 pushInviteReceivers: 'CHAT_SETTINGS_M_PUSH_INVITE_RECEIVERS',
@@ -92,6 +93,7 @@
         p {
             color: $grey170;
             font-size: 11px;
+            cursor: pointer;
         }
     }
 

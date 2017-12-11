@@ -5,15 +5,30 @@
             <img v-if="src" class="mr-3" :src="src" alt="Generic placeholder image">
 
             <div class="media-body">
-                <h5 class="ml-3 mt-2">{{ header }}</h5>
+
+                <h5 class="ml-3 mt-2">{{ title }}</h5>
+
                 <p class="ml-3 mb-2">{{ content }}</p>
+
                 <hr/>
-                <div class="notification-footer">
-                    <div class="text-right ">
-                        <button class="btn btn-outline-success btn-sm">accept</button>
-                        <button class="btn btn-outline-danger btn-sm m">reject</button>
+
+                <div class="notification-footer" :class="{'bg-danger': state === 'rejected', 'bg-success': state === 'accepted'}">
+
+                    <div class="buttons text-right" v-if="state === 'pending'">
+                        <button class="btn btn-outline-success btn-sm" @click="$emit('accept',  index)">accept</button>
+                        <button class="btn btn-outline-danger btn-sm" @click="$emit('reject', index)">reject</button>
                     </div>
+
+                    <div class="text-right notification-sign" v-if="state === 'rejected'">
+                        You rejected this invite
+                    </div>
+
+                    <div class="text-right notification-sign" v-if="state === 'accepted'">
+                        You accepted this invite
+                    </div>
+
                 </div>
+
             </div>
 
         </div>
@@ -24,30 +39,37 @@
 
     export default {
         props: {
-            src: {
+            content: {
                 type: String,
-                default: null
+                default: 'notice content'
+            },
+            index: {
+                type: Number
+            },
+            title: {
+                type: String,
+                default: 'Notice title'
             },
             shortcut: {
                 type: Boolean,
                 default: false
             },
-            header: {
+            src: {
                 type: String,
-                default: 'Notice header'
+                default: null
             },
-            content: {
+            state: {
                 type: String,
-                default: 'notice content'
             }
         },
+        methods: {
 
+        }
     }
 
 </script>
 
 <style lang="scss" scoped>
-
     .media {
 
         hr {
@@ -62,8 +84,10 @@
                 font-weight: 500;
             }
         }
+
+        .notification-sign {
+            color: rgba(255, 255, 255, 1);
+            font-weight: 500;
+        }
     }
-
-
-
 </style>

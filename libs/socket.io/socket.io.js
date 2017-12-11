@@ -1,13 +1,12 @@
-const socketioJwt = require('socketio-jwt');
-const jwtsecret = "mysecretkey";
-
-const jwtAuth = require('socketio-jwt-auth');
-
-const passportSocketIO = require('passport.socketio');
+const socketioJwt = require('socketio-jwt'),
+      jwtsecret = "mysecretkey",
+      jwtAuth = require('socketio-jwt-auth'),
+      passportSocketIO = require('passport.socketio');
 
 const userCtrl = require('@userCtrl')(),
       chatCtrl = require('@chatCtrl'),
-      messageCtrl = require('../../controllers/message/message.controller');
+      messageCtrl = require('../../controllers/message/message.controller'),
+      notificationCtrl = require('@notificationCtrl');
 
 const rooms = {};
 
@@ -33,16 +32,12 @@ const rooms = {};
 module.exports = io => {
 
     io.use(jwtAuth.authenticate({
-        secret: jwtsecret,    // required, used to verify the token's signature
-        algorithm: 'HS256',        // optional, default to be HS256
+        secret: jwtsecret,
+        algorithm: 'HS256',
         succeedWithoutToken: true
     }, async (payload, done) => {
-        // you done callback will not include any payload data now
-        // if no token was supplied
-
         if (payload) {
             const user = await userCtrl.getUserById(payload.id);
-
                 if (user && user.error) {
                     // return error
                     return done(user.error);
@@ -61,36 +56,43 @@ module.exports = io => {
 
     (function joinNamespaces() {
 
-        const notifications = io.of('/notifications');
-        const messages = io.of('/messages');
+        const Notifications = io.of('/notifications');
+        const Messages = io.of('/messages');
 
-        notifications.on('connection', socket => {
-
+        Notifications.on('connection', socket => {
 
             if(socket.request.user.logged_in === false){
                 socket.disconnect();
                 return;
             }
 
-            console.log('connected to notifications namespace');
+            socket.join(`u${ socket.request.user._id }`, err => {
+                if(err) console.log('chat changin\' error', err);
+            });
 
             socket.request.user.availableChats.forEach(item => {
                 socket.join(item)
+            });
+
+            socket.on('notification.invite', data => {
+                console.log('notification notification notification notification', data);
+                data.receivers.forEach(async item => {
+                    const notification = await notificationCtrl.createNotification({
+                        ...data.notification,
+                        receiver: item._id
+                    });
+                    Notifications.in(`u${ item._id }`).emit('notification.invite', notification)
+                })
             })
 
         });
 
-
-
-        messages.on('connection', socket => {
-
+        Messages.on('connection', socket => {
 
             if(!socket.request.user.logged_in){
                 socket.disconnect();
                 return
             }
-
-            console.log('connected to message namespace');
 
             socket.on('changeChat', async data => {
                 try {
@@ -120,8 +122,8 @@ module.exports = io => {
                     message.target = await userCtrl.getUserById(message.target);
                 }
 
-                messages.in(socket.currentChat).emit('message', message);
-                notifications.in(socket.currentChat).emit('notification.message', {chat: socket.currentChat});
+                Messages.in(socket.currentChat).emit('message', message);
+                Notifications.in(socket.currentChat).emit('notification.message', {chat: socket.currentChat});
 
             });
 
@@ -140,7 +142,7 @@ module.exports = io => {
 
                 typingUsers.push(socket.request.user.username);
 
-                messages.emit('typingUsers', typingUsers);
+                Messages.emit('typingUsers', typingUsers);
             });
 
             socket.on('finishTyping', () => {
@@ -153,13 +155,13 @@ module.exports = io => {
                     }
                 });
 
-                messages.emit('typingUsers', typingUsers);
+                Messages.emit('typingUsers', typingUsers);
 
             });
 
             socket.on('typingUsers', () => {
 
-                messages.emit('typingUsers',  rooms[socket.currentChat].typingUsers);
+                Messages.emit('typingUsers',  rooms[socket.currentChat].typingUsers);
 
             });
 
@@ -168,8 +170,6 @@ module.exports = io => {
     })();
 
     io.on('connection', function(socket) {
-
-
 
         socket.emit('success', {
             message: 'success logged in!',
@@ -221,7 +221,4 @@ module.exports = io => {
         });
 
     });
-
-
-
 };

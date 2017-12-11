@@ -22,12 +22,14 @@
 </template>
 
 <script>
-
+    //IMPORTED COMPONENTS
     import ChatTitleField from './ChatTitleField.vue';
-
+    //IMPORTED MAPPERS
     import { mapGetters } from 'vuex';
-
+    //IMPORTED SERVICES
     import { ErrorHandler } from '../../../services/ErrorHandler.secvice';
+
+    import axios from 'axios';
 
     export default {
 
@@ -47,7 +49,7 @@
         },
         methods: {
             createChat() {
-                this.$http.post('/private/chats', {
+                axios.post('/private/chats', {
                     creator: this.user._id,
                     title: this.title,
                     type: 'public'

@@ -6,10 +6,6 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.get('/test', (request, response, next) => {
 
-    response.send({"gnida": "mraz"});
-
-});
 
 module.exports = router;

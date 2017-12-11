@@ -1,6 +1,7 @@
 "use strict";
 
 module.exports = {
+    ...require('./statics/availableChats.static'),
     getUserByToken: require('./statics/getUser/getUserByToken.static'),
     getUserById: require('./statics/getUser/getUserById.static'),
     getAllUsers: require('./statics/getUser/getAllUsers.static'),
@@ -8,7 +9,8 @@ module.exports = {
     addAvailableChatForAll: require('./statics/addAvailableChatForAll.static'),
 
     setAvatar: require('./statics/setAvatar.static'),
-    setAvailableChats: require('./statics/setAvailableChats.static'),
+
+    pushNotifications: require('./statics/pushNotifications.static'),
 
     pushPullField:  require('./statics/pushPullField.static'),
     incDecField:    require('./statics/incDecField.static'),

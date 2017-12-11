@@ -1,10 +1,14 @@
 const state = {
-    currentUser: {},
+    currentUser: {
+        notifications: []
+    },
     userType: null
 };
 
 const mutations = {
-
+    'SESSION_M_PUSH_NOTIFICATIONS'(state, notification) {
+        state.currentUser.notifications.push(notification);
+    }
 };
 
 const actions = {
@@ -14,7 +18,6 @@ const actions = {
         state.userType = 'guest';
     },
     'SESSION_SET_CURRENT_USER'({state, commit}, user) {
-
         state.currentUser = user;
         state.userType = user.accessRights;
 

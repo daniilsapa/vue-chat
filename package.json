@@ -10,19 +10,21 @@
     "build": "node build/build.js"
   },
   "_moduleAliases": {
+    "@authRoutes": "./routes/authentication.js",
     "@chatCtrl": "./controllers/chat/chat.controller.js",
-    "@userCtrl": "./controllers/user/user.controller.js",
-    "@libs": "./libs",
-    "@middlewares": "./middlewares/middlewares.js",
-    "@passportMiddlewares": "./middlewares/passport/passport.middlewares",
-    "@userModel": "./models/user/user.model.js",
     "@chatModel": "./models/chat/chat.model.js",
+    "@libs": "./libs",
     "@messageModel": "./models/message/message.model.js",
+    "@middlewares": "./middlewares/middlewares.js",
+    "@notificationCtrl": "./controllers/notification/notification.controller.js",
+    "@notificationModel": "./models/notification/notification.model.js",
+    "@passportMiddlewares": "./middlewares/passport/passport.middlewares",
+    "@privateRoutes": "./routes/private",
     "@public": "./public",
     "@publicRoutes": "./routes/public",
-    "@privateRoutes": "./routes/private",
-    "@authRoutes": "./routes/authentication.js",
-    "@views": "./views"
+    "@views": "./views",
+    "@userCtrl": "./controllers/user/user.controller.js",
+    "@userModel": "./models/user/user.model.js"
   },
   "dependencies": {
     "body-parser": "~1.18.2",

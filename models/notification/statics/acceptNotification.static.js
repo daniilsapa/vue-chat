@@ -1,17 +1,12 @@
-module.exports = function (chat, message, option) {
-    const Chat = this;
+module.exports = function (_id) {
+    const Notification = this;
 
     return new Promise((resolve, reject) => {
-
-        Chat.updateOne({_id: chat}, {$push: {messages: message}},(error, result) => {
-
+        Notification.findOneAndUpdate({_id}, {$set: {state: 'accepted'}}, (error, result, affected) => {
             if (error) {
                 return reject(error);
             }
             return resolve(result);
-
         });
-
     });
-
 };

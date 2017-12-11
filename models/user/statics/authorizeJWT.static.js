@@ -1,9 +1,9 @@
 
 module.exports = function(payload, done) {
 
-    console.log('payload');
-    console.log(payload);
-    console.log('payload');
+    // console.log('payload');
+    // console.log(payload);
+    // console.log('payload');
 
     const User = this;
 
