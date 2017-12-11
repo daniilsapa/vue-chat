@@ -1,5 +1,4 @@
 <template>
-
     <div class="form-group">
 
         <label class="form-control-label" for="name">Password</label>
@@ -12,14 +11,10 @@
                type="password"
         >
 
-        <div class="invalid-feedback" v-if="!isValid && !isTouched">{{ errorMessage }}</div>
-
     </div>
-
 </template>
 
 <script>
-
     //IMPORTED MAPPERS
     import { mapGetters } from 'vuex';
 
@@ -36,14 +31,11 @@
             })
         }
     }
-
 </script>
 
 <style lang="scss" scoped>
-
     label {
         font-weight: 600;
     }
-
 </style>
 

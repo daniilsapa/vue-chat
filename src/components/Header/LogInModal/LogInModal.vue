@@ -30,7 +30,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" :disabled="pass === false" @click="submit">Submit</button>
+                    <button type="button" class="btn btn-primary"  @click="submit">Submit</button>
                 </div>
 
             </div>
@@ -40,11 +40,9 @@
 </template>
 
 <script>
-
     //IMPORTED COMPONENTS
     import UsernameField from './UsernameField.vue';
     import PasswordField from './PasswordField.vue';
-
     //IMPORTED MAPPERS
     import { mapActions } from 'vuex';
 
@@ -62,15 +60,6 @@
             ...mapActions({
                 submit: 'LOGIN_SEND_A_LOGIN_REQUEST'
             })
-        },
-        created() {
-
-//            SignUp.$on('serverSignal', serverSignal => {
-//
-//                this.serverSignal = serverSignal;
-//
-//            });
-
         }
     }
 

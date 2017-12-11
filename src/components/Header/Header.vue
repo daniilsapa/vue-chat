@@ -37,6 +37,10 @@
             </ul>
 
         </nav>
+
+        <sign-up-modal></sign-up-modal>
+        <log-in-modal></log-in-modal>
+
     </div>
 </template>
 
@@ -44,9 +48,9 @@
     //IMPORTED COMPONENTS
     import LogInModal from './LogInModal/LogInModal.vue';
     import SignUpModal from './SignUpModal/SignUpModal.vue';
-
     //IMPORTED MAPPERS
     import { mapGetters } from 'vuex';
+    import { mapActions } from 'vuex';
 
     export default {
         computed: {
@@ -58,6 +62,11 @@
         components: {
             LogInModal,
             SignUpModal
+        },
+        methods: {
+            ...mapActions({
+                logOut: 'SESSION_LOG_OUT'
+            })
         }
     }
 </script>

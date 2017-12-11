@@ -40,7 +40,7 @@ const actions = {
             });
 
             state.notifications.on('notification.invite', notification => {
-                console.log('notifications notifications', notification)
+                console.log('notifications notifications', notification);
                 commit('SESSION_M_PUSH_NOTIFICATIONS', notification);
             });
 
@@ -78,17 +78,14 @@ const actions = {
             })
 
         }).on('error', function(err) {
-            throw new Error(err);
+            console.log(err)
         }).on('connect', function () {
             console.log('authenticated');
 
         }).on('disconnect', function () {
             console.log('disconnected');
         });
-
-
     },
-
 };
 
 const getters = {
