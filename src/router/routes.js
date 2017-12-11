@@ -26,7 +26,6 @@ const beforeEnter = (to, from, next) => {
     }
 };
 
-
 export const routes = [
     {
         path: '',
