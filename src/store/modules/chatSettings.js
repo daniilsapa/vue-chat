@@ -21,6 +21,9 @@ const mutations = {
     },
     'CHAT_SETTINGS_M_RESET_INVITE_RECEIVERS'(state, index) {
         state.inviteReceivers = [];
+    },
+    'CHAT_SETTINGS_M_SET_FIELD'(state, { field, value }) {
+        state.chat[field] = value;
     }
 };
 

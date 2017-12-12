@@ -20,19 +20,11 @@ const privateRoutes = require('@privateRoutes')();
 const auth = require('@authRoutes')(passport, jwt, jwtsecret);
 
 module.exports = app => {
-
     app.use(passport.initialize());
-
-    app.use('/axios', (request, response, next) => {
-
-        response.json({"hello": "World"})
-
-    })
 
     app.use('/auth', auth);
     app.use('/public', publicRoutes);
     app.use('/private', passport.authenticate('jwt', { session: false }), function(req, res, next){
-        console.log('request', req.headers)
         next();
     }, privateRoutes);
 

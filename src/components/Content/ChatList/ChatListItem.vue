@@ -1,9 +1,7 @@
 <template>
-    <div
+    <div :class="{'active-chat': chat._id === currentChat._id}"
          class="chat-list-item"
-         :class="{'active-chat': chat._id === currentChat._id}"
-         @click="changeChat"
-    >
+         @click="changeChat">
         <div class="media">
 
             <img class="mr-3 rounded" :src="chat.coverUrl" alt="Generic placeholder image">
@@ -19,7 +17,9 @@
                     <i class="fa fa-sign-out" aria-hidden="true"></i>
                 </button>
 
-                <button class="btn btn-outline-info btn-sm" @click.stop="goToChatSettings">
+                <button v-show="chat.creator._id === user._id"
+                        class="btn btn-outline-info btn-sm"
+                        @click.stop="goToChatSettings">
                     <i class="fa fa-bars" aria-hidden="true"></i>
                 </button>
 
@@ -37,7 +37,8 @@
         props: ['chat'],
         computed: {
             ...mapGetters({
-                currentChat: 'CHAT_G_GET_CHAT'
+                currentChat: 'CHAT_G_GET_CHAT',
+                user: 'SESSION_G_GET_CURRENT_USER'
             })
         },
         methods: {

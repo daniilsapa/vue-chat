@@ -6,7 +6,7 @@
         <div class="avatar-upload"  v-show="!edit">
             <div class="text-center p-2">
                 <label for="avatar">
-                    <img :src="files.length ? files[0].url : user.avatarUrl"  class="rounded-circle" />
+                    <img :src="files.length ? files[0].url : chat.coverUrl"  class="rounded" />
                     <!--<h4 class="pt-2">or<br/>Drop files anywhere to upload</h4>-->
                 </label>
             </div>
@@ -14,16 +14,16 @@
             <div class="row">
                 <div class="col-lg-12 avatar-info">
                     <div>
-                        <h4>Click the button or simply drop an image there to change the avatar</h4>
+                        <h6>Click the button or simply drop an image there to change the cover</h6>
                     </div>
                     <div class="p-2">
                         <file-upload
                                 extensions="gif,jpg,jpeg,png,webp"
                                 accept="image/png,image/gif,image/jpeg,image/webp"
-                                name="avatar"
+                                name="cover"
                                 id="avatar"
                                 class="btn btn-secondary"
-                                post-action="private/users/avatar"
+                                :post-action="`private/chats/cover/${ chat._id }`"
                                 :drop="!edit"
                                 :headers="{'authorization': token}"
                                 v-model="files"
@@ -39,14 +39,17 @@
         </div>
 
         <div class="avatar-edit" v-show="files.length && edit">
+
             <div class="avatar-edit-image" v-if="files.length">
                 <img ref="editImage" :src="files[0].url" />
             </div>
+
             <div class="text-center p-4">
                 <button type="button" class="btn btn-secondary" @click.prevent="$refs.upload.clear">Cancel</button>
                 <button type="submit" class="btn btn-primary" @click.prevent="editSave">Save</button>
                 <span v-show="$refs.upload && $refs.upload.uploaded">{{ uploadedHook() }}</span>
             </div>
+
         </div>
     </div>
 </template>
@@ -61,7 +64,7 @@
     import { mapMutations } from 'vuex';
 
     export default {
-        props: ['user'],
+        props: ['chat'],
         components: {
             FileUpload,
         },
@@ -100,14 +103,18 @@
         },
         methods: {
             ...mapMutations({
-                setField: 'SESSION_M_SET_FIELD'
+                setFieldChatList: 'CHATLIST_M_SET_FIELD_OF_CHAT',
+                setFieldChatSettings: 'CHAT_SETTINGS_M_SET_FIELD'
             }),
             uploadedHook() {
-                axios.get(`/private/users/${ this.user._id }`)
-                    .then(({ data }) => {
-                        this.setField({ field: 'avatarUrl', value: data.avatarUrl });
-                    })
-                    .catch()
+                if(this.chat._id){
+                    axios.get(`/private/chats/${ this.chat._id }`)
+                        .then(({ data }) => {
+                            this.setFieldChatList({ id: this.chat._id, changes:  { field: 'coverUrl', value: data.coverUrl } });
+                            this.setFieldChatSettings({ field: 'coverUrl', value: data.coverUrl })
+                        })
+                        .catch()
+                }
             },
             editSave() {
                 this.edit = false;
@@ -164,10 +171,10 @@
         background: rgba(255, 255, 255, 1);
 
         border: 1px solid rgba(180, 180, 180, 1);
-        border-radius: 10px;
+        border-radius: 4px;
     }
 
-    .example-avatar .avatar-upload .rounded-circle {
+    .example-avatar .avatar-upload .rounded {
         width: 200px;
         height: 200px;
     }

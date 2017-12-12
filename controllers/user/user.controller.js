@@ -41,12 +41,9 @@ const addUser = async request => {
 const getUsers = request => {
 
     return new Promise((resolve, reject) => {
-
         User.getUsers(request.params.id, null)
             .then(resolve, reject);
-
     });
-
 };
 
 
@@ -54,53 +51,43 @@ const getUsers = request => {
 const getUserByToken = token => {
 
     return new Promise((resolve, reject) => {
-
         User.getUserByToken(token)
             .then(resolve, reject);
-
     });
-
 };
 
 const deleteUser = (request) => {
 
     return new Promise((resolve, reject) => {
-
         User.deleteUser(request.params.id)
             .then(resolve, reject);
-
     });
-
-
 };
 
 const logIn = (request) => {
 
     return new Promise((resolve, reject) => {
-
         User.authorize(request.body.data, request.body.password)
             .then(resolve, reject);
-
     });
-    
 };
 
 
-const updateUser = (request) => {
+const updateUser = async obj => {
+    const updateObj = {};
+    updateObj[obj.field] = obj.value;
 
-    if(!request.params.id) {
-        console.log(request.authorizationConfirmed);
-        request.params.id = request.authorizationConfirmed._id;
+     const updatedUser = await User.updateUser(
+         {  _id: obj.user },
+         { $set: updateObj }
+     );
+
+    if(updatedUser.error){
+        return updatedUser;
     }
-
-    return new Promise((resolve, reject) => {
-
-        User.updateUser(request.body, request.params.id)
-            .then(resolve, reject);
-
-    });
-
-
+    else {
+        return await User.getUserById(obj.user);
+    }
 };
 
 const customFind = (token, searchObj) => {

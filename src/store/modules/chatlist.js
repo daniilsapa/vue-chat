@@ -8,27 +8,30 @@ const state = {
 
 const mutations = {
     'CHATLIST_M_SET_AVAILABLE_CHATS'(state, availableChats) {
-
         availableChats.forEach(item => {
             item.notifications = 0;
         });
 
         state.availableChats = availableChats
-
     },
     'CHATLIST_M_ADD_NOTIFICATION'(state, notification) {
-
         state.availableChats.forEach(item => {
            if(item._id === notification.chat){
                item.notifications += 1;
            }
         });
-
     },
     'CHATLIST_M_RESET_NOTIFICATIONS'(state, id) {
         state.availableChats.forEach(item => {
             if(item._id === id){
                 item.notifications = 0;
+            }
+        })
+    },
+    'CHATLIST_M_SET_FIELD_OF_CHAT'(state, obj) {
+        state.availableChats.forEach(item => {
+            if(item._id === obj.id){
+                item[obj.changes.field] = obj.changes.value;
             }
         })
     }

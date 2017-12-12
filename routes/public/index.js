@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const userCtrl = require('@userCtrl');
+const userCtrl = require('@userCtrl')();
 
 module.exports = () => {
 
@@ -16,6 +16,7 @@ module.exports = () => {
                     }
                 })
                 .catch(error => {
+                    console.log(error);
                     response.status(500).send({})
                 })
         });

@@ -4,18 +4,70 @@
 
             <div class="col-lg-10">
                 <ul class="nav text-center">
+
                     <li class="nav-item">
                         <router-link tag="a" class="nav-link" active-class="text-info" to="/profile" exact>Profile</router-link>
                     </li>
+
                     <li class="nav-item">
                         <router-link tag="a" class="nav-link" active-class="text-info" to="/profile/edit">Edit</router-link>
                     </li>
+
                 </ul>
             </div>
 
             <div class="col-lg-10">
+
                 <hr/>
-                <profile-field-edit v-for="field in profileFields" :field="field"></profile-field-edit>
+
+                <input-field :fieldValue="user.firstName"
+                             :setter="setField"
+                             fieldTitle="First name"
+                             titleInData="firstName"
+                             url="/private/users/change/firstName"
+                             validationRules="alpha_spaces">
+                </input-field>
+
+                <input-field :fieldValue="user.lastName"
+                             :setter="setField"
+                             fieldTitle="Last name"
+                             titleInData="lastName"
+                             url="/private/users/change/lastName"
+                             validationRules="alpha_spaces">
+                </input-field>
+
+                <input-field :fieldValue="user.username"
+                             :setter="setField"
+                             fieldTitle="Username"
+                             titleInData="username"
+                             url="/private/users/change/username"
+                             :validationRules="`alpha_dash|usernameExists`">
+                </input-field>
+
+                <input-field :fieldValue="user.email"
+                             :setter="setField"
+                             fieldTitle="Email"
+                             titleInData="email"
+                             url="/private/users/change/email"
+                             validationRules="email|emailExists">
+                </input-field>
+
+                <input-field :fieldValue="user.phone"
+                             :setter="setField"
+                             fieldTitle="Phone"
+                             titleInData="phone"
+                             url="/private/users/change/phone"
+                             validationRules="numeric|max:12">
+                </input-field>
+
+                <input-field :fieldValue="'**********'"
+                             :setter="setField"
+                             fieldTitle="Password"
+                             titleInData="password"
+                             url="/private/users/change/password"
+                             validationRules="alpha_num|min:8">
+                </input-field>
+
             </div>
 
         </div>
@@ -23,29 +75,13 @@
 </template>
 
 <script>
-    //IMPORTED COMPONENTS
-    import ProfileFieldEdit from './ProfileFieldEdit/ProfileFieldEdit.vue';
+    //IMPORTED MAPPERS
+    import { mapMutations } from 'vuex';
 
     export default {
         props: ['user'],
-        computed: {
-            profileFields() {
-                const fieldsArray = [];
-
-                for(let key in this.user){
-                    if(key.match(/username|email|phone|password/)) {
-                        fieldsArray.push({
-                            name: key,
-                            value: this.user[key]
-                        })
-                    }
-                }
-
-                return fieldsArray;
-            }
-        },
-        components: {
-            ProfileFieldEdit
+        methods: {
+            ...mapMutations({ setField: 'SESSION_M_SET_FIELD' }),
         }
     }
 </script>

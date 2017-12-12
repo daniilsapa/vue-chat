@@ -8,6 +8,10 @@ const state = {
 const mutations = {
     'SESSION_M_PUSH_NOTIFICATIONS'(state, notification) {
         state.currentUser.notifications.push(notification);
+    },
+    'SESSION_M_SET_FIELD'(state, { field, value }) {
+        console.log('SET_FIELD', { field, value });
+        state.currentUser[field] = value;
     }
 };
 

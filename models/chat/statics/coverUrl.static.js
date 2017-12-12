@@ -1,9 +1,9 @@
-module.exports = function (_id, avatarUrl) {
-    const User = this;
+module.exports.setCover = function (_id, coverUrl) {
+    const Chat = this;
 
     return new Promise((resolve, reject) => {
         try {
-            User.updateOne({_id}, {$set: {avatarUrl}}, (error, result) => {
+            Chat.updateOne({ _id }, { $set: { coverUrl } }, (error, result) => {
                 if (error) {
                     reject(error);
                 }

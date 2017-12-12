@@ -5,6 +5,7 @@ module.exports = {
     getUserByToken: require('./statics/getUser/getUserByToken.static'),
     getUserById: require('./statics/getUser/getUserById.static'),
     getAllUsers: require('./statics/getUser/getAllUsers.static'),
+    getUserByCustomField: require('./statics/getUser/getUserByCustomField.static'),
 
     addAvailableChatForAll: require('./statics/addAvailableChatForAll.static'),
 

@@ -1,13 +1,17 @@
 import Vue from 'vue';
 import axios from 'axios'
 import App from './App.vue';
+import VeeValidate from 'vee-validate';
+
+import http from 'vue-resource'
 
 import VueResource from 'vue-resource';
 import VueRouter from 'vue-router';
 //GLOBAL COMPONENTS
 import WWHeader from './components/global/WWHeader.vue';
 import Notification from './components/global/Notification.vue';
-import AddresseList from './components/global/AddresseeList/AddresseeList.vue';
+import AddresseeList from './components/global/AddresseeList/AddresseeList.vue';
+import InputField from './components/global/InputField/InputField.vue';
 import VModal from 'vue-js-modal'
 
 import { routes } from "./router/routes.js"
@@ -15,9 +19,41 @@ import { store } from "./store/store"
 
 Vue.config.productionTip = false;
 
+Vue.use(http);
+
+VeeValidate.Validator.extend('usernameExists', {
+    getMessage: field => 'This username already exists!',
+    validate: value => {
+        return axios.post('/public/check/username', { field: value })
+            .then(response => {
+                console.log(response.data.result);
+                return { valid: !response.data.result };
+            })
+            .catch(error => {
+                return false;
+                // ErrorHandler.pushError({ message: 'An issue with server-side validation!' })
+            });
+    }
+});
+
+VeeValidate.Validator.extend('emailExists', {
+    getMessage: field => 'This email already exists!',
+    validate: value => {
+        return axios.post('/public/check/email', { field: value })
+            .then(response => {
+                console.log(response.data.result);
+                return { valid: !response.data.result };
+            })
+            .catch(error => {
+                return false;
+                // ErrorHandler.pushError({ message: 'An issue with server-side validation!' })
+            });
+    }
+});
+
 Vue.use(VueResource);
 Vue.use(VueRouter);
-
+Vue.use(VeeValidate);
 Vue.use(VModal);
 Vue.use(require('vue-prevent-parent-scroll'));
 
@@ -37,9 +73,12 @@ axios.interceptors.request
         }
     );
 
+
+
 Vue.component('ww-header', WWHeader);
 Vue.component('ww-notification', Notification);
-Vue.component('addressee-list', AddresseList);
+Vue.component('addressee-list', AddresseeList);
+Vue.component('input-field', InputField);
 
 Vue.filter('timestamp', value => {
 

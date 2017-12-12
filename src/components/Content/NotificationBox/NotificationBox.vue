@@ -7,16 +7,16 @@
             <div class="notifications">
                 <transition-group name="notification" tag="div">
 
-                    <ww-notification class="ww-box ww-notification"
-                                     v-for="(notice, index) in user.notifications"
+                    <ww-notification v-for="(notice, index) in user.notifications"
                                      :content="notice.content"
                                      :index="index"
                                      :key="index"
                                      :state="notice.state"
                                      :title="notice.title"
+                                     class="ww-box ww-notification"
                                      @accept="accept"
-                                     @reject="reject"
-                    ></ww-notification>
+                                     @reject="reject">
+                    </ww-notification>
 
                 </transition-group>
             </div>
@@ -69,10 +69,19 @@
 </script>
 
 <style lang="scss" scoped>
+    .notification-box {
+
+
+    }
+
     .notifications {
         padding: 20px;
 
         min-height: 505px;
+        max-height: 505px;
+
+        overflow: scroll;
+        overflow-x: hidden;
 
         .ww-notification {
             margin: 10px 0 0 0;

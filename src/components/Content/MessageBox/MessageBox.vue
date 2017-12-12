@@ -120,7 +120,6 @@
 </script>
 
 <style lang="scss" scoped>
-
     .chat-box {
         max-height: 100%;
 
@@ -165,7 +164,6 @@
             background: rgba(180, 180, 180, 1);
             height: 100px;
         }
-
     }
 
     .message-list-item {
@@ -209,6 +207,4 @@
             transform: translateY(20px);
         }
     }
-
-
 </style>

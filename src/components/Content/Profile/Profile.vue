@@ -5,7 +5,8 @@
             <ww-header class="col-lg-12" title="Profile"></ww-header>
 
             <div class="col-lg-5 avatar text-center">
-                <img class="rounded-circle" :src="user.avatarUrl"/>
+                <!--<img class="rounded-circle" :src="user.avatarUrl"/>-->
+                <profile-avatar :user="user"></profile-avatar>
             </div>
 
             <transition name="side" mode="out-in">
@@ -17,11 +18,9 @@
 </template>
 
 <script>
-
     //IMPORTED COMPONENTS
     import ProfileAvatar from './ProfileAvatar/ProfileAvatar.vue';
     import UserProfile from './UserProfile/UserProfile.vue';
-
     //IMPORTED MAPPERS
     import { mapGetters } from 'vuex';
 
@@ -29,19 +28,16 @@
         computed: {
             ...mapGetters({
                 user: 'SESSION_G_GET_CURRENT_USER',
-                css: 'PROFILE_G_GET_CSS'
             })
         },
         components: {
+            ProfileAvatar,
             UserProfile
         }
-
     }
-
 </script>
 
 <style lang="scss" scoped>
-
     $box-border-color: rgba(210, 210, 210, 1);
 
     .profile {
@@ -58,7 +54,7 @@
 
     .router-view {
 
-        margin: 15px 0 100px 0;
+        margin: 15px 0 30px 0;
 
     }
 
