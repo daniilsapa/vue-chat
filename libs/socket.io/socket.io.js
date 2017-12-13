@@ -1,12 +1,20 @@
+//IMPORTED FOREIGN ADDICTIONS
 const socketioJwt = require('socketio-jwt'),
       jwtsecret = "mysecretkey",
       jwtAuth = require('socketio-jwt-auth'),
       passportSocketIO = require('passport.socketio');
 
+//IMPORTED CONTROLLERS
 const userCtrl = require('@userCtrl')(),
       chatCtrl = require('@chatCtrl'),
       messageCtrl = require('../../controllers/message/message.controller'),
       notificationCtrl = require('@notificationCtrl');
+
+//IMPORTED MODELS
+const User = require('@userModel');
+
+//IMPORTED HELPERS
+const TUHelpers = require('./helpers/typing-users.helpers');
 
 const rooms = {};
 
@@ -99,6 +107,7 @@ module.exports = io => {
                     await socket.leave(data.previousChat, err => {
                         socket.join(data.currentChat, err => {
                             if(err) console.log('chat changin\' error', err);
+                            console.log('changeChat', data);
                             socket.currentChat = data.currentChat;
 
                             socket.emit('changeChat', {});
@@ -106,7 +115,7 @@ module.exports = io => {
                     });
                 }
                 catch(e) {
-                    socket.emit('changeChat', {error: 'server error'});
+                    socket.emit('changeChat', { error: 'server error' });
                 }
             });
 
@@ -127,46 +136,18 @@ module.exports = io => {
 
             });
 
-            socket.on('beginTyping', () => {
+            require('./API/typing-users.api')(socket, rooms, Messages);
 
-                const typingUsers = rooms[socket.currentChat].typingUsers;
-                let alreadyExists = false;
+            socket.on('disconnect', async () => {
+                if(rooms[socket.currentChat]) {
+                    const typingUsers = rooms[socket.currentChat].typingUsers;
 
-                typingUsers.forEach((item, index) => {
-                    if(item === socket.request.user.username){
-                        alreadyExists = true;
-                    }
-                });
-
-                if(alreadyExists){return}
-
-                typingUsers.push(socket.request.user.username);
-
-                Messages.emit('typingUsers', typingUsers);
-            });
-
-            socket.on('finishTyping', () => {
-
-                const typingUsers = rooms[socket.currentChat].typingUsers;
-
-                typingUsers.forEach((item, index) => {
-                    if(item === socket.request.user.username){
-                        typingUsers.splice(index, 1);
-                    }
-                });
-
-                Messages.emit('typingUsers', typingUsers);
-
-            });
-
-            socket.on('typingUsers', () => {
-
-                Messages.emit('typingUsers',  rooms[socket.currentChat].typingUsers);
-
-            });
-
+                    TUHelpers.removeFromTyping(typingUsers, socket.request.user._id);
+                    Messages.in(socket.currentChat).emit('typingUsers',
+                        await TUHelpers.getUsernamesOfTypingUsers(typingUsers));
+                }
+            })
         });
-
     })();
 
     io.on('connection', function(socket) {
@@ -195,7 +176,7 @@ module.exports = io => {
                 });
             }
             catch(e) {
-                socket.emit('changeChat', {error: 'server error'});
+                socket.emit('changeChat', { error: 'server error' });
             }
 
         });

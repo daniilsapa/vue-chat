@@ -10,6 +10,7 @@ const state = {
         _id: null
     },
     newMessage: '',
+    previousChatId: null,
     scrollEvent: false
 };
 
@@ -20,6 +21,7 @@ const mutations = {
         setTimeout(() => {state.scrollEvent = false}, 100)
     },
     'CHAT_M_RESET_CHAT'(state) {
+        state.previousChatId = state.currentChat._id;
         state.currentChat = {};
         state.newMessage = '';
         state.chatFetched = false;
@@ -49,9 +51,14 @@ const actions = {
             if(state.currentChat.messages[state.currentChat.messages.length - 1]){
                 data.chats[currentChatId].lastMessage = state.currentChat.messages[state.currentChat.messages.length - 1]['_id'];
             }
-
-            localStorage.setItem('data', JSON.stringify(data));
         }
+        else {
+            data.chats[currentChatId] = {
+                message: state.newMessage
+            };
+        }
+
+        localStorage.setItem('data', JSON.stringify(data));
 
         commit('CHAT_M_RESET_CHAT');
     },
@@ -102,7 +109,7 @@ const actions = {
         messagesSocket
             .emit('changeChat', {
                 currentChat: chat._id,
-                previousChat: state.currentChat._id
+                previousChat: state.previousChatId
             })
             .emit('typingUsers', {});
 
@@ -112,6 +119,7 @@ const actions = {
         if(storedChats[chat._id] && storedChats[chat._id].message){
             commit('CHAT_M_SET_NEW_MESSAGE', storedChats[chat._id].message);
         }
+        commit('CHATLIST_M_RESET_NOTIFICATIONS', chat._id)
     }
 };
 

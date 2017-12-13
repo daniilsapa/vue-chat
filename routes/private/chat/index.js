@@ -40,7 +40,6 @@ module.exports = router => {
     router.route('/chats/change/:id/title')
         .post(async (request, response, next) => {
 
-
             const chat = await chatCtrl.setTitle(request.params.id, request.body.field);
 
             if(chat.error){

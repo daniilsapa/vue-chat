@@ -1,7 +1,10 @@
 "use strict";
 
 module.exports = {
+    //STATIC METHODS FOR MODELS FIELDS
     ...require('./statics/availableChats.static'),
+    //OTHER STATIC METHODS
+    ...require('./statics/getUser/getUsersByArray.static'),
     getUserByToken: require('./statics/getUser/getUserByToken.static'),
     getUserById: require('./statics/getUser/getUserById.static'),
     getAllUsers: require('./statics/getUser/getAllUsers.static'),

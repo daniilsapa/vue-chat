@@ -1,21 +1,14 @@
-"use strict";
-
-module.exports = function (chatArray) {
+module.exports.getUsersByArrayOfIds = function (array) {
     const Chat = this;
 
     return new Promise((resolve, reject) => {
 
-        Chat.find({_id: {$in: chatArray}})
-            .populate({
-                path: 'creator',
-            })
+        Chat.find({ _id: { $in: array } })
             .exec((error, result) => {
-
                 if (error) {
-                    return reject(error);
+                    return reject({ error });
                 }
                 return resolve(result);
-
             });
     });
 };

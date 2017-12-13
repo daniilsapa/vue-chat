@@ -7,10 +7,9 @@
 
             <div class="chat-list" v-prevent-parent-scroll>
                 <chat-list-item
-                        class="chat-list-item"
                         v-for="chat in availableChats"
-                        :chat="chat"
-                >
+                        class="chat-list-item"
+                        :chat="chat">
                 </chat-list-item>
             </div>
 

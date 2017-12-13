@@ -26,7 +26,6 @@
     import AppContent from './components/Content/Content.vue'
     import ErrorBox from './components/ErrorBox/ErrorBox.vue';
 
-
     export default {
         created() {
             this.$store.dispatch('APP_A_INIT_APP')
@@ -40,13 +39,12 @@
 </script>
 
 <style lang="scss">
-
     .header-divider {
         margin: 0 0 10px 0;
     }
 
     body {
-        background: rgba(225, 225, 225, 1);
+        background: rgba(240, 240, 240, 1);
     }
 
     .error-box-wraper {
@@ -59,5 +57,4 @@
             position: relative;
         }
     }
-
 </style>

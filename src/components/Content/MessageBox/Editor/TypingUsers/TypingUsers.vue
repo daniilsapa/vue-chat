@@ -1,13 +1,12 @@
 <template>
     <div class="typing-users text-left" v-if="typingUsers && typingUsers.length > 0">
 
-        <div>{{ string }}</div>
+        <div class="ml-2 string">{{ string }}</div>
 
     </div>
 </template>
 
 <script>
-
     export default {
         props: ['typingUsers'],
         computed: {
@@ -36,16 +35,18 @@
             }
         }
     }
-
 </script>
 
 <style lang="scss" scoped>
-
     .typing-users{
         background: rgba(255, 255, 255, 1);
-        border-radius: 30px;
+        border-radius: 4px;
 
-        border: 1px solid rgba(180, 180, 180, 1)
+        border: 1px solid rgba(210, 210, 210, 1);
+
+        .string {
+            font-weight: 500;
+            color: rgba(180, 180, 180, 1);
+        }
     }
-
 </style>

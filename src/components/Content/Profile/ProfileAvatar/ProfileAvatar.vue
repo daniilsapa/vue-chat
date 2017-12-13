@@ -164,7 +164,7 @@
         background: rgba(255, 255, 255, 1);
 
         border: 1px solid rgba(180, 180, 180, 1);
-        border-radius: 10px;
+        border-radius: 4px;
     }
 
     .example-avatar .avatar-upload .rounded-circle {

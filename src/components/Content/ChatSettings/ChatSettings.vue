@@ -17,6 +17,7 @@
                              :url="`/private/chats/change/${ chat._id }/title`"
                              validationRules="alpha_dash">
                 </input-field>
+
             </div>
 
             <div class="col-lg-12">
@@ -37,7 +38,7 @@
 
         <div class="row justify-content-center">
             <transition name="side" mode="out-in">
-                <router-view class="col-lg-11 router-view" :members="chat.members"></router-view>
+                <router-view class="col-lg-11 router-view" :members="chat.members" :invites="chat.invites"></router-view>
             </transition>
         </div>
 

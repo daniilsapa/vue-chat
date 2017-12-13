@@ -8,8 +8,10 @@ const state = {
     chat: {
         _id: null
     },
+    invited: [],
+    inviteReceivers: [],
     users: [],
-    inviteReceivers: []
+
 };
 
 const mutations = {
@@ -30,8 +32,15 @@ const mutations = {
 const actions = {
     'CHAT_SETTINGS_A_FETCH_CHAT'({state, dispatch}, id) {
         axios.get(`/private/chats/${id}`)
-            .then(response => {
-                state.chat = response.data;
+            .then(({ data }) => {
+                state.chat = data;
+                state.invited = data.invites
+                    .filter(item => {
+                        return item.state === 'pending';
+                    })
+                    .map(item => {
+                        return item.receiver;
+                    })
             })
             .catch(error => {
                 ErrorHandler.pushError({message: 'Cannot get chat!'})
@@ -48,16 +57,18 @@ const actions = {
     },
     'CHAT_SETTINGS_A_SEND_NOTIFICATIONS'({state, dispatch, getters}, id) {
 
-
         getters['SOCKET_IO_G_GET_NOTIFICATIONS_SOCKET'].emit('notification.invite', {
             receivers: state.inviteReceivers,
             notification: {
                 chat: state.chat._id,
                 content: `You\'ve been invited to "${ state.chat.title }" chat`,
                 sender: state.chat.creator,
-                title: "CHAT INVITE"
+                title: "Invite to the chat"
             }
         });
+
+        state.invited = state.invited.concat(state.inviteReceivers);
+        state.inviteReceivers = [];
     }
 
 };
@@ -65,6 +76,9 @@ const actions = {
 const getters = {
     'CHAT_SETTINGS_G_GET_CHAT'(state) {
         return state.chat;
+    },
+    'CHAT_SETTINGS_G_INVITED'(state) {
+        return state.invited;
     },
     'CHAT_SETTINGS_G_INVITE_RECEIVERS'(state) {
         return state.inviteReceivers;
@@ -82,16 +96,14 @@ const getters = {
             unnecessaryUsers[receiver._id] = true;
         });
 
-        const final = state.users.filter((user, index) => {
-            console.log('filter function', unnecessaryUsers[user._id])
-            return !unnecessaryUsers[user._id];
+        state.invited.forEach(receiver => {
+            unnecessaryUsers[receiver._id] = true;
         });
 
-        console.log('final final final final', final);
-        console.log('unnecessaryUsers', unnecessaryUsers);
-
-        return final;
-
+        return state.users.filter((user, index) => {
+            console.log('filter function', unnecessaryUsers[user._id]);
+            return !unnecessaryUsers[user._id];
+        });
     }
 };
 

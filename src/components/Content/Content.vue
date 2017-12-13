@@ -66,6 +66,4 @@
             transform: translateX(-30px);
         }
     }
-
-
 </style>

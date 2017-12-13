@@ -61,17 +61,17 @@
             },
             chat(newChat) {
                 if(newChat){
-                    this.$store._mutations['CHATLIST_M_RESET_NOTIFICATIONS'][0](newChat._id);
+//                    this.$store._mutations['CHATLIST_M_RESET_NOTIFICATIONS'][0](newChat._id);
                 }
             },
             scrollEvent(newValue) {
-                console.log('scroll');
                 if(newValue){
                     setTimeout(() => {
-
-
                         const messageList = this.$el.querySelector("#messageList"),
-                            lastMessage = messageList.lastElementChild.previousElementSibling.lastElementChild,
+                            lastMessage = messageList
+                                            .lastElementChild
+                                            .previousElementSibling
+                                            .lastElementChild,
                             needScroll = messageList.scrollTop +
                                 lastMessage.offsetHeight +
                                 lastMessage.previousElementSibling.offsetHeight +
@@ -116,7 +116,6 @@
             next();
         }
     }
-
 </script>
 
 <style lang="scss" scoped>

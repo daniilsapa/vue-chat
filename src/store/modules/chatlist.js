@@ -3,13 +3,19 @@ import axios from 'axios';
 import { ErrorHandler } from "../../services/ErrorHandler.secvice"
 
 const state = {
-    availableChats: []
+    availableChats: [],
+    storedNotifications: {}
 };
 
 const mutations = {
     'CHATLIST_M_SET_AVAILABLE_CHATS'(state, availableChats) {
         availableChats.forEach(item => {
-            item.notifications = 0;
+            if(state.storedNotifications[item._id]){
+                item.notifications = state.storedNotifications[item._id];
+            }
+            else{
+                item.notifications = 0;
+            }
         });
 
         state.availableChats = availableChats
@@ -34,19 +40,33 @@ const mutations = {
                 item[obj.changes.field] = obj.changes.value;
             }
         })
+    },
+    'CHATLIST_M_STORE_NOTIFICATIONS'(state) {
+        let availableChats = state.availableChats;
+        if(availableChats.length !== 0) {
+            availableChats.forEach(item => {
+
+                state.storedNotifications[item._id] = item.notifications;
+                console.log('CHATLIST_M_STORE_NOTIFICATIONS', state.storedNotifications[item._id])
+            })
+        }
     }
 };
 
 const actions = {
     'CHATLIST_A_FETCH_AVAILABLE_CHATS'({ commit, getters }, id) {
+        commit('CHATLIST_M_STORE_NOTIFICATIONS');
 
         axios.post('/private/chats/available', getters['SESSION_G_GET_CURRENT_USER']['availableChats'])
-            .then(result => commit('CHATLIST_M_SET_AVAILABLE_CHATS', result.data))
+            .then(({ data }) => {
+                commit('CHATLIST_M_SET_AVAILABLE_CHATS', data);
+            })
             .catch(error => {
 
                 ErrorHandler.pushError({message: 'Can\'t load chat list, try again later.'})
 
             });
+
 
     }
 };

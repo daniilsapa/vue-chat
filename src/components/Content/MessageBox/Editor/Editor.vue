@@ -2,27 +2,24 @@
     <div>
         <div class="editor-wrapper row no-gutters justify-content-center">
 
-            <addressee-list class="addressee-list col-lg-10"
-                            v-if="showUsersList"
-                            :users="chat.members"
-                            :itemClickFunc="addAddressee"
-            >
-
+            <addressee-list  v-if="showUsersList"
+                             :itemClickFunc="addAddressee"
+                             :users="chat.members"
+                             class="addressee-list col-lg-10">
             </addressee-list>
 
             <typing-users class="typing-users col-lg-10" :typingUsers="chat.typingUsers" ></typing-users>
 
             <div class="col-lg-9">
 
-                <textarea class="form-control align-left editor ww-box"
-                      id="messageEditor"
-                      rows="3"
-                      v-model="message"
-                      @keydown="isTyping = true"
-                      @leavefocus="isTyping = false"
-                      @change="isTyping = false"
-                      @input="inputHandler"
-                >
+                <textarea v-model="message"
+                          class="form-control editor ww-box"
+                          id="messageEditor"
+                          rows="3"
+                          @change="isTyping = false"
+                          @input="inputHandler"
+                          @keydown="isTyping = true"
+                          @leavefocus="isTyping = false">
                 </textarea>
 
             </div>
@@ -62,13 +59,17 @@
                 }
             }
         },
+        components: {
+            TypingUsers
+        },
         watch: {
             isTyping(newValue){
-                this.$store.dispatch('CHAT_A_CHANGE_TYPING_STATE', newValue);
+                this.changeTypingState(newValue);
             }
         },
         methods: {
             ...mapActions({
+                changeTypingState: 'CHAT_A_CHANGE_TYPING_STATE',
                 sendMessage: 'CHAT_A_SEND_MESSAGE'
             }),
             sendMessageWrapper () {
@@ -93,9 +94,6 @@
                 this.message = `@${this.chat.members[index]._id}(${this.chat.members[index].    username}):`;
                 this.inputHandler();
             }
-        },
-        components: {
-            TypingUsers
         }
 
     }
@@ -103,7 +101,6 @@
 </script>
 
 <style lang="scss" scoped>
-    
     .editor-wrapper{
         position: relative;
         top: 0;
@@ -113,14 +110,16 @@
     
     .addressee-list {
         position: absolute;
-        top: -184px;
+        top: -200px;
 
         z-index: 100;
     }
 
     .typing-users{
         position: absolute;
-        top: -30px;
+        top: -45px;
+
+        z-index: 1000;
     }
 
     .editor {
@@ -133,7 +132,6 @@
         font-weight: 500;
     }
 
-
     .editor:focus {
         border: 1px solid rgba(23,162,184, 1) !important;
     }
@@ -144,7 +142,7 @@
         .send-button {
             padding-left: 15px;
             padding-right: 17px;
-
+            width: 100%;
             height: 100%;
 
             background: rgba(255, 255, 255, 1);
