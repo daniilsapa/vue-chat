@@ -21,7 +21,7 @@ module.exports = router => {
                 response.status(500).json(chat.error);
             }
             else {
-                response.status(200).json({result: 'OK'});
+                response.status(200).json(chat);
             }
         });
 

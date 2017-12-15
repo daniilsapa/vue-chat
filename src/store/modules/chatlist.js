@@ -47,7 +47,6 @@ const mutations = {
             availableChats.forEach(item => {
 
                 state.storedNotifications[item._id] = item.notifications;
-                console.log('CHATLIST_M_STORE_NOTIFICATIONS', state.storedNotifications[item._id])
             })
         }
     }
@@ -66,8 +65,6 @@ const actions = {
                 ErrorHandler.pushError({message: 'Can\'t load chat list, try again later.'})
 
             });
-
-
     }
 };
 
@@ -75,6 +72,15 @@ const getters = {
     'CHATLIST_G_GET_AVAILABLE_CHATS'(state) {
         return state.availableChats;
     },
+    'CHATLIST_G_GET_COUNT_OF_NOTIFICATIONS'(state) {
+        let count = 0;
+
+        state.availableChats.forEach(item => {
+            count += item.notifications;
+        });
+
+        return count;
+    }
 };
 
 export default {

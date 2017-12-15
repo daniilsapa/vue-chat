@@ -132,7 +132,7 @@ module.exports = io => {
                 }
 
                 Messages.in(socket.currentChat).emit('message', message);
-                Notifications.in(socket.currentChat).emit('notification.message', {chat: socket.currentChat});
+                Notifications.in(socket.currentChat).emit('notification.message', { chat: socket.currentChat, isPrivate });
 
             });
 

@@ -9,7 +9,7 @@ const state = {
 };
 
 const mutations = {
-    'SOCKET_IO_M_CONNECT_TO_SOCKET'(state, {socket, title}) {
+    'SOCKET_IO_M_CONNECT_TO_SOCKET'(state, { socket, title }) {
         state[title] = socket;
     }
 };
@@ -34,7 +34,8 @@ const actions = {
             });
 
             state.notifications.on('notification.message', notification => {
-                if(getters['CHAT_G_GET_CHAT']['_id'] !== notification.chat){
+                console.log(notification)
+                if(getters['CHAT_G_GET_CHAT']['_id'] !== notification.chat && !notification.isPrivate){
                     commit('CHATLIST_M_ADD_NOTIFICATION', notification);
                 }
             });
@@ -57,8 +58,6 @@ const actions = {
                     ErrorHandler.pushError({message: 'An error occurred!    '})
                 }
 
-
-                console.log('message event was fired', message);
                 const currentChat = getters['CHAT_G_GET_CHAT'];
 
                 if(message.chat !== currentChat._id) return;
@@ -72,9 +71,7 @@ const actions = {
             });
 
             state.messages.on('typingUsers', typingUsers => {
-
                 commit('CHAT_M_SET_TYPING_USERS', typingUsers);
-
             })
 
         }).on('error', function(err) {

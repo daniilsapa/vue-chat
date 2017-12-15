@@ -51,6 +51,20 @@ VeeValidate.Validator.extend('emailExists', {
     }
 });
 
+VeeValidate.Validator.extend('chatExists', {
+    getMessage: field => 'This chat title already exists!',
+    validate: value => {
+        return axios.post('/public/check/chat/title', { field: value })
+            .then(response => {
+                return { valid: !response.data.result };
+            })
+            .catch(error => {
+                return false;
+                //ErrorHandler.pushError({ message: 'An issue with server-side validation!' })
+            });
+    }
+});
+
 Vue.use(VueResource);
 Vue.use(VueRouter);
 Vue.use(VeeValidate);

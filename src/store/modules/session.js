@@ -12,6 +12,9 @@ const mutations = {
     'SESSION_M_SET_FIELD'(state, { field, value }) {
         console.log('SET_FIELD', { field, value });
         state.currentUser[field] = value;
+    },
+    'SESSION_M_ADD_CHAT'(state, newChatId) {
+        state.currentUser.availableChats.push(newChatId);
     }
 };
 

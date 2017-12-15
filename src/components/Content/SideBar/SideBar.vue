@@ -8,7 +8,10 @@
             <router-link tag="div" class="nav-link" active-class="text-info" to="/profile">Profile</router-link>
         </li>
         <li class="nav-item">
-            <router-link tag="div" class="nav-link" active-class="text-info" to="/chats">Chats</router-link>
+            <router-link tag="div" class="nav-link" active-class="text-info" to="/chats">
+                Chats
+                <span class="badge badge-secondary" v-show="countOfNotifications !== 0">{{ countOfNotifications }}</span>
+            </router-link>
         </li>
         <li class="nav-item">
             <router-link tag="div" class="nav-link" active-class="text-info" to="/notifications">
@@ -21,12 +24,13 @@
 </template>
 
 <script>
-
+    //IMPORTED MAPPERS
     import { mapGetters } from 'vuex'
 
     export default {
         computed: {
             ...mapGetters({
+                countOfNotifications: 'CHATLIST_G_GET_COUNT_OF_NOTIFICATIONS',
                 user: 'SESSION_G_GET_CURRENT_USER'
             }),
             notifications() {
@@ -41,15 +45,12 @@
             }
         }
     }
-
 </script>
 
 <style lang="scss" scoped>
-
     .nav-link {
         font-weight: 500;
 
         cursor: pointer;
     }
-
 </style>

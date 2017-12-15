@@ -1,78 +1,145 @@
 <template>
-
     <div class="form-group">
-        <label class="form-control-label" for="name">Chat title</label>
-        <input id="name"
-               name="name"
-               maxlength="16"
-               class="form-control"
-               :class="{ 'is-invalid': !isValid && isTouched }"
-               v-model="chatTitle"
-               @input="validateField"
-               type="text" >
-        <div class="invalid-feedback" v-if="!isValid && isTouched">{{ errorMessage }}</div>
-    </div>
 
+        <label :class="{ 'text-danger': errors.has('field') }"
+               :for="id"
+               class="field-label">
+            {{ fieldTitle }}
+        </label>
+
+        <div class="input-group">
+
+            <input :class="{ 'is-invalid': errors.has('field') }"
+                   :data-vv-rules="validationRules"
+                   :placeholder="fieldValue"
+                   class="form-control in"
+                   type="email"
+                   v-model="field"
+                   v-validate.initial="field">
+
+            <span class="input-group-btn">
+                <button class="btn btn-secondary" :disabled="isValid" @click="createChat">Create</button>
+            </span>
+
+        </div>
+
+        <transition name="danger-box">
+            <p class="text-danger" v-if="errors.has('field')" key="1">{{ errors.first('field') }}</p>
+            <p class="text-success" v-if="showSign" key="2">Successfully changed!</p>
+        </transition>
+
+    </div>
 </template>
 
 <script>
-
-
+    //IMPORTED MODULES
+    import axios from 'axios';
+    //IMPORTED MAPPERS
+    import { mapGetters } from 'vuex';
+    import { mapMutations } from 'vuex';
 
     export default {
-        props: ['serverSignal', 'setTitle', 'titleIsValid'],
-        data () {
-            return{
-                isValid: false,
-                isTouched: false,
-                signalNoticed: false,
-                errorMessage: '',
-                chatTitle: ''
+        props: {
+            fieldTitle: {
+                type: String,
+                default: 'The title of the field'
+            },
+            fieldValue: {
+                type: String,
+                default: 'The current value of the field'
+            },
+            titleInData: {
+                type: String
+            },
+            validationRules: {
+                type: String,
+                required: true
+            },
+            setter: {
+                type: Function
             }
         },
-        watch: {
-            serverSignal () {
-                this.validateField();
+        data() {
+            return {
+                field: '',
+                id: Date.now() + Math.random(),
+                showSign: false
+            }
+        },
+        computed: {
+            ...mapGetters({
+                user: 'SESSION_G_GET_CURRENT_USER'
+            }),
+            isValid() {
+                return this.errors.has('field') || this.field === '';
             }
         },
         methods: {
-            validateField () {
-
-                if (!this.isTouched) {
-                    this.isTouched = true
-                }
-
-                if (!this.signalNoticed && this.serverSignal.errmsg.indexOf('title') !== -1) {
-                    this.signalNoticed = true;
-                    this.isValid = false;
-                    this.setTitle('', false);
-                    this.errorMessage = 'This title already exists!';
-                }
-                else if (this.chatTitle.length === 0) {
-                    this.setTitle('', false);
-                    this.isValid = false;
-                    this.errorMessage = 'Field mustn\'t be empty!';
-                }
-                else if (!this.chatTitle.match(/^[A-Za-z0-9_.]+$/)) {
-                    this.setTitle('', false);
-                    this.isValid = false;
-                    this.errorMessage = 'Entered username is not valid!';
-                }
-                else {
-                    this.isValid = true;
-                    this.setTitle(this.chatTitle, true);
-                }
-
+            ...mapMutations({
+               addChat: 'SESSION_M_ADD_CHAT'
+            }),
+            createChat() {
+                axios.post('/private/chats', {
+                    creator: this.user._id,
+                    title: this.field,
+                    type: 'public'
+                })
+                    .then(({ data }) => {
+                        this.addChat(data._id);
+                    })
+                    .catch(error => this.serverSignal = error.body);
+            },
+            showSuccessSign() {
+                this.showSign = true;
+                setTimeout(() => {
+                    this.showSign = false;
+                }, 2000)
             }
         }
     }
-
 </script>
 
 <style lang="scss" scoped>
-
-    label {
-        font-weight: 600;
+    .field-label {
+        font-weight: 500;
+        color: rgba(180, 180, 180, 1)
     }
 
+    /*ANIMATIONS*/
+    .danger-box-enter {
+        opacity: 0;
+    }
+
+    .danger-box-enter-to {
+        animation: danger-box-in 1s ease-out forwards;
+        transition: opacity .5s;
+    }
+
+    .danger-box-leave-to {
+        animation: danger-box-out 1s ease-out forwards;
+        transition: opacity 1s;
+        opacity: 0;
+    }
+
+    .danger-box-move {
+        transition: transform 1s;
+    }
+
+    @keyframes danger-box-in {
+        from {
+            transform: translateY(-20px)
+        }
+        to {
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes danger-box-out {
+        from {
+            transform: translateY(0)
+        }
+        to {
+            transform: translateY(-20px);
+        }
+    }
 </style>

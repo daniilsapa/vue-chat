@@ -1,6 +1,9 @@
 const router = require('express').Router();
-
-const userCtrl = require('@userCtrl')();
+//IMPORTED MODELS
+const Chat = require('@chatModel');
+//IMPORTED CONTROLLERS
+const userCtrl = require('@userCtrl')(),
+      chatCtrl = require('@chatCtrl');
 
 module.exports = () => {
 
@@ -16,7 +19,22 @@ module.exports = () => {
                     }
                 })
                 .catch(error => {
-                    console.log(error);
+                    response.status(500).send({})
+                })
+        });
+
+    router.route('/check/chat/:field')
+        .post(async(request, response, next) => {
+            Chat.getChatByTitle(request.body.field, false)
+                .then(user => {
+                    if(user){
+                        response.json({ result: true })
+                    }
+                    else{
+                        response.json({ result: false })
+                    }
+                })
+                .catch(error => {
                     response.status(500).send({})
                 })
         });
