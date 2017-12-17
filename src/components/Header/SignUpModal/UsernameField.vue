@@ -1,9 +1,9 @@
 <template>
     <div class="form-group">
 
-        <label class="form-control-label" for="name">Username</label>
+        <label class="form-control-label" for="signUpUsername">Username</label>
 
-        <input id="name"
+        <input id="signUpUsername"
                name="name"
                maxlength="16"
                class="form-control"

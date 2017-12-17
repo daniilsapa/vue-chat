@@ -2,9 +2,9 @@
 
     <div class="form-group">
 
-        <label class="form-control-label" for="name">Password</label>
+        <label class="form-control-label" for="signUpPassword">Password</label>
 
-        <input id="name"
+        <input id="signUpPassword"
                name="name"
                maxlength="100"
                class="form-control"

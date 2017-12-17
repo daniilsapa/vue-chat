@@ -1,8 +1,8 @@
 <template>
 
     <div class="form-group">
-        <label class="form-control-label" for="name">Age</label>
-        <input id="name"
+        <label class="form-control-label" for="signUpAge">Age</label>
+        <input id="signUpAge"
                name="name"
                maxlength="100"
                class="form-control"

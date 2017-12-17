@@ -33,6 +33,10 @@
 
 <style lang="scss" scoped>
     .error-box {
+        position: relative;
+        top: 0;
+        left: 0;
+
         padding: 10px;
 
         color: white;

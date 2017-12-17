@@ -1,8 +1,8 @@
 <template>
 
     <div class="form-group">
-        <label class="form-control-label" for="name">Phone number</label>
-        <input id="name"
+        <label class="form-control-label" for="signUpPhone">Phone number</label>
+        <input id="signUpPhone"
                name="name"
                maxlength="100"
                class="form-control"

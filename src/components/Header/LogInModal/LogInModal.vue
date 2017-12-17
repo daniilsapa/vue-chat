@@ -2,9 +2,15 @@
     <transition name="modal">
         <div class="modal-mask" v-show="show">
             <div class="modal-container">
-                <div class="modal-header">
-                    <h3>New Post</h3>
+
+                <div class="text-right close-modal">
+                    <i class="fa fa-times" aria-hidden="true" @click="$emit('close')"></i>
                 </div>
+
+                <div class="modal-header">
+                    <h3 class="text-info">Log In Werewolf</h3>
+                </div>
+
                 <div class="modal-body">
 
                     <label class="form-label">
@@ -12,11 +18,13 @@
                         <password-field></password-field>
                     </label>
                 </div>
+
                 <div class="modal-footer text-right">
-                    <button class="modal-default-button" @click="submit">
-                        Save
+                    <button class="btn btn-outline-info" @click="submit">
+                        Submit
                     </button>
                 </div>
+
             </div>
         </div>
     </transition>
@@ -39,8 +47,8 @@
             }
         },
         components: {
-            UsernameField,
-            PasswordField
+            PasswordField,
+            UsernameField
         },
         methods: {
             ...mapActions({
@@ -65,7 +73,7 @@
 <style lang="scss" scoped>
     .modal-mask {
         position: fixed;
-        z-index: 9998;
+        z-index: 9900;
         top: 0;
         left: 0;
         width: 100%;
@@ -74,10 +82,18 @@
         transition: opacity .3s ease;
     }
 
+    .close-modal {
+        color: rgba(160, 160, 160, 1);
+    }
+
+    .close-modal:hover {
+        color: rgba(180, 180, 180, 1);
+    }
+
     .modal-container {
-        width: 300px;
-        margin: 40px auto 0;
-        padding: 20px 30px;
+        width: 350px;
+        margin: 40px auto 0 ;
+        padding: 10px 15px;
         background-color: #fff;
         border-radius: 2px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
@@ -87,7 +103,6 @@
 
     .modal-header h3 {
         margin-top: 0;
-        color: #42b983;
     }
 
     .modal-body {
@@ -114,15 +129,6 @@
         line-height: 1.5;
         border: 1px solid #ddd;
     }
-
-    /*
-     * The following styles are auto-applied to elements with
-     * transition="modal" when their visibility is toggled
-     * by Vue.js.
-     *
-     * You can easily play with the modal transition by editing
-     * these styles.
-     */
 
     .modal-enter {
         opacity: 0;

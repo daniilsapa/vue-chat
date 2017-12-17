@@ -1,13 +1,14 @@
 <template>
     <div class="form-group">
 
-        <label class="form-control-label" for="name">Password</label>
+        <label class="form-control-label" for="logInPassword">Password</label>
 
-        <input id="name"
-               name="name"
-               maxlength="100"
+        <input v-model="form.password"
                class="form-control"
-               v-model="form.password"
+               id="logInPassword"
+               maxlength="100"
+               name="name"
+               placeholder="Enter your password"
                type="password"
         >
 
@@ -36,6 +37,7 @@
 <style lang="scss" scoped>
     label {
         font-weight: 600;
+        color: rgba(160, 160, 160, 1);
     }
 </style>
 

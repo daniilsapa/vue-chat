@@ -1,8 +1,8 @@
 <template>
 
     <div class="form-group">
-        <label class="form-control-label" for="name">Repeat your password</label>
-        <input id="name"
+        <label class="form-control-label" for="signUpPasswordConfirmation">Repeat your password</label>
+        <input id="signUpPasswordConfirmation"
                name="name"
                maxlength="100"
                class="form-control"

@@ -22,14 +22,14 @@
                         <div v-else class="sign">
                             <a href="#" data-toggle="modal" @click="showLogInModal = true">log in</a>
                             |
-                            <a href="#" data-toggle="modal" data-target="#SignUpModal">sign up</a>
+                            <a href="#" data-toggle="modal"  @click="showSignUpModal = true">sign up</a>
                         </div>
 
                     </a>
                 </li>
 
                 <li>
-                    <a href="#" v-if="userType === 'user' || userType === 'admin'" class="logout" @click="logOut">
+                    <a href="#" v-if="userType === 'user' || userType === 'admin'" class="logout" @click="logOutWrapper">
                         log out
                     </a>
                 </li>
@@ -38,8 +38,8 @@
 
         </nav>
 
-        <sign-up-modal ></sign-up-modal>
-        <log-in-modal :show="showLogInModal" @close="showLogInModal = false"></log-in-modal>
+        <sign-up-modal :show="showSignUpModal && !currentUser.username" @close="showSignUpModal = false"></sign-up-modal>
+        <log-in-modal :show="showLogInModal && !currentUser.username" @close="showLogInModal = false"></log-in-modal>
 
     </div>
 </template>
@@ -72,7 +72,11 @@
         methods: {
             ...mapActions({
                 logOut: 'SESSION_LOG_OUT'
-            })
+            }),
+            logOutWrapper() {
+                this.$router.push('/');
+                this.logOut();
+            }
         }
     }
 </script>

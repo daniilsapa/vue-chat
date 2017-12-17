@@ -25,7 +25,7 @@
 
         border-radius: 4px 4px 0 0;
 
-        background: rgba(242, 242, 242, 0.8);
+        background: rgba(255, 255, 255, 0.8);
         color: rgba(180, 180, 180, 1);
 
         h5 {

@@ -5,13 +5,14 @@
             <ww-header title="Chats"></ww-header>
 
 
-            <div class="chat-list" v-prevent-parent-scroll>
+            <transition-group class="chat-list" name="item" mode="out-in" tag="div" >
                 <chat-list-item
-                        v-for="chat in availableChats"
-                        class="chat-list-item"
-                        :chat="chat">
+                        v-for="(chat, index) in availableChats"
+                        :chat="chat"
+                        :key="index"
+                        class="chat-list-item">
                 </chat-list-item>
-            </div>
+            </transition-group>
 
             <div class="add-chat-btn-wrapper">
                 <div class="text-center">
@@ -65,7 +66,6 @@
 </script>
 
 <style lang="scss" scoped>
-
     $box-border-color: rgba(210, 210, 210, 1);
 
     .chat-list-box {
@@ -78,7 +78,6 @@
 
             overflow: auto;
             max-height: 438px;
-
         }
 
         .add-chat-btn-wrapper {
@@ -103,4 +102,46 @@
         }
     }
 
+    //ANIMATIONS
+    .item-enter {
+        opacity: 0;
+    }
+
+    .item-enter-active {
+        animation: item-in .5s ease-out forwards;
+        transition: opacity .5s;
+    }
+
+    .item-leave {
+        opacity: 0;
+    }
+
+    .item-leave-active {
+        animation: item-out .5s ease-out forwards;
+        transition: opacity 1s;
+        opacity: 0;
+
+    }
+
+    .item-move {
+        transition: transform 1s;
+    }
+
+    @keyframes item-in {
+        from {
+            transform: translateY(20px)
+        }
+        to {
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes item-out {
+        from {
+            transform: translateY(0)
+        }
+        to {
+            transform: translateY(20px);
+        }
+    }
 </style>

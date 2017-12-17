@@ -20,6 +20,7 @@ module.exports = function () {
         getUserByToken: getUserByToken,
         getUserById: require('./methods/getUserById.method'),
         getUserByCustomField : require('./methods/getUserByCustomField.method'),
+        leaveChat: require('./methods/leaveChat.method'),
         setAvatar: require('./methods/setAvatar.method')
 
 	};

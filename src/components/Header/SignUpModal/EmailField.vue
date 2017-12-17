@@ -2,9 +2,9 @@
 
     <div class="form-group">
 
-        <label class="form-control-label" for="name">Email</label>
+        <label class="form-control-label" for="signUpEmail">Email</label>
 
-        <input id="name"
+        <input id="signUpEmail"
                name="name"
                maxlength="100"
                class="form-control"

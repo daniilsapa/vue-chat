@@ -44,7 +44,7 @@
     }
 
     body {
-        background: rgba(240, 240, 240, 1);
+        background: rgba(245, 245, 245, 1);
     }
 
     .error-box-wraper {
@@ -52,6 +52,7 @@
 
         position: fixed;
         bottom: 10px;
+        z-index: 9999;
 
         .container {
             position: relative;

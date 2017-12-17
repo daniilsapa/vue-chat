@@ -1,32 +1,42 @@
 <template>
     <div v-if="(isPrivate && privateTarget) || isAuthor || !isPrivate">
+        <div class="col-lg-12">
 
-        <div v-if="!message.sameUser" class="col-lg-5 image-wrapper">
-            <img :src="message.author.avatarUrl" class="rounded-circle" height="30px">
-        </div>
+            <div class="row bg-secondary text-light" v-if="message.type === 'system'">
+                <div class="col-lg-12 text-center">
+                    {{ message.content }} ({{ message.author.username }})
+                </div>
+            </div>
 
-        <div v-if="!message.sameUser" class="col-lg-12"></div>
+            <div v-else="" class="row">
+                <div v-if="!message.sameUser" class="col-lg-5 image-wrapper">
+                    <img :src="message.author.avatarUrl" class="rounded-circle" height="30px">
+                </div>
 
-        <div v-if="!message.sameUser"  class="user-info col-lg-5">
-            {{ message.author.username }}
-        </div>
+                <div v-if="!message.sameUser" class="col-lg-12"></div>
 
-        <div class="col-lg-12 divider"></div>
+                <div v-if="!message.sameUser"  class="user-info col-lg-5">
+                    {{ message.author.username }}
+                </div>
 
-        <div class="message col-lg-5"
-            :class="{'current-user-message': isAuthor && !isPrivate, 'private-message': isPrivate}"
-        >
+                <div class="col-lg-12 divider"></div>
+
+                <div class="message col-lg-5"
+                     :class="{'current-user-message': isAuthor && !isPrivate, 'private-message': isPrivate}"
+                >
             <span v-if="isPrivate && isAuthor">
                 to <span class="target"> {{ message.target.username }}</span> <br>
             </span>
 
-            {{ message.content }}
+                    {{ message.content }}
 
-            <div :style="{color: 'rgba(160, 160, 160, 1)'}">
-                {{ message.timestamp | timestamp }}
+                    <div :style="{color: 'rgba(160, 160, 160, 1)'}">
+                        {{ message.timestamp | timestamp }}
+                    </div>
+                </div>
             </div>
-        </div>
 
+        </div>
     </div>
 </template>
 

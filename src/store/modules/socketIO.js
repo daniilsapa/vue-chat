@@ -34,20 +34,22 @@ const actions = {
             });
 
             state.notifications.on('notification.message', notification => {
-                console.log(notification)
                 if(getters['CHAT_G_GET_CHAT']['_id'] !== notification.chat && !notification.isPrivate){
                     commit('CHATLIST_M_ADD_NOTIFICATION', notification);
                 }
             });
 
             state.notifications.on('notification.invite', notification => {
-                console.log('notifications notifications', notification);
                 commit('SESSION_M_PUSH_NOTIFICATIONS', notification);
             });
 
             commit('SOCKET_IO_M_CONNECT_TO_SOCKET', {
                 title: 'messages',
                 socket: io('/messages')
+            });
+
+            state.messages.on('chat.leave', ({ id }) => {
+                commit('CHATLIST_M_PULL_AVAILABLE_CHATS', id)
             });
 
             state.messages.on('message', message => {

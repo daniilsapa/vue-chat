@@ -13,7 +13,7 @@
 
             <div class="icons">
 
-                <button class="btn btn-outline-info btn-sm" >
+                <button class="btn btn-outline-info btn-sm" @click.stop="leaveChat(chat._id)">
                     <i class="fa fa-sign-out" aria-hidden="true"></i>
                 </button>
 
@@ -31,7 +31,8 @@
 
 <script>
     //IMPORTED MAPPERS
-    import { mapGetters } from 'vuex'
+    import { mapGetters } from 'vuex';
+    import { mapActions } from 'vuex';
 
     export default {
         props: ['chat'],
@@ -42,6 +43,9 @@
             })
         },
         methods: {
+            ...mapActions({
+                leaveChat: 'CHATLIST_A_LEAVE_CHAT'
+            }),
             changeChat() {
                 this.$router.push(`/chats/${this.chat._id}`);
             },

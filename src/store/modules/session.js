@@ -20,7 +20,7 @@ const mutations = {
 
 const actions = {
     'SESSION_LOG_OUT'({ dispatch, state }) {
-        dispatch('LOCAL_STORAGE_A_SET_TOKEN', '');
+        dispatch('LOCAL_STORAGE_A_SET_TOKEN', null);
         state.currentUser = { notifications: [] };
         state.userType = 'guest';
     },

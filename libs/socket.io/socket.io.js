@@ -83,7 +83,6 @@ module.exports = io => {
             });
 
             socket.on('notification.invite', data => {
-                console.log('notification notification notification notification', data);
                 data.receivers.forEach(async item => {
                     const notification = await notificationCtrl.createNotification({
                         ...data.notification,
@@ -107,7 +106,6 @@ module.exports = io => {
                     await socket.leave(data.previousChat, err => {
                         socket.join(data.currentChat, err => {
                             if(err) console.log('chat changin\' error', err);
-                            console.log('changeChat', data);
                             socket.currentChat = data.currentChat;
 
                             socket.emit('changeChat', {});
@@ -133,8 +131,31 @@ module.exports = io => {
 
                 Messages.in(socket.currentChat).emit('message', message);
                 Notifications.in(socket.currentChat).emit('notification.message', { chat: socket.currentChat, isPrivate });
+            });
+
+            socket.on('chat.leave', async ({ chatID }) => {
+                let userID = socket.request.user._id;
+                try {
+                    await userCtrl.leaveChat(userID, chatID);
+                    const message = await messageCtrl.createMessage({ chat: chatID, type: 'system', author: userID, content: 'User have just left the room!' });
+
+                    socket.emit('chat.leave', { id: chatID })
+
+                    Messages.in(chatID).emit('message', message);
+                    Notifications.in(chatID).emit('notification.message', { chat: chatID, isPrivate: false });
+
+                }
+                catch(e) {
+                    socket.emit('chat.leave', { error: 'Cannot leave chat' })
+                }
+            });
+
+            socket.on('chat.accept', async () => {
+
+                
 
             });
+
 
             require('./API/typing-users.api')(socket, rooms, Messages);
 
@@ -151,55 +172,9 @@ module.exports = io => {
     })();
 
     io.on('connection', function(socket) {
-
         socket.emit('success', {
             message: 'success logged in!',
             user: socket.request.user
         });
-
-        socket.on('changeChat', async data => {
-
-            try {
-
-                await socket.leave(data.previousChat, err => {
-
-                    socket.join(data.currentChat, err => {
-
-                        socket.currentChat = data.currentChat;
-
-                        console.log('chat changin\'', socket.request.user.username, data.currentChat);
-
-                        socket.emit('changeChat', {});
-
-                    });
-
-                });
-            }
-            catch(e) {
-                socket.emit('changeChat', { error: 'server error' });
-            }
-
-        });
-
-        socket.on('message', async data => {
-
-            let isPrivate = data.type === 'private';
-
-            data.author = socket.request.user._id;
-            data.chat = socket.currentChat;
-
-            const message = await messageCtrl.createMessage(data);
-
-            if(isPrivate){
-                message.target = await userCtrl.getUserById(message.target);
-            }
-
-            console.log('Current Chat Current Chat', socket.currentChat);
-
-            io.emit('message', message);
-        //.of('/').in(socket.currentChat)
-
-        });
-
     });
 };

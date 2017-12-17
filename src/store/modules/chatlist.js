@@ -43,12 +43,17 @@ const mutations = {
     },
     'CHATLIST_M_STORE_NOTIFICATIONS'(state) {
         let availableChats = state.availableChats;
+
         if(availableChats.length !== 0) {
             availableChats.forEach(item => {
-
                 state.storedNotifications[item._id] = item.notifications;
             })
         }
+    },
+    'CHATLIST_M_PULL_AVAILABLE_CHATS'(state, id) {
+        state.availableChats = state.availableChats.filter(item => {
+            return item._id !== id;
+        })
     }
 };
 
@@ -65,6 +70,9 @@ const actions = {
                 ErrorHandler.pushError({message: 'Can\'t load chat list, try again later.'})
 
             });
+    },
+    'CHATLIST_A_LEAVE_CHAT'({ commit, getters }, id) {
+        getters['SOCKET_IO_G_GET_MESSAGES_SOCKET'].emit('chat.leave', { chatID: id });
     }
 };
 

@@ -1,14 +1,14 @@
 <template>
 
     <div class="form-group">
-        <label class="form-control-label" for="name">Username</label>
-        <input id="name"
-               name="name"
-               maxlength="16"
+        <label class="form-control-label" for="logInUsername">Username</label>
+        <input v-model="form.email"
                class="form-control"
-               v-model="form.email"
-               type="text"
-        >
+               id="logInUsername"
+               maxlength="16"
+               name="name"
+               placeholder="Enter your email or username here"
+               type="text">
     </div>
 
 </template>
@@ -29,5 +29,6 @@
 <style lang="scss" scoped>
     label {
         font-weight: 600;
+        color: rgba(160, 160, 160, 1);
     }
 </style>

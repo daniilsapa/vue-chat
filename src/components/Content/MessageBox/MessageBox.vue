@@ -8,7 +8,7 @@
 
                 <transition-group name="message" tag="div" class="transition-group-message">
                     <message class="row message-list-item" v-for="message in chat.messages"
-                             :class="{'justify-content-end': message.author._id === currentUser._id}"
+                             :class="{ 'justify-content-end': message.author._id === currentUser._id }"
                              :id="message._id"
                              :isAuthor="message.author._id === currentUser._id"
                              :isPrivate="message.type === 'private'"
