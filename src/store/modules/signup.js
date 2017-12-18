@@ -43,12 +43,8 @@ const mutations = {
 };
 
 const actions = {
-    'LOGIN_SEND_A_SIGN_UP_REQUEST'({ state, dispatch }) {
-
-        const newUser = {
-            lastName: 'The Blade',
-            firstName: 'Boris'
-        };
+    'LOGIN_SEND_A_SIGN_UP_REQUEST'({ state, dispatch, commit }) {
+        const newUser = {};
 
         for(let key in state.form){
             newUser[key] = state.form[key]['value'];
@@ -56,18 +52,29 @@ const actions = {
 
         Vue.http.post('/auth/user', newUser)
             .then(response => {
-
                 const data = response.body;
 
                 if(data.token){
-                    dispatch('LOCAL_STORAGE_A_SET_TOKEN', data.token.split(' ')[1]);
-                    dispatch('APP_A_INIT_APP');
+                    commit('SOCKET_IO_M_CLOSE_CONNECTIONS');
+                    setTimeout(() => {
+                        dispatch('LOCAL_STORAGE_A_SET_TOKEN', data.token.split(' ')[1]);
+                        dispatch('APP_A_INIT_APP');
+                    }, 100)
+
                 }
                 else{
-                    ErrorHandler.pushError({message: 'Account successfully created, but automatic log in is not available right now. Please do it manually.'})
+                    ErrorHandler.pushError({ message: 'Account successfully created, but automatic log in is not available right now. Please do it manually.' })
                 }
             })
-            .catch(error => state.serverResponse = error.body);
+            .catch(error => {
+                if(error.body.errmsg){
+                    state.serverResponse = error.body
+                }
+                else{
+                    ErrorHandler.pushError({ message: 'Unknown issue' })
+
+                }
+            });
 
     }
 };

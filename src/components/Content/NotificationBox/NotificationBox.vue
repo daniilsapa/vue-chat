@@ -28,6 +28,7 @@
 <script>
     //IMPORTED MAPPERS
     import { mapGetters } from 'vuex';
+    import { mapActions } from 'vuex';
     //IMPORTED MODULES
     import axios from 'axios';
     //IMPORTED SERVICES
@@ -48,16 +49,20 @@
             }
         },
         methods: {
+            ...mapActions({
+               joinChat: 'SESSION_A_JOIN_CHAT'
+            }),
             accept(index) {
-                this.sendAnswer(`/private/notifications/${ this.user.notifications[index]._id }/accept`, index)
+                this.sendAnswer(`/private/notifications/${ this.user.notifications[index]._id }/accept`, index, true)
             },
             reject(index) {
-                this.sendAnswer(`/private/notifications/${ this.user.notifications[index]._id }/reject`, index)
+                this.sendAnswer(`/private/notifications/${ this.user.notifications[index]._id }/reject`, index, false)
             },
-            sendAnswer(url, index) {
+            sendAnswer(url, index, boolean) {
                 axios.post(url, this.user.notifications[index])
                     .then(({ data }) => {
                         this.user.notifications[index].state = data.state;
+                        if(boolean){ this.joinChat(this.user.notifications[index].chat)}
                     })
                     .catch(error => {
                         ErrorHandler.pushError({ message: 'It\'s something wrong. We fucked up. Try again later' });
@@ -65,7 +70,6 @@
             }
         }
     }
-
 </script>
 
 <style lang="scss" scoped>

@@ -10,7 +10,6 @@ const mutations = {
         state.currentUser.notifications.push(notification);
     },
     'SESSION_M_SET_FIELD'(state, { field, value }) {
-        console.log('SET_FIELD', { field, value });
         state.currentUser[field] = value;
     },
     'SESSION_M_ADD_CHAT'(state, newChatId) {
@@ -19,8 +18,9 @@ const mutations = {
 };
 
 const actions = {
-    'SESSION_LOG_OUT'({ dispatch, state }) {
+    'SESSION_LOG_OUT'({ dispatch, state, commit }) {
         dispatch('LOCAL_STORAGE_A_SET_TOKEN', null);
+        commit('SOCKET_IO_M_CLOSE_CONNECTIONS');
         state.currentUser = { notifications: [] };
         state.userType = 'guest';
     },
@@ -29,6 +29,9 @@ const actions = {
         state.userType = user.accessRights;
 
         commit('APP_M_SET_READY_STATE');
+    },
+    'SESSION_A_JOIN_CHAT'({ getters }, id) {
+        getters['SOCKET_IO_G_GET_MESSAGES_SOCKET'].emit('chat.join', { chatID: id });
     }
 };
 

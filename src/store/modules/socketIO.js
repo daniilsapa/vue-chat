@@ -11,6 +11,11 @@ const state = {
 const mutations = {
     'SOCKET_IO_M_CONNECT_TO_SOCKET'(state, { socket, title }) {
         state[title] = socket;
+    },
+    'SOCKET_IO_M_CLOSE_CONNECTIONS'(state) {
+        if(state.socket){ state.socket.close(); }
+        if(state.notifications){ state.notifications.close(); }
+        if(state.messages){ state.messages.close(); }
     }
 };
 
@@ -21,60 +26,64 @@ const actions = {
 
         commit('SOCKET_IO_M_CONNECT_TO_SOCKET', {
             title: 'socket',
-            socket: io({query: `auth_token=${token}` })
+            socket: io({ query: `auth_token=${token}` })
         });
 
         state.socket.on('success', (data) => {
-
             dispatch('SESSION_SET_CURRENT_USER', data.user);
+            console.log('socket n success', data);
 
-            commit('SOCKET_IO_M_CONNECT_TO_SOCKET', {
-                title: 'notifications',
-                socket: io('/notifications')
-            });
+                commit('SOCKET_IO_M_CONNECT_TO_SOCKET', {
+                    title: 'notifications',
+                    socket: io('/notifications')
+                });
 
-            state.notifications.on('notification.message', notification => {
-                if(getters['CHAT_G_GET_CHAT']['_id'] !== notification.chat && !notification.isPrivate){
-                    commit('CHATLIST_M_ADD_NOTIFICATION', notification);
-                }
-            });
+                state.notifications.on('notification.message', notification => {
+                    if(getters['CHAT_G_GET_CHAT']['_id'] !== notification.chat && !notification.isPrivate){
+                        commit('CHATLIST_M_ADD_NOTIFICATION', notification);
+                    }
+                });
 
-            state.notifications.on('notification.invite', notification => {
-                commit('SESSION_M_PUSH_NOTIFICATIONS', notification);
-            });
+                state.notifications.on('notification.invite', notification => {
+                    commit('SESSION_M_PUSH_NOTIFICATIONS', notification);
+                });
 
-            commit('SOCKET_IO_M_CONNECT_TO_SOCKET', {
-                title: 'messages',
-                socket: io('/messages')
-            });
+                commit('SOCKET_IO_M_CONNECT_TO_SOCKET', {
+                    title: 'messages',
+                    socket: io('/messages')
+                });
 
-            state.messages.on('chat.leave', ({ id }) => {
-                commit('CHATLIST_M_PULL_AVAILABLE_CHATS', id)
-            });
+                state.messages.on('chat.leave', ({ id }) => {
+                    commit('CHATLIST_M_PULL_AVAILABLE_CHATS', id)
+                });
 
-            state.messages.on('message', message => {
-                if(message.error && message.error.message.indexOf('content') !== -1){
-                    ErrorHandler.pushError({message: 'Sent message is empty!'})
-                }
-                else if(message.error){
-                    ErrorHandler.pushError({message: 'An error occurred!    '})
-                }
+                state.messages.on('chat.join', chat => {
+                    commit('SESSION_M_ADD_CHAT', chat)
+                });
 
-                const currentChat = getters['CHAT_G_GET_CHAT'];
+                state.messages.on('message', message => {
+                    if(message.error && message.error.message.indexOf('content') !== -1){
+                        ErrorHandler.pushError({message: 'Sent message is empty!'})
+                    }
+                    else if(message.error){
+                        ErrorHandler.pushError({message: 'An error occurred!'})
+                    }
 
-                if(message.chat !== currentChat._id) return;
+                    const currentChat = getters['CHAT_G_GET_CHAT'];
 
-                if(currentChat.messages[currentChat.messages.length - 1] &&
-                    ( currentChat.messages[currentChat.messages.length - 1]['author']['_id'] === message['author']['_id'])){
-                    message['sameUser'] = true;
-                }
+                    if(message.chat !== currentChat._id) return;
 
-                commit('CHAT_M_ADD_MESSAGE', message);
-            });
+                    if(currentChat.messages[currentChat.messages.length - 1] &&
+                        ( currentChat.messages[currentChat.messages.length - 1]['author']['_id'] === message['author']['_id'])){
+                        message['sameUser'] = true;
+                    }
 
-            state.messages.on('typingUsers', typingUsers => {
-                commit('CHAT_M_SET_TYPING_USERS', typingUsers);
-            })
+                    commit('CHAT_M_ADD_MESSAGE', message);
+                });
+
+                state.messages.on('typingUsers', typingUsers => {
+                    commit('CHAT_M_SET_TYPING_USERS', typingUsers);
+                })
 
         }).on('error', function(err) {
             console.log(err)

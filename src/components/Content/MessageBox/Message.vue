@@ -1,32 +1,35 @@
 <template>
     <div v-if="(isPrivate && privateTarget) || isAuthor || !isPrivate">
-        <div class="col-lg-12">
+        <div class="col-lg-12" v-if="message.type === 'system'">
 
-            <div class="row bg-secondary text-light" v-if="message.type === 'system'">
+            <div class="row bg-secondary text-light" >
                 <div class="col-lg-12 text-center">
-                    {{ message.content }} ({{ message.author.username }})
+                    {{ message.content }} ({{ message.target }})
                 </div>
             </div>
 
-            <div v-else="" class="row">
-                <div v-if="!message.sameUser" class="col-lg-5 image-wrapper">
+        </div>
+
+        <div v-else="" class="col-lg-5">
+            <div class="row">
+                <div v-if="!message.sameUser" class="col-lg-12 image-wrapper">
                     <img :src="message.author.avatarUrl" class="rounded-circle" height="30px">
                 </div>
 
                 <div v-if="!message.sameUser" class="col-lg-12"></div>
 
-                <div v-if="!message.sameUser"  class="user-info col-lg-5">
+                <div v-if="!message.sameUser"  class="user-info col-lg-12">
                     {{ message.author.username }}
                 </div>
 
                 <div class="col-lg-12 divider"></div>
 
-                <div class="message col-lg-5"
+                <div class="message col-lg-12"
                      :class="{'current-user-message': isAuthor && !isPrivate, 'private-message': isPrivate}"
                 >
-            <span v-if="isPrivate && isAuthor">
-                to <span class="target"> {{ message.target.username }}</span> <br>
-            </span>
+                    <span v-if="isPrivate && isAuthor">
+                        to <span class="target"> {{ message.target.username }}</span> <br>
+                    </span>
 
                     {{ message.content }}
 
@@ -34,9 +37,11 @@
                         {{ message.timestamp | timestamp }}
                     </div>
                 </div>
+
             </div>
 
         </div>
+
     </div>
 </template>
 
@@ -71,7 +76,7 @@
     
 
     .divider {
-        height: 15px;
+        height: 10px;
     }
 
     .message {

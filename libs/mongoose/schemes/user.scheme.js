@@ -15,11 +15,11 @@ module.exports = {
 	},
 	firstName: {
 		type: String,
-		required: true
+		default: ''
 	},
 	lastName: {
 		type: String,
-		required: true
+		default: ''
 	},
     gender: {
         type: String

@@ -63,12 +63,11 @@ module.exports = io => {
     }));
 
     (function joinNamespaces() {
-
-        const Notifications = io.of('/notifications');
-        const Messages = io.of('/messages');
+        const Notifications = io.of('/notifications'),
+              Messages = io.of('/messages');
 
         Notifications.on('connection', socket => {
-
+            console.log(' user connected to notifications', socket.request.user);
             if(socket.request.user.logged_in === false){
                 socket.disconnect();
                 return;
@@ -95,7 +94,7 @@ module.exports = io => {
         });
 
         Messages.on('connection', socket => {
-
+            console.log(' user connected to messages', socket.request.user)
             if(!socket.request.user.logged_in){
                 socket.disconnect();
                 return
@@ -137,9 +136,9 @@ module.exports = io => {
                 let userID = socket.request.user._id;
                 try {
                     await userCtrl.leaveChat(userID, chatID);
-                    const message = await messageCtrl.createMessage({ chat: chatID, type: 'system', author: userID, content: 'User have just left the room!' });
+                    const message = await messageCtrl.createMessage({ chat: chatID, type: 'system', target: userID, content: 'User have just left the room!' });
 
-                    socket.emit('chat.leave', { id: chatID })
+                    socket.emit('chat.leave', { id: chatID });
 
                     Messages.in(chatID).emit('message', message);
                     Notifications.in(chatID).emit('notification.message', { chat: chatID, isPrivate: false });
@@ -150,10 +149,25 @@ module.exports = io => {
                 }
             });
 
-            socket.on('chat.accept', async () => {
+            socket.on('chat.join', async ({ chatID }) => {
+                let userID = socket.request.user._id;
+                try {
+                    const chat = await chatCtrl.getChatById(chatID);
+                    const message = await messageCtrl.createMessage({
+                        chat: chatID,
+                        type: 'system',
+                        target: userID,
+                        content: 'User have just join the room!'
+                    });
 
-                
+                    Messages.in(chatID).emit('message', message);
+                    Notifications.in(chatID).emit('notification.message', { chat: chatID, isPrivate: false });
 
+                    socket.emit('chat.join', chat);
+                }
+                catch(e) {
+                    socket.emit('chat.join', { error: 'Cannot leave chat' })
+                }
             });
 
 

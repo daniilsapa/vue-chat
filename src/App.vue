@@ -25,15 +25,22 @@
     import AppHeader from './components/Header/Header.vue';
     import AppContent from './components/Content/Content.vue'
     import ErrorBox from './components/ErrorBox/ErrorBox.vue';
+    //IMPORTED MAPPERS
+    import { mapActions } from 'vuex';
 
     export default {
         created() {
-            this.$store.dispatch('APP_A_INIT_APP')
+            this.initApp();
         },
         components: {
             AppHeader,
             AppContent,
             ErrorBox,
+        },
+        methods: {
+            ...mapActions({
+                initApp: 'APP_A_INIT_APP'
+            })
         }
     }
 </script>

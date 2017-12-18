@@ -86,6 +86,7 @@
                 })
                     .then(({ data }) => {
                         this.addChat(data._id);
+                        this.$router.push('/chats');
                     })
                     .catch(error => this.serverSignal = error.body);
             },

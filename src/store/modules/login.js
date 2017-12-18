@@ -1,21 +1,18 @@
 import Vue from 'vue';
 
-import {ErrorHandler} from "../../services/ErrorHandler.secvice"
+import { ErrorHandler } from "../../services/ErrorHandler.secvice"
 
 const state = {
     form: {
         email: '',
         password: ''
-
     }
 };
 
-const mutations = {
-
-};
+const mutations = {};
 
 const actions = {
-    'LOGIN_SEND_A_LOGIN_REQUEST'({ state, dispatch }) {
+    'LOGIN_SEND_A_LOGIN_REQUEST'({ state, dispatch, commit }) {
 
         console.log('login', {
             email: state.form.email,
@@ -27,13 +24,15 @@ const actions = {
             password: state.form.password
         })
             .then(result => {
-
-                dispatch('LOCAL_STORAGE_A_SET_TOKEN', result.body.token.split(' ')[1]);
-                dispatch('APP_A_INIT_APP');
-
+                commit('SOCKET_IO_M_CLOSE_CONNECTIONS');
+                setTimeout(() => {
+                    dispatch('LOCAL_STORAGE_A_SET_TOKEN', result.body.token.split(' ')[1]);
+                    dispatch('APP_A_INIT_APP');
+                }, 100)
 
             })
             .catch(error => {
+                console.log(error);
                 ErrorHandler.pushError({message: 'User not found or incorrect password'})
             });
 
