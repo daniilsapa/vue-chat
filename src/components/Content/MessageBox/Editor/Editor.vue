@@ -8,7 +8,7 @@
                              class="addressee-list col-lg-10">
             </addressee-list>
 
-            <typing-users class="typing-users col-lg-10" :typingUsers="chat.typingUsers" ></typing-users>
+            <typing-users :typingUsers="chat.typingUsers" class="typing-users col-lg-10"></typing-users>
 
             <div class="col-lg-9">
 
@@ -42,6 +42,7 @@
     import { mapActions } from 'vuex'
 
     export default {
+        name: 'MessageEditor',
         props: ['chat'],
         data () {
             return {
@@ -72,6 +73,13 @@
                 changeTypingState: 'CHAT_A_CHANGE_TYPING_STATE',
                 sendMessage: 'CHAT_A_SEND_MESSAGE'
             }),
+            addAddressee(index) {
+                this.message = `@${this.chat.members[index]._id}(${this.chat.members[index].    username}):`;
+                this.inputHandler();
+            },
+            inputHandler() {
+                this.showUsersList = this.message === '@';
+            },
             sendMessageWrapper () {
                 let dividerPos = this.message.indexOf(':'),
                     addressee = this.message.slice(0, dividerPos);
@@ -87,17 +95,10 @@
                     this.sendMessage({content: this.message, type: 'public'});
                 }
 
-                 this.isTyping = false;
-            },
-            inputHandler() { this.showUsersList = this.message === '@'; },
-            addAddressee(index) {
-                this.message = `@${this.chat.members[index]._id}(${this.chat.members[index].    username}):`;
-                this.inputHandler();
+                this.isTyping = false;
             }
         }
-
     }
-
 </script>
 
 <style lang="scss" scoped>
@@ -153,8 +154,6 @@
         }
     }
 
-
-
     .send-button:hover {
         background: rgba(23,162,184, 1);
 
@@ -162,5 +161,4 @@
             color: rgba(255, 255, 255, 1);
         }
     }
-
 </style>

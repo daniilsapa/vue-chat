@@ -3,9 +3,16 @@
         <div class="row">
 
             <div class="col-lg-6 list">
+
                 <h6 class="ml-2 mb-3">Users:</h6>
-                <addressee-list class="addressee-list" :users="users" :itemClickFunc="addInviteReceiver"></addressee-list>
+
+                <addressee-list class="addressee-list"
+                                :itemClickFunc="addInviteReceiver"
+                                :users="users">
+                </addressee-list>
+
                 <p class="ml-2">Click on an item to add user in opposite list</p>
+
             </div>
 
             <transition name="invited-slide" mode="out-in">
@@ -13,9 +20,16 @@
                 <div v-if="!showSuccess"
                      class="col-lg-6 list"
                      key="1">
+
                     <h6 class="ml-2 mb-3">These users will receive an invite to your chat:</h6>
-                    <addressee-list class="addressee-list" :users="inviteReceivers" :itemClickFunc="deleteInviteReceiver"></addressee-list>
+
+                    <addressee-list class="addressee-list"
+                                    :itemClickFunc="deleteInviteReceiver"
+                                    :users="inviteReceivers">
+                    </addressee-list>
+
                     <p class="ml-2">Click on an item removes it from list</p>
+
                 </div>
 
                 <div v-if="showSuccess"
@@ -43,6 +57,7 @@
     import { mapMutations } from 'vuex';
 
     export default {
+        name: 'AddMembers',
         props: {
             members: {
                 type: Array,
@@ -88,7 +103,7 @@
             sendNotificationsWrapper() {
                 this.sendNotifications();
                 this.showSuccess = true;
-                setTimeout(() => { this.showSuccess = false }, 3000);
+                setTimeout(() => { this.showSuccess = false }, 2500);
             }
         },
         created() {
@@ -103,7 +118,6 @@
 </script>
 
 <style lang="scss" scoped>
-
     $grey170: rgba(170, 170, 170, 1);
 
     .list {

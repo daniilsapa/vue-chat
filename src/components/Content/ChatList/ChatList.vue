@@ -4,19 +4,18 @@
 
             <ww-header title="Chats"></ww-header>
 
-
-            <transition-group class="chat-list" name="item" mode="out-in" tag="div" >
+            <transition-group class="chat-list" mode="out-in" name="item" tag="div" >
                 <chat-list-item
-                        v-for="(chat, index) in availableChats"
+                        v-for="(chat, index) in availableChats">
                         :chat="chat"
                         :key="index"
-                        class="chat-list-item">
+                        class="chat-list-item"
                 </chat-list-item>
             </transition-group>
 
             <div class="add-chat-btn-wrapper">
                 <div class="text-center">
-                    <router-link tag="button" to="/chats/create" class="btn btn-info text-center add-chat-btn">
+                    <router-link class="btn btn-info text-center add-chat-btn" tag="button" to="/chats/create">
                         Add new chat
                     </router-link>
                 </div>
@@ -35,6 +34,7 @@
     import { mapGetters } from 'vuex';
 
     export default {
+        name: 'ChatList',
         computed: {
             ...mapGetters({
                 appState: 'APP_G_GET_APP_STATE',

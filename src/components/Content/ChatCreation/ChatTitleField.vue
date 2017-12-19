@@ -9,23 +9,29 @@
 
         <div class="input-group">
 
-            <input :class="{ 'is-invalid': errors.has('field') }"
+            <input v-model="field"
+                   v-validate.initial="field"
+                   :class="{ 'is-invalid': errors.has('field') }"
                    :data-vv-rules="validationRules"
                    :placeholder="fieldValue"
                    class="form-control in"
-                   type="email"
-                   v-model="field"
-                   v-validate.initial="field">
+                   type="email">
 
             <span class="input-group-btn">
-                <button class="btn btn-secondary" :disabled="isValid" @click="createChatWrapper">Create</button>
+                <button :disabled="isValid"
+                        class="btn btn-secondary"
+                        @click="createChatWrapper">
+                    Create
+                </button>
             </span>
 
         </div>
 
         <transition name="danger-box">
-            <p class="text-danger" v-if="errors.has('field')" key="1">{{ errors.first('field') }}</p>
-            <p class="text-success" v-if="showSign" key="2">Successfully changed!</p>
+            <p class="text-danger"
+               v-if="errors.has('field')">
+                {{ errors.first('field') }}
+            </p>
         </transition>
 
     </div>
@@ -40,6 +46,7 @@
     import { mapActions } from 'vuex';
 
     export default {
+        name: 'ChatTitleField',
         props: {
             fieldTitle: {
                 type: String,
@@ -80,29 +87,16 @@
                 createChat: 'SESSION_A_CREATE_CHAT'
             }),
             createChatWrapper() {
-                const cb = () => {
-                    this.$router.push('/chats');
-                };
-
                 this.createChat({
                     data: {
                         creator: this.user._id,
                         title: this.field,
                         type: 'public'
                     },
-                    cb: cb
-                    });
-
-
-
-
-
-            },
-            showSuccessSign() {
-                this.showSign = true;
-                setTimeout(() => {
-                    this.showSign = false;
-                }, 2000)
+                    cb: () => {
+                        this.$router.push('/chats');
+                    }
+                });
             }
         }
     }

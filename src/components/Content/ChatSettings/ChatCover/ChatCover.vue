@@ -64,15 +64,16 @@
     import { mapMutations } from 'vuex';
 
     export default {
+        name: 'ChatCover',
         props: ['chat'],
         components: {
             FileUpload,
         },
         data() {
             return {
-                files: [],
-                edit: false,
                 cropper: false,
+                edit: false,
+                files: []
             }
         },
         computed: {

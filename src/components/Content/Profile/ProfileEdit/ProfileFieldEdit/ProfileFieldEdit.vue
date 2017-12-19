@@ -20,7 +20,18 @@
 
 <script>
     export default {
-        props: ['field'],
+        name: 'ProfileFieldEdit',
+        props: {
+            field: {
+                type: Object,
+                default: () => {
+                    return {
+                        name: 'field name',
+                        value: 'field value'
+                    }
+                }
+            }
+        },
         data() {
             return {
                 id: Date.now()
@@ -31,9 +42,7 @@
 
 <style lang="scss" scoped>
     .field-label {
-
         font-weight: 500;
         color: rgba(180, 180, 180, 1)
-
     }
 </style>

@@ -11,10 +11,9 @@
                              :id="message._id"
                              :isAuthor="message.author._id === currentUser._id"
                              :isPrivate="message.type === 'private'"
-                             :message="message"
-                             :privateTarget="message.target && (message.target._id === currentUser._id)"
                              :key="message._id"
-                    >
+                             :message="message"
+                             :privateTarget="message.target && (message.target._id === currentUser._id)">
                     </message>
                 </transition-group>
 
@@ -26,10 +25,9 @@
 
             <hr>
 
-            <editor v-if="chat" :online="chat.online" :chat="chat" class="textarea"></editor>
+            <editor v-if="chat" :chat="chat" :online="chat.online" class="textarea"></editor>
 
-
-                <div>online: {{ chat.onlineUsers.length }} / {{ chat.members.length }}</div>
+            <div v-if="chat.onlineUsers.length !== 0">online: {{ chat.onlineUsers.length }} / {{ chat.members.length }}</div>
 
             <div> online: <span v-for="u in chat.onlineUsers">{{ u.username }} | </span></div>
             <div> members: <span v-for="u in chat.members"> {{ u.username }} | </span></div>
@@ -49,6 +47,7 @@
     import { mapMutations } from 'vuex';
 
     export default {
+        name: 'MessageBox',
         computed: {
             ...mapGetters({
                 appState: 'APP_G_GET_APP_STATE',
@@ -65,11 +64,6 @@
             appState(newState) {
                 if(newState) {
                     this.getChat(this.$route.params.id);
-                }
-            },
-            chat(newChat) {
-                if(newChat){
-//                    this.$store._mutations['CHATLIST_M_RESET_NOTIFICATIONS'][0](newChat._id);
                 }
             },
             scrollEvent(newValue) {
@@ -98,9 +92,7 @@
                                 messageList.scrollTop = messageList.scrollTop + 10;
                             }, 30);
                         }
-
                     }, 100)
-
                 }
             }
         },
@@ -114,14 +106,14 @@
             Editor,
             Message
         },
+        beforeRouteLeave(to, from, next) {
+            this.beforeLeaveChat();
+            next();
+        },
         created () {
             if(this.appState) {
                 this.getChat(this.$route.params.id);
             }
-        },
-        beforeRouteLeave(to, from, next) {
-            this.beforeLeaveChat();
-            next();
         }
     }
 </script>

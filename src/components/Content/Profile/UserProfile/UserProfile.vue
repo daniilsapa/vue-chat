@@ -53,6 +53,7 @@
 
 <script>
     export default {
+        name: 'UserProfile',
         props: ['user'],
     }
 </script>

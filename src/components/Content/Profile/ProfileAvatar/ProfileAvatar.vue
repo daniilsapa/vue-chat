@@ -52,13 +52,13 @@
 </template>
 
 <script>
+    //IMPORTED MAPPERS
+    import { mapGetters } from 'vuex';
+    import { mapMutations } from 'vuex';
     //IMPORTED MODULES
     import axios from 'axios';
     import Cropper from 'cropperjs';
     import FileUpload from 'vue-upload-component';
-    //IMPORTED MAPPERS
-    import { mapGetters } from 'vuex';
-    import { mapMutations } from 'vuex';
 
     export default {
         props: ['user'],

@@ -1,17 +1,15 @@
 <template>
-    <div class="typing-users text-left" v-if="typingUsers && typingUsers.length > 0">
-
+    <div v-if="typingUsers && typingUsers.length > 0" class="typing-users text-left">
         <div class="ml-2 string">{{ string }}</div>
-
     </div>
 </template>
 
 <script>
     export default {
+        name: 'TypingUsers',
         props: ['typingUsers'],
         computed: {
             string() {
-
                 if(this.typingUsers){
                     const user = this.$store.getters['SESSION_G_GET_CURRENT_USER'];
                     let usersQuantity;

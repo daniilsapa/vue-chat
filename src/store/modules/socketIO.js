@@ -86,12 +86,15 @@ const actions = {
                     }
 
                     const currentChat = getters['CHAT_G_GET_CHAT'];
+                    const messages = currentChat.messages;
 
                     if(message.chat !== currentChat._id) return;
 
-                    if(message.type !== 'system' && currentChat.messages[currentChat.messages.length - 1] &&
-                        ( currentChat.messages[currentChat.messages.length - 1]['author']['_id'] === message['author']['_id'])){
-                        message['sameUser'] = true;
+                    if((messages[messages.length - 1] && messages[messages.length -1].type !== 'system') && message.type !== 'system'){
+                        if( messages[messages.length - 1] &&
+                            (messages[messages.length - 1]['author']['_id'] === message['author']['_id'])){
+                            message['sameUser'] = true;
+                        }
                     }
 
                     commit('CHAT_M_ADD_MESSAGE', message);

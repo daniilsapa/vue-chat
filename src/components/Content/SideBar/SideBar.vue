@@ -2,23 +2,27 @@
 
     <ul class="nav flex-column">
         <li class="nav-item">
-            <router-link tag="div" class="nav-link" active-class="text-info" to="/" exact>Home</router-link>
+            <router-link active-class="text-info" class="nav-link" exact tag="div" to="/">Home</router-link>
         </li>
+
         <li class="nav-item">
-            <router-link tag="div" class="nav-link" active-class="text-info" to="/profile">Profile</router-link>
+            <router-link active-class="text-info" class="nav-link" tag="div" to="/profile">Profile</router-link>
         </li>
+
         <li class="nav-item">
-            <router-link tag="div" class="nav-link" active-class="text-info" to="/chats">
+            <router-link active-class="text-info" class="nav-link" tag="div" to="/chats">
                 Chats
-                <span class="badge badge-secondary" v-show="countOfNotifications !== 0">{{ countOfNotifications }}</span>
+                <span v-show="countOfNotifications !== 0" class="badge badge-secondary">{{ countOfNotifications }}</span>
             </router-link>
         </li>
+
         <li class="nav-item">
-            <router-link tag="div" class="nav-link" active-class="text-info" to="/notifications">
+            <router-link active-class="text-info" class="nav-link" tag="div" to="/notifications">
                 Notifications
-                <span class="badge badge-secondary" v-show="notifications.length !== 0">{{ notifications.length }}</span>
+                <span v-show="notifications.length !== 0" class="badge badge-secondary">{{ notifications.length }}</span>
             </router-link>
         </li>
+
     </ul>
 
 </template>
@@ -28,6 +32,7 @@
     import { mapGetters } from 'vuex'
 
     export default {
+        name: 'SideBar',
         computed: {
             ...mapGetters({
                 countOfNotifications: 'CHATLIST_G_GET_COUNT_OF_NOTIFICATIONS',

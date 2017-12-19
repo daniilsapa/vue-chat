@@ -4,10 +4,15 @@
          @click="changeChat">
         <div class="media">
 
-            <img class="mr-3 rounded" :src="chat.coverUrl" alt="Generic placeholder image">
+            <img :src="chat.coverUrl" alt="Generic placeholder image" class="mr-3 rounded">
 
             <div class="media-body">
-                <h5 class="mt-0">{{ chat.title }} <span v-if="chat.notifications !== 0" class="badge badge-secondary">{{ chat.notifications }}</span></h5>
+                <h5 class="mt-0">
+                    {{ chat.title }}
+                    <span v-if="chat.notifications !== 0" class="badge badge-secondary">
+                        {{ chat.notifications }}
+                    </span>
+                </h5>
                 <h6>Creator: {{ chat.creator.username }}</h6>
             </div>
 
@@ -35,6 +40,7 @@
     import { mapActions } from 'vuex';
 
     export default {
+        name: 'ChatListItem',
         props: ['chat'],
         computed: {
             ...mapGetters({
@@ -57,7 +63,6 @@
 </script>
 
 <style lang="scss" scoped>
-
     .chat-list-item {
         margin-top:10px;
         padding: 4px 6px 6px 6px;

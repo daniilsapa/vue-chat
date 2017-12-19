@@ -35,6 +35,7 @@
     import { ErrorHandler } from '../../../services/ErrorHandler.secvice';
 
     export default {
+        name: 'NotificationBox',
         computed: {
             ...mapGetters({
                 user: 'SESSION_G_GET_CURRENT_USER'
@@ -73,11 +74,6 @@
 </script>
 
 <style lang="scss" scoped>
-    .notification-box {
-
-
-    }
-
     .notifications {
         padding: 20px;
 

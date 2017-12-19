@@ -7,17 +7,17 @@
 </template>
 
 <script>
-
+    //IMPORTED MAPPERS
     import { mapGetters } from 'vuex';
 
     export default {
+        name: 'Home',
         computed:{
             ...mapGetters({
                 user: 'SESSION_G_GET_CURRENT_USER'
             })
         }
     }
-
 </script>
 
 <style>

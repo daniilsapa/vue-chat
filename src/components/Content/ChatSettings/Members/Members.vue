@@ -3,11 +3,11 @@
         <div class="row no-gutters">
 
             <div class="col-lg-6">
-                <addressee-list class="list" :users="members" ></addressee-list>
+                <addressee-list :users="members" class="list"></addressee-list>
             </div>
 
             <div class="col-lg-6">
-                <addressee-list class="list" :users="invited" ></addressee-list>
+                <addressee-list :users="invited" class="list"></addressee-list>
             </div>
 
         </div>
@@ -19,6 +19,7 @@
     import { mapGetters } from 'vuex';
 
     export default {
+        name: 'ChatMembers',
         props: {
             members: {
                 type: Array,

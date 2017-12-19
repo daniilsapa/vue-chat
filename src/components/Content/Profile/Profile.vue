@@ -25,6 +25,7 @@
     import { mapGetters } from 'vuex';
 
     export default {
+        name: 'Profile',
         computed: {
             ...mapGetters({
                 user: 'SESSION_G_GET_CURRENT_USER',

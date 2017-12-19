@@ -1,5 +1,6 @@
 <template>
     <div v-if="(isPrivate && privateTarget) || isAuthor || !isPrivate">
+
         <div class="col-lg-12" v-if="message.type === 'system'">
 
             <div class="row bg-secondary text-light" >
@@ -25,8 +26,8 @@
                 <div class="col-lg-12 divider"></div>
 
                 <div class="message col-lg-12"
-                     :class="{'current-user-message': isAuthor && !isPrivate, 'private-message': isPrivate}"
-                >
+                     :class="{'current-user-message': isAuthor && !isPrivate, 'private-message': isPrivate}">
+
                     <span v-if="isPrivate && isAuthor">
                         to <span class="target"> {{ message.target.username }}</span> <br>
                     </span>
@@ -36,10 +37,10 @@
                     <div :style="{color: 'rgba(160, 160, 160, 1)'}">
                         {{ message.timestamp | timestamp }}
                     </div>
+
                 </div>
 
             </div>
-
         </div>
 
     </div>
@@ -48,7 +49,25 @@
 <script>
 
     export default {
-        props: ['message', 'isOwner', 'privateTarget', 'isPrivate', 'isAuthor']
+        name: 'ChatMessage',
+        props: {
+            isAuthor: {
+                type: Boolean,
+                default: false
+            },
+            isPrivate: {
+                type: Boolean,
+                default: false
+            },
+            privateTarget: {
+                type: Boolean,
+                default: false
+            },
+            message: {
+                type: Object,
+                default: () => { {} }
+            }
+        }
     }
 </script>
 
@@ -59,8 +78,6 @@
         border-radius: 20px;
         border: 1px solid rgba(23,162,184, 1);
         box-shadow: 1px 1px 8px 1px rgba(180, 180, 180, 1);
-
-
 
         font-weight: 600;
 
@@ -91,12 +108,10 @@
             font-weight: 600;
             color: rgba(140, 140, 140, 1);
 
-
             .target {
                 text-decoration: underline;
             }
         }
-
     }
 
     .current-user-message {

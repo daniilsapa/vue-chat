@@ -9,12 +9,14 @@
             </div>
 
             <div class="col-lg-7">
+
                 <h4 class="text-center mt-5 text-secondary" >{{ chat.title }}</h4>
+
                 <input-field :fieldValue="chat.title"
                              :setter="setChanges"
+                             :url="`/private/chats/change/${ chat._id }/title`"
                              fieldTitle="Change title"
                              titleInData="title"
-                             :url="`/private/chats/change/${ chat._id }/title`"
                              validationRules="alpha_dash">
                 </input-field>
 
@@ -24,11 +26,22 @@
                 <ul class="nav">
 
                     <li class="nav-item">
-                        <router-link :to="`/chats/${chat._id}/settings/members`" tag="a" class="nav-link" active-class="text-info" exact>Members</router-link>
+                        <router-link :to="`/chats/${chat._id}/settings/members`"
+                                     active-class="text-info"
+                                     class="nav-link"
+                                     exact
+                                     tag="a">
+                            Members
+                        </router-link>
                     </li>
 
                     <li class="nav-item">
-                        <router-link :to="`/chats/${chat._id}/settings/members/add`" tag="a" class="nav-link" active-class="text-info">Add Members</router-link>
+                        <router-link :to="`/chats/${chat._id}/settings/members/add`"
+                                     active-class="text-info"
+                                     class="nav-link"
+                                     tag="a">
+                            Add Members
+                        </router-link>
                     </li>
 
                 </ul>
@@ -38,7 +51,10 @@
 
         <div class="row justify-content-center">
             <transition name="side" mode="out-in">
-                <router-view class="col-lg-11 router-view" :members="chat.members" :invites="chat.invites"></router-view>
+                <router-view class="col-lg-11 router-view"
+                             :invites="chat.invites"
+                             :members="chat.members">
+                </router-view>
             </transition>
         </div>
 
@@ -54,6 +70,7 @@
     import { mapMutations } from 'vuex';
 
     export default {
+        name: 'ChatSettings',
         computed: {
             ...mapGetters({
                 appState: 'APP_G_GET_APP_STATE',
