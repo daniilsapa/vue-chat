@@ -14,9 +14,14 @@ module.exports = (router) => {
 
     router.route('/notifications/:id/accept')
         .post(async(request, response, next) => {
-
-            response.json(await notificationCtrl.acceptNotification(request.body));
-
+            try{
+                const notification = await notificationCtrl.acceptNotification(request.body);
+                response.json(notification);
+            }
+            catch(e) {
+                console.log('error', e);
+                response.status(500).send({});
+            }
         });
 
     router.route('/notifications/:id/reject')

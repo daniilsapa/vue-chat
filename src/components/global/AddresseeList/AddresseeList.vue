@@ -7,8 +7,7 @@
                     :index="index"
                     :user="user"
                     :itemClickFunc="itemClickFunc"
-                    :key="user._id"
-            >
+                    :key="user._id">
             </addressee-list-item>
         </transition-group>
     </ul>

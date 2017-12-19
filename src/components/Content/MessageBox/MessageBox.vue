@@ -1,7 +1,6 @@
 <template>
     <div>
         <div class="chat-box ww-box">
-
             <ww-header v-if="chat._id" :title="chat.title"></ww-header>
 
             <div v-if="chat" class="message-list" id="messageList" v-prevent-parent-scroll>
@@ -19,13 +18,22 @@
                     </message>
                 </transition-group>
 
-                <div class="placeholder"></div>
+                <div class="placeholder">
+
+                </div>
 
             </div>
 
             <hr>
 
             <editor v-if="chat" :online="chat.online" :chat="chat" class="textarea"></editor>
+
+
+                <div>online: {{ chat.onlineUsers.length }} / {{ chat.members.length }}</div>
+
+            <div> online: <span v-for="u in chat.onlineUsers">{{ u.username }} | </span></div>
+            <div> members: <span v-for="u in chat.members"> {{ u.username }} | </span></div>
+
 
         </div>
     </div>

@@ -7,7 +7,9 @@ import { ErrorHandler } from "../../services/ErrorHandler.secvice"
 const state = {
     chatFetched: false,
     currentChat: {
-        _id: null
+        _id: null,
+        members: [],
+        onlineUsers: []
     },
     newMessage: '',
     previousChatId: null,
@@ -34,6 +36,10 @@ const mutations = {
     },
     'CHAT_M_SET_NEW_MESSAGE'(state, message) {
         state.newMessage = message;
+    },
+    'CHAT_M_SET_ONLINE_USERS'(state, users) {
+        console.log('chat. set online users')
+        state.currentChat.onlineUsers = users;
     },
     'CHAT_M_SET_TYPING_USERS'(state, typingUsers) {
         state.currentChat.typingUsers = typingUsers;
@@ -75,12 +81,13 @@ const actions = {
     },
 
     'CHAT_A_FETCH_CHAT'({ state, dispatch }, id) {
-        axios.get(`/private/chats/${id}`)
-            .then(response => {
-                dispatch('CHAT_A_SET_CHAT', response.data);
+        axios.get(`/private/chats/${ id }`)
+            .then(({ data }) => {
+                dispatch('CHAT_A_SET_CHAT', data);
                 state.chatFetched = true;
             })
             .catch(error => {
+                throw new Error(error)
                 ErrorHandler.pushError({message: 'Cannot get chat!'})
             });
     },
@@ -91,35 +98,47 @@ const actions = {
     },
 
     'CHAT_A_SET_CHAT'({ state, getters, commit }, chat) {
-        const messagesSocket = getters['SOCKET_IO_G_GET_MESSAGES_SOCKET'],
-              storedChats = JSON.parse(localStorage.getItem('data')).chats;
+            const messagesSocket = getters['SOCKET_IO_G_GET_MESSAGES_SOCKET'],
+                storedChats = JSON.parse(localStorage.getItem('data')).chats;
 
-        chat.messages = chat.messages.map((message, index) => {
-            let prevMessage = chat.messages[index - 1];
+            chat.messages = chat.messages.map((message, index) => {
 
-            if(prevMessage && message){
-                if(prevMessage.author._id === message.author._id){
-                    message.sameUser = true;
+                let prevMessage = chat.messages[index - 1];
+
+
+                if (prevMessage && message) {
+                    if (prevMessage.type === 'system' || message.type === 'system') {
+                        console.log('system', message);
+                        return message;
+                    }
+
+                    if (prevMessage.author._id === message.author._id) {
+                        message.sameUser = true;
+                    }
                 }
+
+
+                return message;
+            });
+
+            chat.typingUsers = [];
+            chat.onlineUsers = [];
+
+            messagesSocket
+                .emit('changeChat', {
+                    currentChat: chat._id,
+                    previousChat: state.previousChatId
+                })
+                .emit('typingUsers', {})
+                .emit('users.online', { id: chat._id});
+
+            state.currentChat = chat;
+
+            if (storedChats[chat._id] && storedChats[chat._id].message) {
+                commit('CHAT_M_SET_NEW_MESSAGE', storedChats[chat._id].message);
             }
+            commit('CHATLIST_M_RESET_NOTIFICATIONS', chat._id)
 
-            return message;
-        });
-
-        messagesSocket
-            .emit('changeChat', {
-                currentChat: chat._id,
-                previousChat: state.previousChatId
-            })
-            .emit('typingUsers', {});
-
-        chat.typingUsers = [];
-        state.currentChat = chat;
-
-        if(storedChats[chat._id] && storedChats[chat._id].message){
-            commit('CHAT_M_SET_NEW_MESSAGE', storedChats[chat._id].message);
-        }
-        commit('CHATLIST_M_RESET_NOTIFICATIONS', chat._id)
     }
 };
 

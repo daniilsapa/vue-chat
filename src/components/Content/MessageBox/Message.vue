@@ -4,7 +4,7 @@
 
             <div class="row bg-secondary text-light" >
                 <div class="col-lg-12 text-center">
-                    {{ message.content }} ({{ message.target }})
+                    {{ message.content }} ({{ message.target.username }})
                 </div>
             </div>
 

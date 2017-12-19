@@ -16,7 +16,19 @@
 <script>
 
     export default {
-        props: ['user', 'index', 'itemClickFunc'],
+        props: {
+            index: {
+                type: Number
+            },
+            itemClickFunc: {
+                type: Function,
+                default() {}
+            },
+            user: {
+                type: Object,
+                default: () => { {} }
+            }
+        },
     }
 
 </script>

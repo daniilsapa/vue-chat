@@ -55,6 +55,8 @@ const mutations = {
             return item._id !== id;
         })
     }
+
+
 };
 
 const actions = {
@@ -73,6 +75,11 @@ const actions = {
     },
     'CHATLIST_A_LEAVE_CHAT'({ commit, getters }, id) {
         getters['SOCKET_IO_G_GET_MESSAGES_SOCKET'].emit('chat.leave', { chatID: id });
+    },
+    'CHATLIST_A_PUSH_AVAILABLE_CHATS'({ state, commit }, chat) {
+        const newChats = [...state.availableChats];
+        newChats.push(chat);
+        commit('CHATLIST_M_SET_AVAILABLE_CHATS', newChats);
     }
 };
 

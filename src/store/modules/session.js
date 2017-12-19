@@ -32,6 +32,10 @@ const actions = {
     },
     'SESSION_A_JOIN_CHAT'({ getters }, id) {
         getters['SOCKET_IO_G_GET_MESSAGES_SOCKET'].emit('chat.join', { chatID: id });
+        getters['SOCKET_IO_G_GET_NOTIFICATIONS_SOCKET'].emit('join', { chatID: id });
+    },
+    'SESSION_A_CREATE_CHAT'({ getters }, data) {
+        getters['SOCKET_IO_G_GET_MESSAGES_SOCKET'].emit('chat.create', data.data, data.cb);
     }
 };
 

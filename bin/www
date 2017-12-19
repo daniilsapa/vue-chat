@@ -30,8 +30,6 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
-
-
 require('../libs/socket.io/socket.io')(io);
 
 /**

@@ -26,44 +26,60 @@ const actions = {
 
         commit('SOCKET_IO_M_CONNECT_TO_SOCKET', {
             title: 'socket',
-            socket: io({ query: `auth_token=${token}` })
+            socket: io({ query: `token=${token}` })
         });
 
-        state.socket.on('success', (data) => {
-            dispatch('SESSION_SET_CURRENT_USER', data.user);
-            console.log('socket n success', data);
+        //state.socket.on('connection', (data) => {
 
-                commit('SOCKET_IO_M_CONNECT_TO_SOCKET', {
-                    title: 'notifications',
-                    socket: io('/notifications')
-                });
+
+
+            commit('SOCKET_IO_M_CONNECT_TO_SOCKET', {
+                title: 'notifications',
+                socket: io('/notifications')
+            });
+
+            state.notifications.emit('auth', token );
+
+            state.notifications.on('authenticated', data => {
+                console.log('notifications auth', data)
+                dispatch('SESSION_SET_CURRENT_USER', data);
 
                 state.notifications.on('notification.message', notification => {
+                    console.log('notification message')
                     if(getters['CHAT_G_GET_CHAT']['_id'] !== notification.chat && !notification.isPrivate){
                         commit('CHATLIST_M_ADD_NOTIFICATION', notification);
                     }
                 });
 
                 state.notifications.on('notification.invite', notification => {
+                    console.log('notification invite')
+
                     commit('SESSION_M_PUSH_NOTIFICATIONS', notification);
                 });
 
-                commit('SOCKET_IO_M_CONNECT_TO_SOCKET', {
-                    title: 'messages',
-                    socket: io('/messages')
-                });
+            });
 
+
+            commit('SOCKET_IO_M_CONNECT_TO_SOCKET', {
+                title: 'messages',
+                socket: io('/messages')
+            });
+
+            state.messages.emit('auth', token);
+
+            state.messages.on('authenticated', () => {
                 state.messages.on('chat.leave', ({ id }) => {
                     commit('CHATLIST_M_PULL_AVAILABLE_CHATS', id)
                 });
 
                 state.messages.on('chat.join', chat => {
-                    commit('SESSION_M_ADD_CHAT', chat)
+                    commit('SESSION_M_ADD_CHAT', chat);
+                    dispatch('CHATLIST_A_FETCH_AVAILABLE_CHATS');
                 });
 
                 state.messages.on('message', message => {
                     if(message.error && message.error.message.indexOf('content') !== -1){
-                        ErrorHandler.pushError({message: 'Sent message is empty!'})
+                        ErrorHandler.pushError({ message: 'Sent message is empty!' })
                     }
                     else if(message.error){
                         ErrorHandler.pushError({message: 'An error occurred!'})
@@ -73,7 +89,7 @@ const actions = {
 
                     if(message.chat !== currentChat._id) return;
 
-                    if(currentChat.messages[currentChat.messages.length - 1] &&
+                    if(message.type !== 'system' && currentChat.messages[currentChat.messages.length - 1] &&
                         ( currentChat.messages[currentChat.messages.length - 1]['author']['_id'] === message['author']['_id'])){
                         message['sameUser'] = true;
                     }
@@ -83,16 +99,23 @@ const actions = {
 
                 state.messages.on('typingUsers', typingUsers => {
                     commit('CHAT_M_SET_TYPING_USERS', typingUsers);
-                })
+                });
 
-        }).on('error', function(err) {
-            console.log(err)
-        }).on('connect', function () {
-            console.log('authenticated');
+                state.messages.on('users.online', users => {
+                    commit('CHAT_M_SET_ONLINE_USERS', users);
+                });
+            })
 
-        }).on('disconnect', function () {
-            console.log('disconnected');
-        });
+
+
+        // }).on('error', function(err) {
+        //     console.log(err)
+        // }).on('connect', function () {
+        //     console.log('authenticated');
+        //
+        // }).on('disconnect', function () {
+        //     console.log('disconnected');
+        // });
     },
 };
 

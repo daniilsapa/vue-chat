@@ -18,7 +18,7 @@
                    v-validate.initial="field">
 
             <span class="input-group-btn">
-                <button class="btn btn-secondary" :disabled="isValid" @click="createChat">Create</button>
+                <button class="btn btn-secondary" :disabled="isValid" @click="createChatWrapper">Create</button>
             </span>
 
         </div>
@@ -37,6 +37,7 @@
     //IMPORTED MAPPERS
     import { mapGetters } from 'vuex';
     import { mapMutations } from 'vuex';
+    import { mapActions } from 'vuex';
 
     export default {
         props: {
@@ -75,20 +76,27 @@
             }
         },
         methods: {
-            ...mapMutations({
-               addChat: 'SESSION_M_ADD_CHAT'
+            ...mapActions({
+                createChat: 'SESSION_A_CREATE_CHAT'
             }),
-            createChat() {
-                axios.post('/private/chats', {
-                    creator: this.user._id,
-                    title: this.field,
-                    type: 'public'
-                })
-                    .then(({ data }) => {
-                        this.addChat(data._id);
-                        this.$router.push('/chats');
-                    })
-                    .catch(error => this.serverSignal = error.body);
+            createChatWrapper() {
+                const cb = () => {
+                    this.$router.push('/chats');
+                };
+
+                this.createChat({
+                    data: {
+                        creator: this.user._id,
+                        title: this.field,
+                        type: 'public'
+                    },
+                    cb: cb
+                    });
+
+
+
+
+
             },
             showSuccessSign() {
                 this.showSign = true;
