@@ -91,7 +91,7 @@ module.exports = io => {
                 const payload = jwtTools.decode(token);
                 const user = await userCtrl.getUserById(payload.id);
 
-                if (!payload){
+                if (!user){
                     socket.emit('Unauthorized', {});
                     socket.disconnect();
                     return;
