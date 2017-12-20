@@ -27,11 +27,14 @@
 
             <editor v-if="chat" :chat="chat" :online="chat.online" class="textarea"></editor>
 
-            <div v-if="chat.onlineUsers.length !== 0">online: {{ chat.onlineUsers.length }} / {{ chat.members.length }}</div>
+            <div class="row justify-content-center">
+                <div class="col-lg-10" style="font-size: 11px">
+                    <div v-if="chat.onlineUsers.length !== 0">online: {{ chat.onlineUsers.length }} / {{ chat.members.length }}</div>
 
-            <div> online: <span v-for="u in chat.onlineUsers">{{ u.username }} | </span></div>
-            <div> members: <span v-for="u in chat.members"> {{ u.username }} | </span></div>
-
+                    <div> online: <span v-for="u in chat.onlineUsers">{{ u.username }} | </span></div>
+                    <div> members: <span v-for="u in chat.members"> {{ u.username }} | </span></div>
+                </div>
+            </div>
 
         </div>
     </div>
@@ -121,6 +124,7 @@
 <style lang="scss" scoped>
     .chat-box {
         max-height: 100%;
+        padding:  0 0 5px 0;
 
         background: rgba(240, 240, 240, 1);
 
@@ -148,7 +152,7 @@
     }
 
     .message-list {
-        height: 505px;
+        max-height: 505px;
 
         overflow: scroll;
         overflow-x: hidden;

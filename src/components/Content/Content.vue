@@ -15,10 +15,11 @@
 <script>
     //IMPORTED COMPONENTS
     import SideBar from './SideBar/SideBar.vue'
-
+    //IMPORTED COMPONENTS
     import { mapGetters } from 'vuex'
 
     export default {
+        name: 'AppContent',
         components: {
             SideBar
         }

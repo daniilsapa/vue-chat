@@ -6,8 +6,8 @@
 </template>
 
 <script>
-
     export default {
+        name: 'WwHeader',
         props: {
             title: {
                 type: String,
@@ -15,11 +15,9 @@
             }
         }
     }
-
 </script>
 
 <style lang="scss" scoped>
-
     .ww-box-header {
         padding: 15px 0 0 0;
 
@@ -37,7 +35,4 @@
             margin: 0;
         }
     }
-
-
-
 </style>

@@ -2,7 +2,7 @@
     <div>
         <div class="media">
 
-            <img v-if="src" class="mr-3" :src="src" alt="Generic placeholder image">
+            <img v-if="src" :src="src" alt="Generic placeholder image" class="mr-3">
 
             <div class="media-body">
 
@@ -12,11 +12,20 @@
 
                 <hr/>
 
-                <div class="notification-footer" :class="{'bg-danger': state === 'rejected', 'bg-success': state === 'accepted'}">
+                <div :class="{'bg-danger': state === 'rejected', 'bg-success': state === 'accepted'}" class="notification-footer" >
 
                     <div class="buttons text-right" v-if="state === 'pending'">
-                        <button class="btn btn-outline-success btn-sm" @click="$emit('accept',  index)">accept</button>
-                        <button class="btn btn-outline-danger btn-sm" @click="$emit('reject', index)">reject</button>
+
+                        <button class="btn btn-outline-success btn-sm"
+                                @click="$emit('accept',  index)">
+                            accept
+                        </button>
+
+                        <button class="btn btn-outline-danger btn-sm"
+                                @click="$emit('reject', index)">
+                            reject
+                        </button>
+
                     </div>
 
                     <div class="text-right notification-sign" v-if="state === 'rejected'">
@@ -36,8 +45,8 @@
 </template>
 
 <script>
-
     export default {
+        name: 'Notification',
         props: {
             content: {
                 type: String,
@@ -61,12 +70,8 @@
             state: {
                 type: String,
             }
-        },
-        methods: {
-
         }
     }
-
 </script>
 
 <style lang="scss" scoped>

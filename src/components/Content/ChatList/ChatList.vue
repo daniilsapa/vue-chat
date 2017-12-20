@@ -6,10 +6,10 @@
 
             <transition-group class="chat-list" mode="out-in" name="item" tag="div" >
                 <chat-list-item
-                        v-for="(chat, index) in availableChats">
+                        v-for="(chat, index) in availableChats"
                         :chat="chat"
                         :key="index"
-                        class="chat-list-item"
+                        class="chat-list-item">
                 </chat-list-item>
             </transition-group>
 

@@ -106,7 +106,7 @@
         position: relative;
         top: 0;
 
-        padding: 0 0 50px 0;
+        padding: 0 0 10px 0;
     }
     
     .addressee-list {

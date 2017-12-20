@@ -1,13 +1,13 @@
 <template>
     <ul class="addressee-list ww-box" v-prevent-parent-scroll>
-        <transition-group name="addressee" tag="div" mode="in-out">
+        <transition-group mode="in-out" name="addressee" tag="div">
             <addressee-list-item
-                    class="addressee-list-item"
                     v-for="(user, index) in users"
                     :index="index"
-                    :user="user"
+                    :key="user._id"
                     :itemClickFunc="itemClickFunc"
-                    :key="user._id">
+                    :user="user"
+                    class="addressee-list-item">
             </addressee-list-item>
         </transition-group>
     </ul>
@@ -18,6 +18,7 @@
     import AddresseeListItem from './AddresseeListItem.vue';
 
     export default {
+        name: 'AddresseeList',
         props: ['users', 'itemClickFunc'],
         components: {
             AddresseeListItem
@@ -26,7 +27,6 @@
 </script>
 
 <style scoped lang="scss">
-
     .addressee-list {
         padding: 0;
 
@@ -78,5 +78,4 @@
             transform: translateY(20px);
         }
     }
-
 </style>

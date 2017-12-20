@@ -38,8 +38,13 @@
 
         </nav>
 
-        <sign-up-modal :show="showSignUpModal && !currentUser.username" @close="showSignUpModal = false"></sign-up-modal>
-        <log-in-modal :show="showLogInModal && !currentUser.username" @close="showLogInModal = false"></log-in-modal>
+        <sign-up-modal :show="showSignUpModal && !currentUser.username"
+                       @close="showSignUpModal = false">
+        </sign-up-modal>
+
+        <log-in-modal :show="showLogInModal && !currentUser.username"
+                      @close="showLogInModal = false">
+        </log-in-modal>
 
     </div>
 </template>
@@ -53,6 +58,7 @@
     import { mapActions } from 'vuex';
 
     export default {
+        name: 'AppHeader',
         data() {
             return {
                 showLogInModal: false,
@@ -82,7 +88,6 @@
 </script>
 
 <style lang="scss" scoped>
-
     .navbar-brand, .nav-item {
         cursor: pointer;
     }
@@ -113,5 +118,4 @@
             color: rgba(160, 160, 160, 1);
         }
     }
-
 </style>

@@ -10,23 +10,27 @@
 
             <div class="input-group">
 
-                <input :class="{ 'is-invalid': errors.has('field') }"
-                       :data-vv-rules="validationRules"
-                       :placeholder="fieldValue"
-                       class="form-control in"
-                       type="email"
-                       v-model="field"
-                       v-validate.initial="field">
+                <input  v-model="field"
+                        v-validate.initial="field"
+                        :class="{ 'is-invalid': errors.has('field') }"
+                        :data-vv-rules="validationRules"
+                        :placeholder="fieldValue"
+                        class="form-control in"
+                        type="email">
 
                 <span class="input-group-btn">
-                    <button class="btn btn-secondary" :disabled="isValid" @click="sendChanges">Save</button>
+                    <button :disabled="isValid"
+                            class="btn btn-secondary"
+                            @click="sendChanges">
+                        Save
+                    </button>
                 </span>
 
             </div>
 
             <transition name="danger-box">
-                <p class="text-danger" v-if="errors.has('field')" key="1">{{ errors.first('field') }}</p>
-                <p class="text-success" v-if="showSign" key="2">Successfully changed!</p>
+                <p v-if="errors.has('field')" class="text-danger" key="1">{{ errors.first('field') }}</p>
+                <p v-if="showSign" class="text-success" key="2">Successfully changed!</p>
             </transition>
 
         </div>
@@ -40,6 +44,7 @@
     import { ErrorHandler } from '../../../services/ErrorHandler.secvice';
 
     export default {
+        name: 'InputField',
         props: {
             fieldTitle: {
                 type: String,
