@@ -39,11 +39,9 @@ module.exports = router => {
 
     router.route('/chats/change/:id/title')
         .post(async (request, response, next) => {
-
             const chat = await chatCtrl.setTitle(request.params.id, request.body.field);
 
             if(chat.error){
-                console.log(chat.error);
                 response.status(500).json(chat.error);
             }
             else {
@@ -58,7 +56,6 @@ module.exports = router => {
                 response.status(200).send({});
             }
             catch(e) {
-                console.log(e);
                 response.status(500).send({});
             }
         });

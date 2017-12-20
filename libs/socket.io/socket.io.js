@@ -61,12 +61,11 @@ module.exports = io => {
                 socket.emit('authenticated', socket.user);
 
                 socket.join(`u${ socket.user._id }`, err => {
-                    if(err) console.log('chat changin\' error', err);
+                    if(err) console.log('error', err);
                 });
 
                 socket.user.availableChats.forEach(async item => {
                     socket.join(item);
-                    console.log('rooms item', rooms[item]);
                     Messages.in(item).emit('users.online', await OUHelpers.getOnlineUsers(connections, item));
                 });
 
@@ -105,7 +104,7 @@ module.exports = io => {
                     try {
                         await socket.leave(data.previousChat, err => {
                             socket.join(data.currentChat, err => {
-                                if(err) console.log('chat changin\' error', err);
+                                if(err) console.log('error', err);
                                 socket.currentChat = data.currentChat;
 
                                 socket.emit('changeChat', {});

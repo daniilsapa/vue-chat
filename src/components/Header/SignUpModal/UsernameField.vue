@@ -34,7 +34,6 @@
         },
         watch: {
             serverResponse () {
-                console.log(this.serverResponse);
                 this.validateField();
             }
         },

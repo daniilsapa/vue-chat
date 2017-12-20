@@ -20,7 +20,6 @@
         },
         watch: {
             errors(newErrors) {
-                console.log('errors errors errors', newErrors);
             }
         },
         created() {

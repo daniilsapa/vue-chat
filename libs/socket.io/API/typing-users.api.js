@@ -9,7 +9,6 @@ module.exports = (socket, rooms, Messages) => {
             helpers.addInTyping(typingUsers, socket.user._id);
             Messages.in(socket.currentChat).emit('typingUsers',
                 await helpers.getUsernamesOfTypingUsers(typingUsers));
-            console.log(`from 'beginTyping current chat of ${ socket.user.username }`,socket.currentChat)
         }
     });
 
@@ -20,7 +19,6 @@ module.exports = (socket, rooms, Messages) => {
             helpers.removeFromTyping(typingUsers, socket.user._id);
             Messages.in(socket.currentChat).emit('typingUsers',
                 await helpers.getUsernamesOfTypingUsers(typingUsers));
-            console.log(`from 'finishTyping' current chat of ${ socket.user.username }`,socket.currentChat)
         }
     });
 

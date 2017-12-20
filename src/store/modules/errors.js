@@ -17,10 +17,7 @@ const mutations = {
 
     },
     'ERRORS_SET_ERRORS_STATE'(state, newState) {
-
-        console.log('new state', newState);
         state.errorsState = newState;
-
     }
 };
 

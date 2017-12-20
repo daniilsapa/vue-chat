@@ -13,7 +13,7 @@ module.exports.setCover = function (_id, coverUrl) {
             })
         }
         catch(err) {
-            console.log(err);
+            reject({ error })
         }
     });
 };

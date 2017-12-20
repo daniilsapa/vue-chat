@@ -26,7 +26,6 @@ VeeValidate.Validator.extend('usernameExists', {
     validate: value => {
         return axios.post('/public/check/username', { field: value })
             .then(response => {
-                console.log(response.data.result);
                 return { valid: !response.data.result };
             })
             .catch(error => {
@@ -41,7 +40,6 @@ VeeValidate.Validator.extend('emailExists', {
     validate: value => {
         return axios.post('/public/check/email', { field: value })
             .then(response => {
-                console.log(response.data.result);
                 return { valid: !response.data.result };
             })
             .catch(error => {

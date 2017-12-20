@@ -29,7 +29,6 @@ const mutations = {
 
     },
     'SIGN_UP_M_VALIDATE_FORM'(state) {
-        console.log('SIGN_UP_M_VALIDATE_FORM', state.form);
         for(let key in state.form) {
             if(!state.form[key]['state']){
                 state.isValid = false;

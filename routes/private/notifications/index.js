@@ -19,7 +19,6 @@ module.exports = (router) => {
                 response.json(notification);
             }
             catch(e) {
-                console.log('error', e);
                 response.status(500).send({});
             }
         });

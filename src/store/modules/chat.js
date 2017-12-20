@@ -39,7 +39,6 @@ const mutations = {
         state.newMessage = message;
     },
     'CHAT_M_SET_ONLINE_USERS'(state, users) {
-        console.log('chat. set online users')
         state.currentChat.onlineUsers = users;
     },
     'CHAT_M_SET_TYPING_USERS'(state, typingUsers) {
@@ -108,7 +107,6 @@ const actions = {
 
                 if (prevMessage && message) {
                     if (prevMessage.type === 'system' || message.type === 'system') {
-                        console.log('system', message);
                         return message;
                     }
 

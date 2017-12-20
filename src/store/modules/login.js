@@ -14,11 +14,6 @@ const mutations = {};
 const actions = {
     'LOGIN_SEND_A_LOGIN_REQUEST'({ state, dispatch, commit }) {
 
-        console.log('login', {
-            email: state.form.email,
-            password: state.form.password
-        });
-
         Vue.http.post('/auth/login', {
             email: state.form.email,
             password: state.form.password
@@ -32,7 +27,6 @@ const actions = {
 
             })
             .catch(error => {
-                console.log(error);
                 ErrorHandler.pushError({message: 'User not found or incorrect password'})
             });
 

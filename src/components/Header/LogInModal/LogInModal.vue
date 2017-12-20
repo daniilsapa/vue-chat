@@ -55,13 +55,10 @@
                 submit: 'LOGIN_SEND_A_LOGIN_REQUEST'
             }),
             beforeOpen (event) {
-                console.log(event)
-                // Set the opening time of the modal
+
                 this.time = Date.now()
             },
             beforeClose (event) {
-                console.log(event)
-                // If modal was open less then 5000 ms - prevent closing it
                 if (this.time + this.duration < Date.now()) {
                     event.stop()
                 }

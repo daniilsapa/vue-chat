@@ -46,12 +46,8 @@ const getters = {
     stockPortfolio(state, getters) {
         return state.stocksP.map(stock => {
             const record = getters.stocks.find(elem => {
-                console.log('elem', elem);
-                console.log('stock', stock);
-
                 return elem.id === stock.id
             });
-            console.log('record', record);
             return {
                 id: stock.id,
                 quantity: stock.quantity,

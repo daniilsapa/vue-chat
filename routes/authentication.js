@@ -56,7 +56,6 @@ module.exports = (passport, jwt, jwtsecret) => {
                 response.status(200).send("hello " + user.username);
             } else {
                 response.status(404).send("No such user");
-                console.log("err", user)
             }
         } )(request, response, next)
 

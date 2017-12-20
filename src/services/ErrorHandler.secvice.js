@@ -12,11 +12,7 @@ export const ErrorHandler = new Vue({
     },
     methods: {
         pushError(error) {
-
             this.errors.push(error);
-
-            console.log(this.errors);
-
         },
         shiftError() {
 
@@ -48,8 +44,6 @@ export const ErrorHandler = new Vue({
         },
         errors(newErrors) {
 
-            console.log('NEW ERRORS', newErrors);
-
             if(newErrors.length === 1 && this.queueState !== 'showingError') {
                 this.queueState = 'ready';
             }
@@ -63,25 +57,3 @@ export const ErrorHandler = new Vue({
 
     }
 });
-
-const mutations = {
-
-    'ERRORS_SET_ERRORS_STATE'(state, newState) {
-
-        console.log('new state', newState);
-        state.errorsState = newState;
-
-    }
-};
-
-const actions = {
-    'ERRORS_THROW_ERROR'({ commit }, error) {
-        commit('ERRORS_PUSH_ERRORS', error);
-    },
-    'ERRORS_SHIFT_ERRORS'({ state, getters }) {
-
-        state.currentError = state.errors.shift();
-        state.errorsState = 'showingError';
-
-    }
-};

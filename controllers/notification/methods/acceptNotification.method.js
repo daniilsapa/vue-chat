@@ -11,8 +11,7 @@ module.exports = async notification => {
         return Notification.getNotification(notification._id);
     }
     catch (error) {
-        console.log(error);
-        return {error};
+        return { error };
     }
 
 };

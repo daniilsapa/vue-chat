@@ -85,7 +85,6 @@
             sendChanges() {
                 axios.post(this.url, { field: this.field })
                     .then(({ data }) => {
-                    console.log('data', this.fieldTitle);
                         this.setter({ field: this.titleInData, value: data[this.titleInData] });
                         this.field = '';
                         this.showSuccessSign();

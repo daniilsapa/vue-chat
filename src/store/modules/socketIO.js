@@ -39,7 +39,6 @@ const actions = {
         state.notifications.emit('auth', token );
 
         state.notifications.on('Unauthorized', () => {
-            console.log('unauthorized')
             state.unauthorized = true;
         });
 
@@ -53,8 +52,6 @@ const actions = {
             });
 
             state.notifications.on('notification.invite', notification => {
-                console.log('notification invite')
-
                 commit('SESSION_M_PUSH_NOTIFICATIONS', notification);
             });
 

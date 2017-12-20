@@ -13,7 +13,7 @@ module.exports = function (_id, avatarUrl) {
             })
         }
         catch(err) {
-            console.log(err);
+            reject({ error });
         }
     });
 };

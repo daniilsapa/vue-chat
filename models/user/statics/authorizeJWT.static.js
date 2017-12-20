@@ -1,10 +1,5 @@
 
 module.exports = function(payload, done) {
-
-    // console.log('payload');
-    // console.log(payload);
-    // console.log('payload');
-
     const User = this;
 
     User.findOne({_id: payload.id}, (err, user) => {
@@ -17,7 +12,5 @@ module.exports = function(payload, done) {
             done(null, false)
         }
     })
-
-
 };
 

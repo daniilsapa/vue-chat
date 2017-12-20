@@ -101,7 +101,6 @@ const getters = {
         });
 
         return state.users.filter((user, index) => {
-            console.log('filter function', unnecessaryUsers[user._id]);
             return !unnecessaryUsers[user._id];
         });
     }
