@@ -40,6 +40,8 @@
     //IMPORTED MAPPERS
     import { mapMutations } from 'vuex'
     import { mapActions } from 'vuex'
+    //IMPORTED SERVICES
+    import { ErrorHandler } from '../../../../services/ErrorHandler.secvice';
 
     export default {
         name: 'MessageEditor',
@@ -81,6 +83,11 @@
                 this.showUsersList = this.message === '@';
             },
             sendMessageWrapper () {
+                if(this.message === ''){
+                    ErrorHandler.pushError({ message: 'You can\'t send an empty message' });
+                    return;
+                }
+
                 let dividerPos = this.message.indexOf(':'),
                     addressee = this.message.slice(0, dividerPos);
 
