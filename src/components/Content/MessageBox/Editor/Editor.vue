@@ -83,13 +83,13 @@
                 this.showUsersList = this.message === '@';
             },
             sendMessageWrapper () {
-                if(this.message === ''){
+                let dividerPos = this.message.indexOf(':'),
+                    addressee = this.message.slice(0, dividerPos);
+
+                if(this.message === '' || this.message.slice(dividerPos + 1) === ''){
                     ErrorHandler.pushError({ message: 'You can\'t send an empty message' });
                     return;
                 }
-
-                let dividerPos = this.message.indexOf(':'),
-                    addressee = this.message.slice(0, dividerPos);
 
                 if(addressee.match(/^@[a-zA-Z0-9]{24}\([a-zA-Z0-9_]{1,16}\)$/)){
                     this.sendMessage({

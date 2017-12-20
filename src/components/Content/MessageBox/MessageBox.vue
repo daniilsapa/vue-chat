@@ -152,7 +152,7 @@
     }
 
     .message-list {
-        max-height: 505px;
+        height: 505px;
 
         overflow: scroll;
         overflow-x: hidden;

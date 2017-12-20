@@ -60,14 +60,6 @@
                              validationRules="numeric|max:12">
                 </input-field>
 
-                <input-field :fieldValue="'**********'"
-                             :setter="setField"
-                             fieldTitle="Password"
-                             titleInData="password"
-                             url="/private/users/change/password"
-                             validationRules="alpha_num|min:8">
-                </input-field>
-
             </div>
 
         </div>
