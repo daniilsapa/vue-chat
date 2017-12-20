@@ -9,7 +9,8 @@ const state = {
     currentChat: {
         _id: null,
         members: [],
-        onlineUsers: []
+        onlineUsers: [],
+        messages: []
     },
     newMessage: '',
     previousChatId: null,
@@ -87,7 +88,6 @@ const actions = {
                 state.chatFetched = true;
             })
             .catch(error => {
-                throw new Error(error)
                 ErrorHandler.pushError({message: 'Cannot get chat!'})
             });
     },

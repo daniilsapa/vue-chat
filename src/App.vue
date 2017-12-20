@@ -27,21 +27,39 @@
     import ErrorBox from './components/ErrorBox/ErrorBox.vue';
     //IMPORTED MAPPERS
     import { mapActions } from 'vuex';
+    import { mapGetters } from 'vuex';
 
     export default {
-        created() {
-            this.initApp();
+        name: 'App',
+        computed: {
+            ...mapGetters({
+                unauthorized: 'SOCKET_IO_G_GET_UNAUTHORIZED'
+            })
         },
         components: {
             AppHeader,
             AppContent,
             ErrorBox,
         },
+        watch: {
+          unauthorized(newValue) {
+              if(newValue){
+                  const data = JSON.parse(localStorage.getItem('data'));
+
+                  data.token = null;
+                  localStorage.setItem('data', JSON.stringify(data));
+                  this.$router.push('/');
+              }
+          }
+        },
         methods: {
             ...mapActions({
                 initApp: 'APP_A_INIT_APP'
             })
-        }
+        },
+        created() {
+            this.initApp();
+        },
     }
 </script>
 

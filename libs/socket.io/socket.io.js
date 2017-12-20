@@ -48,13 +48,15 @@ module.exports = io => {
         Notifications.on('connection', socket => {
             socket.on('auth', async token => {
                 const payload = jwtTools.decode(token);
-                if(!payload){
+                const user = await userCtrl.getUserById(payload.id);
+
+                if(!user){
                     socket.emit('Unauthorized',  {});
                     socket.disconnect();
                     return;
                 }
 
-                socket.user = await userCtrl.getUserById(payload.id);
+                socket.user = user;
                 connections[socket.user._id] = { notifications: socket };
                 socket.emit('authenticated', socket.user);
 
@@ -87,6 +89,7 @@ module.exports = io => {
         Messages.on('connection', socket => {
             socket.on('auth', async token => {
                 const payload = jwtTools.decode(token);
+                const user = await userCtrl.getUserById(payload.id);
 
                 if (!payload){
                     socket.emit('Unauthorized', {});
@@ -94,7 +97,7 @@ module.exports = io => {
                     return;
                 }
 
-                socket.user = await userCtrl.getUserById(payload.id);
+                socket.user = user;
                 connections[socket.user._id].messages = socket ;
                 socket.emit('authenticated', socket.user);
 
