@@ -2,7 +2,7 @@ const chatCtrl = require('@chatCtrl'),
       Chat = require('@chatModel');
 
 const multer = require('multer');
-const upload = multer({dest: 'uploads/'});
+const upload = multer({ dest: 'uploads/' });
 
 module.exports = router => {
 
@@ -53,6 +53,13 @@ module.exports = router => {
 
     router.route('/chats/cover/:id')
         .post(upload.single('cover'), async (request, response, next) => {
-            await chatCtrl.setCover(request.params.id, request.file)
+            try{
+                await chatCtrl.setCover(request.params.id, request.file)
+                response.status(200).send({});
+            }
+            catch(e) {
+                console.log(e);
+                response.status(500).send({});
+            }
         });
 };

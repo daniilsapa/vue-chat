@@ -29,7 +29,7 @@
 
             <div class="row justify-content-center">
                 <div class="col-lg-10" style="font-size: 11px">
-                    <div v-if="chat.onlineUsers.length !== 0">online: {{ chat.onlineUsers.length }} / {{ chat.members.length }}</div>
+                    <div v-if="chat.onlineUsers">online: {{ chat.onlineUsers.length }} / {{ chat.members.length }}</div>
 
                     <div> online: <span v-for="u in chat.onlineUsers">{{ u.username }} | </span></div>
                     <div> members: <span v-for="u in chat.members"> {{ u.username }} | </span></div>
