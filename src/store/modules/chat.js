@@ -25,7 +25,12 @@ const mutations = {
     },
     'CHAT_M_RESET_CHAT'(state) {
         state.previousChatId = state.currentChat._id;
-        state.currentChat = {};
+        state.currentChat = {
+            _id: null,
+            members: [],
+            onlineUsers: [],
+            messages: []
+        };
         state.newMessage = '';
         state.chatFetched = false;
     },
@@ -114,7 +119,6 @@ const actions = {
                         message.sameUser = true;
                     }
                 }
-
 
                 return message;
             });

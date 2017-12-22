@@ -1,6 +1,5 @@
 <template>
-    <div :class="{'active-chat': chat._id === currentChat._id}"
-         class="chat-list-item"
+    <div v-if="chat" class="chat-list-item"
          @click="changeChat">
         <div class="media">
 
@@ -13,7 +12,7 @@
                         {{ chat.notifications }}
                     </span>
                 </h5>
-                <h6>Creator: {{ chat.creator.username }}</h6>
+                <h6 v-if="chat.creator">Creator: {{ chat.creator.username }}</h6>
             </div>
 
             <div class="icons">
@@ -22,7 +21,7 @@
                     <i class="fa fa-sign-out" aria-hidden="true"></i>
                 </button>
 
-                <button v-show="chat.creator._id === user._id"
+                <button v-show="user && chat.creator && chat.creator._id === user._id"
                         class="btn btn-outline-info btn-sm"
                         @click.stop="goToChatSettings">
                     <i class="fa fa-bars" aria-hidden="true"></i>
@@ -41,7 +40,12 @@
 
     export default {
         name: 'ChatListItem',
-        props: ['chat'],
+        props: {
+            chat : {
+                type: Object,
+                default: false
+            }
+        },
         computed: {
             ...mapGetters({
                 currentChat: 'CHAT_G_GET_CHAT',
@@ -53,10 +57,10 @@
                 leaveChat: 'CHATLIST_A_LEAVE_CHAT'
             }),
             changeChat() {
-                this.$router.push(`/chats/${this.chat._id}`);
+                this.$router.push(`/chats/${ this.chat._id }`);
             },
             goToChatSettings() {
-                this.$router.push(`/chats/${this.chat._id}/settings/members`);
+                this.$router.push(`/chats/${ this.chat._id }/settings/members`);
             }
         }
     }

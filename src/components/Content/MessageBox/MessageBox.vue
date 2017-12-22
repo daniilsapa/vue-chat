@@ -5,17 +5,17 @@
 
             <div v-if="chat" class="message-list" id="messageList" v-prevent-parent-scroll>
 
-                <transition-group name="message" tag="div" class="transition-group-message">
-                    <message class="row message-list-item" v-for="message in chat.messages"
+                <!--<transition-group name="message" tag="div" class="transition-group-message">-->
+                    <message class="row message-list-item" v-for="(message, index) in chat.messages"
                              :class="{ 'justify-content-end': message.author._id === currentUser._id }"
-                             :id="message._id"
+                             :id="`mes${ index }`"
                              :isAuthor="message.author._id === currentUser._id"
                              :isPrivate="message.type === 'private'"
-                             :key="message._id"
+                             :key="index"
                              :message="message"
                              :privateTarget="message.target && (message.target._id === currentUser._id)">
                     </message>
-                </transition-group>
+                <!--</transition-group>-->
 
                 <div class="placeholder">
 
@@ -29,7 +29,7 @@
 
             <div class="row justify-content-center">
                 <div class="col-lg-10" style="font-size: 11px">
-                    <div v-if="chat.onlineUsers">online: {{ chat.onlineUsers.length }} / {{ chat.members.length }}</div>
+                    <div v-if="chat.onlineUsers && chat.members">online: {{ chat.onlineUsers.length }} / {{ chat.members.length }}</div>
 
                     <div> online: <span v-for="u in chat.onlineUsers">{{ u.username }} | </span></div>
                     <div> members: <span v-for="u in chat.members"> {{ u.username }} | </span></div>
@@ -75,8 +75,7 @@
                         const messageList = this.$el.querySelector("#messageList"),
                             lastMessage = messageList
                                             .lastElementChild
-                                            .previousElementSibling
-                                            .lastElementChild,
+                                            .previousElementSibling,
                             needScroll = messageList.scrollTop +
                                 lastMessage.offsetHeight +
                                 lastMessage.previousElementSibling.offsetHeight +

@@ -1,4 +1,4 @@
-//IMPORTED FOREIGN ADDICTIONS
+//IMPORTED "FOREIGN" ADDICTIONS
 const jwtTools = require('jsonwebtoken');
 
 const socketioJwt = require('socketio-jwt'),
@@ -47,8 +47,14 @@ module.exports = io => {
 
         Notifications.on('connection', socket => {
             socket.on('auth', async token => {
+                //Authentication
                 const payload = jwtTools.decode(token);
-                const user = await userCtrl.getUserById(payload.id);
+
+                let user = null;
+
+                if(payload){
+                    user = await userCtrl.getUserById(payload.id);
+                }
 
                 if(!user){
                     socket.emit('Unauthorized',  {});
@@ -56,14 +62,18 @@ module.exports = io => {
                     return;
                 }
 
-                socket.user = user;
-                connections[socket.user._id] = { notifications: socket };
-                socket.emit('authenticated', socket.user);
+                connections[user._id] = { notifications: socket };
 
+                socket.user = user;
+
+                //Creating a room for every available chat,
+                //these rooms will be used for notifications
                 socket.join(`u${ socket.user._id }`, err => {
                     if(err) console.log('error', err);
                 });
+                socket.emit('authenticated', socket.user);
 
+                //Changing the lists of online users on client side
                 socket.user.availableChats.forEach(async item => {
                     socket.join(item);
                     Messages.in(item).emit('users.online', await OUHelpers.getOnlineUsers(connections, item));
@@ -87,17 +97,24 @@ module.exports = io => {
 
         Messages.on('connection', socket => {
             socket.on('auth', async token => {
+                //Authentication
                 const payload = jwtTools.decode(token);
-                const user = await userCtrl.getUserById(payload.id);
 
-                if (!user){
-                    socket.emit('Unauthorized', {});
+                let user = null;
+
+                if(payload){
+                    user = await userCtrl.getUserById(payload.id);
+                }
+
+                if(!user){
+                    socket.emit('Unauthorized',  {});
                     socket.disconnect();
                     return;
                 }
 
+                connections[user._id].messages = socket ;
+
                 socket.user = user;
-                connections[socket.user._id].messages = socket ;
                 socket.emit('authenticated', socket.user);
 
                 socket.on('changeChat', async data => {
@@ -143,6 +160,8 @@ module.exports = io => {
                             target: userID,
                             content: 'User have just left the room!'
                         });
+
+                        message.target = await userCtrl.getUserById(userID);
 
                         socket.emit('chat.leave', { id: chatID });
 
