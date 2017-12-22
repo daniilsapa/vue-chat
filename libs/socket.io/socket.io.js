@@ -183,7 +183,7 @@ module.exports = io => {
                                   type: 'system',
                                   author: userID,
                                   target: userID,
-                                  content: 'User have just join the room!'
+                                  content: 'User have just joined the room!'
                               });
 
                         message.target = await userCtrl.getUserById(userID);

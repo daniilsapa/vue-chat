@@ -1,21 +1,20 @@
 # chat2_1
 
-> The project named chat2_1
+> chat v 2.1
 
-## Build Setup
+## Short guide
 
 ``` bash
 # install dependencies
 npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
+-----------------------------------------------------------
+# install bower dependencies
+bower install
+-----------------------------------------------------------
+# run MongoDB server 
+-----------------------------------------------------------
+# run command 'node bin/www' in the root of project
+-----------------------------------------------------------
+# app will be available on the url 'localhost:3000' when the server launches
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
