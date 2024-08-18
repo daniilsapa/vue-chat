@@ -17,6 +17,21 @@ Main technologies involved:
 - VueJS (^2.5.2)
 - WebSockets
 
+## Features
+- User registration/login
+- Chat creation
+- Chat invitation/acceptance
+- Shows who is online in a chat and who is typing
+- Real-time chat messages
+- Chat history
+- Notifications
+- User profile editing (including avatar upload)
+
+## Screenshots
+
+![list of chats page](./docs/images/chats-page.png)
+![chat](./docs/images/chat.png)
+
 ## Setup
 
 To run the app, you need to have Docker installed on your machine.
