@@ -1,5 +1,5 @@
 {
-  "name": "chat2_1",
+  "name": "vue-chat",
   "version": "1.0.0",
   "dependencies": {
     "bootstrap": "4.0.0-beta",
