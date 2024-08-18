@@ -1,12 +1,13 @@
 {
-  "name": "chat2_1",
+  "name": "vue-chat",
   "version": "1.0.0",
-  "description": "The project named chat2_1",
+  "description": "vue-chat",
   "author": "Daniil <sapadaniil@gmail.com>",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
+    "start:server": "node bin/www",
     "build": "node build/build.js"
   },
   "_moduleAliases": {
@@ -45,7 +46,6 @@
     "passport-jwt": "^3.0.1",
     "passport-local": "^1.0.0",
     "passport.socketio": "^3.7.0",
-    "serve-favicon": "~2.4.5",
     "socket.io": "^2.0.3",
     "socketio-jwt-auth": "0.0.6",
     "vue-prevent-parent-scroll": "^1.0.5",

@@ -4,14 +4,14 @@
 
 ## Short guide
 
-``` bash
+```bash
 # install dependencies
 npm install
 -----------------------------------------------------------
 # install bower dependencies
 bower install
 -----------------------------------------------------------
-# run MongoDB server 
+# run MongoDB server
 -----------------------------------------------------------
 # run command 'node bin/www' in the root of project
 -----------------------------------------------------------

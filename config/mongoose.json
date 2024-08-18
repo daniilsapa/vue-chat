@@ -1,5 +1,5 @@
 {
     "mongoose": {
-        "uri": "mongodb://localhost:27017/werewolf"
+        "uri": "mongodb://mongodb:27017/werewolf"
     }
 }
